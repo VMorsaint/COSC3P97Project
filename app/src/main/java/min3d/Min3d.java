@@ -1,4 +1,4 @@
-package com.ben.cosc3p97project.min3d;
+package min3d;
 
 public class Min3d 
 {

@@ -1,8 +1,8 @@
-package com.min3d.vos;
+package min3d.vos;
 
-import com.min3d.interfaces.IDirtyParent;
+import min3d.interfaces.IDirtyParent;
 
-public class BooleanManaged extends min3d.vos.AbstractDirtyManaged
+public class BooleanManaged extends AbstractDirtyManaged 
 {
 	private boolean _b;
 

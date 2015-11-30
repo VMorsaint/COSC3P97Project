@@ -1,4 +1,4 @@
-package com.min3d;
+package min3d;
 
 import java.io.IOException;
 import java.io.InputStream;

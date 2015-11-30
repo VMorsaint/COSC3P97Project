@@ -1,4 +1,4 @@
-package com.min3d.interfaces;
+package min3d.interfaces;
 
 public interface IDirtyParent 
 {

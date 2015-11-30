@@ -1,4 +1,4 @@
-package com.ben.cosc3p97project.min3d.animation;
+package min3d.animation;
 
 import min3d.core.FacesBufferedList;
 import min3d.core.Object3d;
