@@ -1,12 +1,15 @@
 package com.ben.cosc3p97project;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends Activity {
 
     private GLSurfaceView bodyView;
 
@@ -14,9 +17,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        bodyView = new BodyView(this);
+        setContentView(R.layout.activity_main);
+        startActivity(new Intent(this, BodyActivity.class));
 
-        setContentView(bodyView);
     }
 
     @Override

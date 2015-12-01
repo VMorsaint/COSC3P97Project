@@ -1,64 +1,51 @@
 package com.ben.cosc3p97project;
 
-import android.opengl.GLSurfaceView;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.opengl.EGLConfig;
 
-import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
-import android.opengl.Matrix;
-import android.util.Log;
-import min3d.Utils.*;
+import rajawali.lights.DirectionalLight;
+import rajawali.materials.DiffuseMaterial;
+import rajawali.materials.TextureInfo;
+import rajawali.primitives.Sphere;
+import rajawali.renderer.RajawaliRenderer;
 
 
 /**
  * Created by Ben on 11/29/2015.
  */
-public class BodyRenderer implements GLSurfaceView.Renderer {
+public class BodyRenderer extends RajawaliRenderer {
 
-	 // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
-    private final float[] mMVPMatrix = new float[16];
-    private final float[] mProjectionMatrix = new float[16];
-    private final float[] mViewMatrix = new float[16];
-    private final float[] mRotationMatrix = new float[16];
+    private DirectionalLight mLight;
+    private Sphere mSphere;
 
-    private float mAngle;
-
-    @Override
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-
-    	//clear screen
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-        //init objects
-    }
-
-    @Override
-    public void onSurfaceChanged(GL10 gl, int width, int height) {
-
-    }
-
-    @Override
-    public void onDrawFrame(GL10 gl) {
-
+    public BodyRenderer(Context context){
+        super(context);
+        setFrameRate(60);
     }
 
 
-    /**
-     * Returns the rotation angle of the triangle shape (mTriangle).
-     *
-     * @return - A float representing the rotation angle.
-     */
-    public float getAngle() {
-        return mAngle;
+    public void initScene() {
+		mLight = new DirectionalLight(1f, 0.2f, -1.0f); // set the direction
+		mLight.setColor(1.0f, 1.0f, 1.0f);
+		mLight.setPower(2);
+
+		Bitmap bg = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.earthtruecolor_nasa_big);
+		DiffuseMaterial material = new DiffuseMaterial();
+		mSphere = new Sphere(1, 18, 18);
+		mSphere.setMaterial(material);
+		mSphere.addLight(mLight);
+		mSphere.addTexture(mTextureManager.addTexture(bg));
+		addChild(mSphere);
+
+		mCamera.setZ(4.2f);
     }
 
-    /**
-     * Sets the rotation angle of the triangle shape (mTriangle).
-     */
-    public void setAngle(float angle) {
-        mAngle = angle;
+    public void onDrawFrame(GL10 glUnused) {
+        super.onDrawFrame(glUnused);
+        mSphere.setRotY(mSphere.getRotY() + 1);
     }
-
 }
