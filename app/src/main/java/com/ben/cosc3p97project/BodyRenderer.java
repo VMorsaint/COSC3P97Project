@@ -58,7 +58,8 @@ public class BodyRenderer extends RajawaliRenderer {
         }
 
 
-		mCamera.setZ(4.2f);
+		mCamera.setZ(35f);
+        mCamera.setY(6f);
     }
 
     public void onDrawFrame(GL10 glUnused) {
