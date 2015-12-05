@@ -3,7 +3,6 @@ package com.ben.cosc3p97project;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.opengl.EGLConfig;
 import android.util.Log;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -25,6 +24,7 @@ public class BodyRenderer extends RajawaliRenderer {
 
     private DirectionalLight mLight;
     private BaseObject3D mBody;
+    private float yRotation, xRotation;
 
     public BodyRenderer(Context context){
         super(context);
@@ -37,26 +37,23 @@ public class BodyRenderer extends RajawaliRenderer {
 		mLight.setColor(1.0f, 1.0f, 1.0f);
 		mLight.setPower(2);
 
-        /*
-		Bitmap bg = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.earthtruecolor_nasa_big);
-		DiffuseMaterial material = new DiffuseMaterial();
-		mSphere = new Sphere(1, 18, 18);
-		mSphere.setMaterial(material);
-		mSphere.addLight(mLight);
-		mSphere.addTexture(mTextureManager.addTexture(bg));
-		addChild(mSphere);
-		*/
-
         ObjParser objParser = new ObjParser(mContext.getResources(), mTextureManager, R.raw.male_figure_obj);
         try{
             objParser.parse();
             mBody = objParser.getParsedObject();
-            mBody.setLight(mLight);
+            mBody.addLight(mLight);
+            mBody.setY(-10);
             addChild(mBody);
         }catch(AParser.ParsingException e){
             Log.v("custom print", e.getMessage());
         }
 
+        DiffuseMaterial material = new DiffuseMaterial();
+        material.addTexture(new TextureInfo(R.drawable.earthtruecolor_nasa_big));
+        Sphere sp = new Sphere(1, 24, 24);
+        sp.setMaterial(material);
+        sp.addLight(mLight);
+        addChild(sp);
 
 		mCamera.setZ(35f);
         mCamera.setY(6f);
@@ -64,6 +61,10 @@ public class BodyRenderer extends RajawaliRenderer {
 
     public void onDrawFrame(GL10 glUnused) {
         super.onDrawFrame(glUnused);
-        mBody.setRotY(mBody.getRotY() + 1);
+    }
+
+    public void setRotation(float x, float y){
+        mBody.setRotX(mBody.getRotX() + x);
+        mBody.setRotY(mBody.getRotY() + y);
     }
 }

@@ -28,6 +28,10 @@
             android:name=".BodyActivity"
             android:label="@string/title_activity_rajawali" >
         </activity>
+        <activity
+            android:name=".AppointmentList"
+            android:label="@string/title_activity_appointment_list" >
+        </activity>
     </application>
 
 </manifest>
