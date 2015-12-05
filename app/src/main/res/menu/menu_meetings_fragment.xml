@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.ben.assignment2.ListMeetings">
+    <item
+        android:id="@+id/all_meetings"
+        android:orderInCategory="100"
+        android:title="All Meetings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_new"
+        android:orderInCategory="100"
+        android:title="@string/action_new"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/clear_meetings"
+        android:orderInCategory="100"
+        android:title="@string/clear_meetings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/defer_meetings"
+        android:orderInCategory="100"
+        android:title="Defer Meetings"
+        app:showAsAction="never" />
+</menu>
