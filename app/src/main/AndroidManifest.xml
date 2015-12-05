@@ -20,10 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--
         <activity
             android:name=".Min3DTest"
             android:label="@string/title_activity_min3_dtest" >
         </activity>
+        -->
         <activity
             android:name=".BodyActivity"
             android:label="@string/title_activity_rajawali" >
@@ -31,6 +33,10 @@
         <activity
             android:name=".AppointmentList"
             android:label="@string/title_activity_appointment_list" >
+        </activity>
+        <activity
+            android:name=".PatientList"
+            android:label="@string/title_activity_patient_list" >
         </activity>
     </application>
 
