@@ -42,7 +42,6 @@ public class BodyRenderer extends RajawaliRenderer {
             objParser.parse();
             mBody = objParser.getParsedObject();
             mBody.addLight(mLight);
-            mBody.setY(-10);
             addChild(mBody);
         }catch(AParser.ParsingException e){
             Log.v("custom print", e.getMessage());
@@ -56,7 +55,6 @@ public class BodyRenderer extends RajawaliRenderer {
         addChild(sp);
 
 		mCamera.setZ(35f);
-        mCamera.setY(6f);
     }
 
     public void onDrawFrame(GL10 glUnused) {
