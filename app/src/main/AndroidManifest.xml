@@ -32,6 +32,38 @@
             android:name=".AppointmentList"
             android:label="@string/title_activity_appointment_list" >
         </activity>
+        <activity
+            android:name=".AppointmentEdit"
+            android:label="@string/title_activity_appointment_edit" >
+        </activity>
+        <activity
+            android:name=".AppointmentCreate"
+            android:label="@string/title_activity_appointment_create" >
+        </activity>
+        <activity
+            android:name=".PatientList"
+            android:label="@string/title_activity_patient_list" >
+        </activity>
+        <activity
+            android:name=".PatientEdit"
+            android:label="@string/title_activity_patient_edit" >
+        </activity>
+        <activity
+            android:name=".PatientCreate"
+            android:label="@string/title_activity_patient_create" >
+        </activity>
+        <activity
+            android:name=".FileList"
+            android:label="@string/title_activity_file_list" >
+        </activity>
+        <activity
+            android:name=".FileCreate"
+            android:label="@string/title_activity_file_create" >
+        </activity>
+        <activity
+            android:name=".FileEdit"
+            android:label="@string/title_activity_file_edit" >
+        </activity>
     </application>
 
 </manifest>
