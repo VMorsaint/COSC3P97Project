@@ -1,9 +1,13 @@
 package com.ben.cosc3p97project;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class FileEdit extends AppCompatActivity {
 
@@ -33,5 +37,19 @@ public class FileEdit extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void selectBodyPart(View v){
+        Intent intent = new Intent(this, BodyActivity.class);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent){
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
+            String bodyPart = intent.getStringExtra("body_part");
+            Log.d("FileEdit", bodyPart);
+        }
     }
 }

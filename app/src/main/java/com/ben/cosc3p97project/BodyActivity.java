@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
+import rajawali.BaseObject3D;
 import rajawali.RajawaliActivity;
 
 public class BodyActivity extends RajawaliActivity implements
@@ -94,6 +95,7 @@ public class BodyActivity extends RajawaliActivity implements
     @Override
     public boolean onSingleTapUp(MotionEvent event) {
         Log.d(DEBUG_TAG, "onSingleTapUp: " + event.toString());
+
         return true;
     }
 
@@ -112,6 +114,8 @@ public class BodyActivity extends RajawaliActivity implements
     @Override
     public boolean onSingleTapConfirmed(MotionEvent event) {
         Log.d(DEBUG_TAG, "onSingleTapConfirmed: " + event.toString());
+        mRenderer.getObjectAt(event.getX(), event.getY());
         return true;
     }
+
 }

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class MainActivity extends Activity {
@@ -18,7 +19,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_main);
-        startActivity(new Intent(this, AppointmentList.class));
+        startActivity(new Intent(this, BodyActivity.class));
 
     }
 
@@ -42,5 +43,9 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void viewPatient(View v){
+
     }
 }
