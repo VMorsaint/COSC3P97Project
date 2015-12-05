@@ -6,7 +6,13 @@
     <string name="title_activity_min3_dtest">Min3DTest</string>
     <string name="title_activity_rajawali">Rajawali</string>
     <string name="title_activity_appointment_list">AppointmentList</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_appointment_edit">AppointmentEdit</string>
+    <string name="title_activity_appointment_create">AppointmentCreate</string>
+    <string name="title_activity_patient_list">PatientList</string>
+    <string name="title_activity_patient_edit">PatientEdit</string>
+    <string name="title_activity_patient_create">PatientCreate</string>
+    <string name="title_activity_file_list">FileList</string>
+    <string name="title_activity_file_create">FileCreate</string>
+    <string name="title_activity_file_edit">FileEdit</string>
+    
 </resources>
