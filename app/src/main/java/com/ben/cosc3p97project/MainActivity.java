@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
@@ -19,7 +21,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_main);
-        startActivity(new Intent(this, BodyActivity.class));
+        startActivityForResult(new Intent(this, BodyActivity.class), 1);
 
     }
 
@@ -47,5 +49,23 @@ public class MainActivity extends Activity {
 
     public void viewPatient(View v){
 
+    }
+
+    @Override
+    protected void onActivityResult(int request, int status, Intent intent) {
+
+        if (request == 1) {
+            if(status== Activity.RESULT_OK){
+                String result=intent.getStringExtra("body_part");
+                TextView newText = new TextView(this);
+                newText.setText(result);
+                ((ViewGroup)findViewById(android.R.id.content)).addView(newText);
+            }
+            if (status == Activity.RESULT_CANCELED) {
+                TextView newText = new TextView(this);
+                newText.setText("Canceled");
+                ((ViewGroup)findViewById(android.R.id.content)).addView(newText);
+            }
+        }
     }
 }

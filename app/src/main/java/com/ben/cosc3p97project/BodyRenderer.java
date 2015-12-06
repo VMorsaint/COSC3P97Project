@@ -27,7 +27,7 @@ import rajawali.util.OnObjectPickedListener;
 /**
  * Created by Ben on 11/29/2015.
  */
-public class BodyRenderer extends RajawaliRenderer implements OnObjectPickedListener {
+public class BodyRenderer extends RajawaliRenderer{
 
     private DirectionalLight mLight;
     private BaseObject3D bodyModel, bodyGroup;
@@ -42,6 +42,7 @@ public class BodyRenderer extends RajawaliRenderer implements OnObjectPickedList
             leftLeg, rightLeg,
             leftFoot, rightFoot,
             lowerBack, upperBack;
+
     public BodyRenderer(Context context) {
         super(context);
         setFrameRate(60);
@@ -59,7 +60,7 @@ public class BodyRenderer extends RajawaliRenderer implements OnObjectPickedList
         mLight.setPower(2);
 
         objectPicker = new ObjectColorPicker(this);
-        objectPicker.setOnObjectPickedListener(this);
+        objectPicker.setOnObjectPickedListener((BodyActivity)getContext());
 
         ObjParser objParser = new ObjParser(mContext.getResources(), mTextureManager, R.raw.male_figure_obj);
         try {
@@ -123,7 +124,7 @@ public class BodyRenderer extends RajawaliRenderer implements OnObjectPickedList
         chest.setMaterial(new SimpleMaterial(AMaterial.ALPHA_MASKING));
         chest.addTexture(transparentTexture);
         chest.setName("Chest");
-        chest.setPosition(0, 4.25f, 0);
+        chest.setPosition(0, 4.15f, 0);
         chest.setScaleX(4.8f);
         chest.setScaleY(2.9f);
 
@@ -131,7 +132,7 @@ public class BodyRenderer extends RajawaliRenderer implements OnObjectPickedList
         abdomin.setMaterial(new SimpleMaterial(AMaterial.ALPHA_MASKING));
         abdomin.addTexture(transparentTexture);
         abdomin.setName("Abdomin");
-        abdomin.setPosition(0, 2f, 0);
+        abdomin.setPosition(0, 1.5f, 0);
         abdomin.setScaleX(4.8f);
         abdomin.setScaleY(2.9f);
 
@@ -185,7 +186,7 @@ public class BodyRenderer extends RajawaliRenderer implements OnObjectPickedList
 
         rightLeg = new Cube(1);
         rightLeg.setMaterial(new SimpleMaterial(AMaterial.ALPHA_MASKING));
-        rightLeg.setColor(0x0066FF00);
+        rightLeg.addTexture(transparentTexture);
         rightLeg.setName("RightLeg");
         rightLeg.setPosition(-1.35f, -5f, 0f);
         rightLeg.setScaleX(1.5f);
@@ -230,35 +231,15 @@ public class BodyRenderer extends RajawaliRenderer implements OnObjectPickedList
     }
 
     public void getObjectAt(float x, float y) {
-        objectPicker.getObjectAt(x, y-20);
-        Log.d("Obj At", x + " " + (y-20));
+        objectPicker.getObjectAt(x, (y-120));
+        Log.d("Obj At", x + " " + (y-120));
     }
 
-    @Override
-    public void onObjectPicked(BaseObject3D object) {
-        //object.setY(object.getY() + 1);
-        Log.d("Obj Select", object.getName());
-        //((BodyActivity)mContext).objectSelected(object);
-    }
 
     public void onDrawFrame(GL10 glUnused) {
         super.onDrawFrame(glUnused);
     }
-
-    public Bitmap textAsBitmap(String text) {// For later usage
-        Paint paint = new Paint();
-        paint.setTextSize(16);
-        paint.setColor(0x666666);
-        paint.setUnderlineText(true);
-        paint.setTextAlign(Paint.Align.CENTER);
-        int width = (int) (paint.measureText(text) + 0.5f); // round
-        float baseline = (int) (paint.ascent() + 0.5f);
-        int height = (int) (baseline + paint.descent() + 0.5f);
-        Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(image);
-        canvas.drawText(text, 0, baseline, paint);
-        return image;
-    }
+    
     public void setRotation(float x, float y) {
         bodyGroup.setRotX(bodyGroup.getRotX() + x);
         bodyGroup.setRotY(bodyGroup.getRotY() + y);
