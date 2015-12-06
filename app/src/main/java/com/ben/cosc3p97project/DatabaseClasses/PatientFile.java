@@ -21,9 +21,6 @@ public class PatientFile implements BaseColumns
     public static final String COL_DATETIME_START = "cTimeStart";
     public static final String COL_DATETIME_END = "cTimeEnd";
 
-
-
-
     public PatientFile()
     {
         iPatientFileID = 0;
@@ -42,9 +39,13 @@ public class PatientFile implements BaseColumns
         sPatientFileEnd = sEnd;
     }
 
-    public int getID()
+    public int getPatientFileID()
     {
         return iPatientFileID;
+    }
+    public int getPatientID()
+    {
+        return iPatientID;
     }
     public String getName()
     {

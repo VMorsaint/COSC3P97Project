@@ -31,11 +31,16 @@ public class PatientNote implements BaseColumns
         iPatientFileID = iPatientFileIDParam;
         sPatientNote = sPatientNoteParam;
     }
+    public int getPatientNoteID()
+    {
+        return iPatientFileID;
+    }
     public int getPatientFileID()
     {
         return iPatientFileID;
     }
-    public String getBodyLocationId()
+
+    public String getNote()
     {
         return sPatientNote;
     }
