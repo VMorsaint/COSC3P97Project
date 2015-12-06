@@ -35,8 +35,17 @@
             android:label="@string/title_activity_appointment_list" >
         </activity>
         <activity
-            android:name=".PatientList"
+            android:name=".PatientClasses.PatientListActivity"
             android:label="@string/title_activity_patient_list" >
+        </activity>
+        <activity
+            android:name=".PatientClasses.PatientDetailActivity"
+            android:label="@string/title_activity_patient_list"
+            android:parentActivityName=".PatientClasses.PatientListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PatientClasses.PatientListActivity"/>
         </activity>
     </application>
 

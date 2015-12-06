@@ -10,7 +10,7 @@ import android.provider.BaseColumns;
 public class Patient implements BaseColumns
 {
     private int iPatientID;
-    private int iAndroidID;
+    private String sAndroidID;
     private String sPatientFileFirstName;
     private String sPatientFileLastName;
     public static final String TABLE_NAME = "tPatients";
@@ -22,17 +22,21 @@ public class Patient implements BaseColumns
     public Patient()
     {
         iPatientID = 0;
-        iAndroidID = 0;
+        sAndroidID = "";
         sPatientFileFirstName = "";
         sPatientFileLastName = "";
     }
 
-    public Patient(int iPatientIDParam, int iAndroidIDParam, String sPatientFileFirstNameParam, String sPatientFileLastNameParam)
+    public Patient(int iPatientIDParam, String sAndroidIDParam, String sPatientFileFirstNameParam, String sPatientFileLastNameParam)
     {
         iPatientID = iPatientIDParam;
-        iAndroidID = iAndroidIDParam;
+        sAndroidID = sAndroidIDParam;
         sPatientFileFirstName = sPatientFileFirstNameParam;
         sPatientFileLastName = sPatientFileLastNameParam;
+    }
+    public int getPatientID ()
+    {
+        return iPatientID;
     }
     public String getFirstName()
     {
@@ -41,5 +45,9 @@ public class Patient implements BaseColumns
     public String getLastName()
     {
         return sPatientFileLastName;
+    }
+    public String getAndroidId()
+    {
+        return sAndroidID;
     }
 }

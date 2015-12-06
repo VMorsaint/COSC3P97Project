@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ben.cosc3p97project.PatientClasses.PatientListActivity;
+
 
 public class MainActivity extends Activity {
 
@@ -18,7 +20,7 @@ public class MainActivity extends Activity {
         
         setContentView(R.layout.activity_main);
         //startActivity(new Intent(this, BodyActivity.class));
-        startActivity(new Intent(this, PatientList.class));
+        startActivity(new Intent(this, PatientListActivity.class));
     }
 
     @Override

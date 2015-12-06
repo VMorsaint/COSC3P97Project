@@ -92,6 +92,28 @@ public class DBHelper extends SQLiteOpenHelper
         return bFlagOk;
     }
 
+    public boolean addPatient(Patient newPatient)
+    {
+        boolean bFlagOk = true;
+        ContentValues values = new ContentValues();
+        values.put(Patient.COL_FIRST_NAME, newPatient.getFirstName());
+        values.put(Patient.COL_LAST_NAME, newPatient.getLastName());
+        values.put(Patient.COL_ANDROID_ID, newPatient.getAndroidId());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        try
+        {
+            db.insertOrThrow(Patient.TABLE_NAME, null, values);
+        }
+        catch (Exception e)
+        {
+            bFlagOk = false;
+        }
+        db.close();
+        return bFlagOk;
+    }
+
+
     public boolean addLocation(BodyLocation newLocation)
     {
         boolean bFlagOk = true;
@@ -141,6 +163,71 @@ public class DBHelper extends SQLiteOpenHelper
 
         db.close();
         return PatientFileList;
+    }
+
+    public ArrayList<Patient> getPatientList()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery =  "SELECT  " +
+                Patient.COL_PATIENT_ID + "," +
+                Patient.COL_ANDROID_ID + "," +
+                Patient.COL_FIRST_NAME + "," +
+                Patient.COL_LAST_NAME +
+                " FROM " + Patient.TABLE_NAME;
+
+        ArrayList<Patient> PatientList = new ArrayList<>();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                PatientList.add(new Patient(Integer.parseInt(cursor.getString(cursor.getColumnIndex(Patient.COL_PATIENT_ID))),
+                        cursor.getString(cursor.getColumnIndex(Patient.COL_ANDROID_ID)),
+                        cursor.getString(cursor.getColumnIndex(Patient.COL_FIRST_NAME)),
+                        cursor.getString(cursor.getColumnIndex(Patient.COL_LAST_NAME))));
+            }
+            while (cursor.moveToNext());
+        }
+        if (cursor != null && !cursor.isClosed())
+        {
+            cursor.close();
+        }
+
+        db.close();
+        return PatientList;
+    }
+
+    public Patient getPatient(String iPatientID)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery =  "SELECT  " +
+                Patient.COL_PATIENT_ID + "," +
+                Patient.COL_ANDROID_ID + "," +
+                Patient.COL_FIRST_NAME + "," +
+                Patient.COL_LAST_NAME +
+                " FROM " + Patient.TABLE_NAME +
+                " WHERE " + Patient.COL_PATIENT_ID + " = " + iPatientID;
+
+        Patient patientReturned;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst())
+        {
+            patientReturned = new Patient(Integer.parseInt(cursor.getString(cursor.getColumnIndex(Patient.COL_PATIENT_ID))),
+                        cursor.getString(cursor.getColumnIndex(Patient.COL_ANDROID_ID)),
+                        cursor.getString(cursor.getColumnIndex(Patient.COL_FIRST_NAME)),
+                        cursor.getString(cursor.getColumnIndex(Patient.COL_LAST_NAME)));
+        }
+        else
+        {
+            patientReturned = null;
+        }
+        if (cursor != null && !cursor.isClosed())
+        {
+            cursor.close();
+        }
+
+        db.close();
+        return patientReturned;
     }
 
     public ArrayList<String> getPatientFileListByDate(String strDate)

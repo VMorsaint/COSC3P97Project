@@ -1,16 +1,25 @@
-package com.ben.cosc3p97project;
+package com.ben.cosc3p97project.PatientClasses;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class PatientList extends AppCompatActivity {
+import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
+import com.ben.cosc3p97project.R;
+
+public class PatientListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_list);
+        DBHelper dbHelperPatientList = new DBHelper(this);
+        RecyclerView recyclerViewPatients = (RecyclerView) findViewById(R.id.listView_patient_items);
+        assert recyclerViewPatients != null;
+        //dbHelperPatientList.addPatient(new Patient(0, "", "Vincent2", "Morsaint2"));
+        recyclerViewPatients.setAdapter(new PatientRecyclerViewAdapter(dbHelperPatientList.getPatientList()));
     }
 
     @Override
@@ -34,4 +43,6 @@ public class PatientList extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
