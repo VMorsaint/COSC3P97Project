@@ -3,13 +3,14 @@ package com.ben.cosc3p97project;
 import android.app.Activity;
 import android.content.Intent;
 import android.opengl.GLSurfaceView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.ben.cosc3p97project.PatientClasses.PatientListActivity;
 
 
 public class MainActivity extends Activity {
@@ -21,8 +22,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_main);
-        startActivityForResult(new Intent(this, BodyActivity.class), 1);
 
+        //startActivity(new Intent(this, BodyActivity.class));
+        startActivity(new Intent(this, PatientListActivity.class));
     }
 
     @Override
