@@ -1,7 +1,8 @@
-package com.ben.cosc3p97project.PatientClasses;
+package com.ben.cosc3p97project.PatientClasses.OldClasses;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +12,10 @@ import android.widget.TextView;
 import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
 import com.ben.cosc3p97project.DatabaseClasses.Patient;
 import com.ben.cosc3p97project.DatabaseClasses.PatientFile;
+import com.ben.cosc3p97project.PatientClasses.PatientFileRecyclerViewAdapter;
 import com.ben.cosc3p97project.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class PatientDetailFragment extends Fragment
 {
@@ -24,6 +24,9 @@ public class PatientDetailFragment extends Fragment
     private Patient mPatientItem;
     private ArrayList<PatientFile> mPatientFileList;
     private RecyclerView recyclerViewPatientFiles;
+    private DBHelper dbHelperPatientDetail;
+    private PatientFileRecyclerViewAdapter myTestAdapter;
+    private LinearLayoutManager myTestLayoutManager;
 
 
     public PatientDetailFragment() {}
@@ -35,15 +38,18 @@ public class PatientDetailFragment extends Fragment
 
         if (getArguments().containsKey(ARG_ITEM_ID))
         {
-            DBHelper dbHelperPatientDetail = new DBHelper(getActivity());
+            dbHelperPatientDetail = new DBHelper(getActivity());
             sPatientID = getArguments().getString(ARG_ITEM_ID);
             mPatientItem = dbHelperPatientDetail.getPatient(sPatientID);
-
+            mPatientFileList = dbHelperPatientDetail.getPatientFileListByPatientId(sPatientID);
+/*
             Calendar cDateStart = Calendar.getInstance();
             SimpleDateFormat fSQLDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             dbHelperPatientDetail.addPatientFile(new PatientFile(0, Integer.parseInt(sPatientID),
                     "testFile",fSQLDate.format(cDateStart.getTime()),""));
-            mPatientFileList = dbHelperPatientDetail.getPatientFileListByPatientId(sPatientID);
+                    */
+  //          recyclerViewPatientFiles = (RecyclerView) getView().findViewById(R.id.listView_patientFile_items);
+            myTestAdapter = new PatientFileRecyclerViewAdapter(mPatientFileList);
 
         }
     }
@@ -55,11 +61,12 @@ public class PatientDetailFragment extends Fragment
         View rootView = inflater.inflate(R.layout.patient_detail, container, false);
         if (mPatientItem != null)
         {
-
             recyclerViewPatientFiles = (RecyclerView) rootView.findViewById(R.id.listView_patientFile_items);
-            assert recyclerViewPatientFiles != null;
-            //dbHelperPatientList.addPatient(new Patient(0, "", "Vincent2", "Morsaint2"));
-            recyclerViewPatientFiles.setAdapter(new PatientFileRecyclerViewAdapter(mPatientFileList));
+            myTestLayoutManager = new LinearLayoutManager(getActivity());
+            myTestLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            recyclerViewPatientFiles.setLayoutManager(myTestLayoutManager);
+            recyclerViewPatientFiles.setAdapter(myTestAdapter);
+            recyclerViewPatientFiles.setVisibility(View.VISIBLE);
             ((TextView) rootView.findViewById(R.id.textViewPatientFirstNameEdit)).setText(mPatientItem.getFirstName());
             ((TextView) rootView.findViewById(R.id.textViewPatientLastNameEdit)).setText(mPatientItem.getLastName());
         }

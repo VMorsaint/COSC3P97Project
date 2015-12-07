@@ -17,7 +17,7 @@ import java.util.List;
  * Created by VMorsaint on 12/5/2015.
  */
 public class PatientRecyclerViewAdapter
-        extends RecyclerView.Adapter<PatientRecyclerViewAdapter.ViewHolder>
+        extends RecyclerView.Adapter<PatientRecyclerViewAdapter.PatientViewHolder>
 {
 
     private final List<Patient> mValues;
@@ -28,15 +28,15 @@ public class PatientRecyclerViewAdapter
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public PatientViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.patient_list_content, parent, false);
-        return new ViewHolder(view);
+        return new PatientViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position)
+    public void onBindViewHolder(final PatientViewHolder holder, int position)
     {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText("" + holder.mItem.getPatientID());
@@ -50,8 +50,8 @@ public class PatientRecyclerViewAdapter
 
                 Context context = v.getContext();
                 Intent intent = new Intent(context, PatientDetailActivity.class);
-                intent.putExtra(PatientDetailFragment.ARG_ITEM_ID, String.valueOf(holder.mItem.getPatientID()));
-
+                //intent.putExtra(PatientDetailFragment.ARG_ITEM_ID, String.valueOf(holder.mItem.getPatientID()));
+                intent.putExtra(PatientDetailActivity.ARG_ITEM_ID, String.valueOf(holder.mItem.getPatientID()));
                 context.startActivity(intent);
             }
         });
@@ -63,14 +63,14 @@ public class PatientRecyclerViewAdapter
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder
+    public class PatientViewHolder extends RecyclerView.ViewHolder
     {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
         public Patient mItem;
 
-        public ViewHolder(View view)
+        public PatientViewHolder(View view)
         {
             super(view);
             mView = view;

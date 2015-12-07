@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
@@ -24,9 +25,8 @@
                   xmlns:tools="http://schemas.android.com/tools"
                   android:layout_width="match_parent"
                   android:layout_height="fill_parent"
-                  android:padding="16dp"
                   android:textIsSelectable="true"
-                  tools:context=".PatientClasses.PatientDetailFragment"
+                  tools:context=".PatientClasses.OldClasses.PatientDetailFragment"
                   android:text="test"
                   android:gravity="center_vertical"/>
 
@@ -48,13 +48,12 @@
 
         <TextView
             style="?android:attr/textAppearanceLarge"
-            tools:context=".PatientClasses.PatientDetailFragment"
+            tools:context=".PatientClasses.OldClasses.PatientDetailFragment"
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/textViewPatientLastNameEdit"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:padding="16dp"
             android:textIsSelectable="true"
             android:text="test"
             android:gravity="center_vertical"/>
@@ -70,18 +69,19 @@
         android:gravity="center_vertical"/>
 
     <android.support.v7.widget.RecyclerView android:id="@+id/listView_patientFile_items"
-                                            android:name="com.ben.cosc3p97project.FragmentPatientList"
-                                            xmlns:android="http://schemas.android.com/apk/res/android"
-                                            xmlns:app="http://schemas.android.com/apk/res-auto"
-                                            xmlns:tools="http://schemas.android.com/tools"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:layout_marginLeft="16dp"
-                                            android:layout_marginRight="16dp"
-                                            android:choiceMode="singleChoice"
-                                            app:layoutManager="LinearLayoutManager"
-                                            tools:context=".PatientClasses.PatientDetailFragment"
-                                            tools:listitem="@layout/patient_files_list_content"/>
+                                                    android:name="com.ben.cosc3p97project.FragmentPatientFileList"
+                                                    xmlns:android="http://schemas.android.com/apk/res/android"
+                                                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                    xmlns:tools="http://schemas.android.com/tools"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginLeft="16dp"
+                                                    android:layout_marginRight="16dp"
+                                                    android:choiceMode="singleChoice"
+                                                    app:layoutManager="LinearLayoutManager"
+                                                    tools:context=".PatientClasses.OldClasses.PatientDetailFragment"
+                                                    tools:listitem="@layout/patient_files_list_content"
+                                                    android:visibility="visible"/>
 
 
 </LinearLayout>

@@ -1,35 +1,35 @@
-package com.ben.cosc3p97project.PatientClasses;
+package com.ben.cosc3p97project.PatientClasses.OldClasses;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
-import com.ben.cosc3p97project.DatabaseClasses.PatientFile;
+import com.ben.cosc3p97project.PatientClasses.PatientListActivity;
 import com.ben.cosc3p97project.R;
 
 /**
  * Created by VMorsaint on 12/5/2015.
  */
-public class PatientFileDetailActivity extends AppCompatActivity
+public class PatientDetailActivityOld extends AppCompatActivity
 {
-    public static final String ARG_ITEM_ID = "patient_file_id";
-    String sPatientFileID = "";
-    DBHelper dbHelperPatientFileDetail;
-    PatientFile mPatientFileItem;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_detail);
-
         if (savedInstanceState == null)
         {
-            sPatientFileID = getIntent().getStringExtra(ARG_ITEM_ID);
-            dbHelperPatientFileDetail = new DBHelper(this);
-            mPatientFileItem = dbHelperPatientFileDetail.getPatientFile(sPatientFileID);
+            // Create the detail fragment and add it to the activity
+            // using a fragment transaction.
+            Bundle arguments = new Bundle();
+            arguments.putString(PatientDetailFragment.ARG_ITEM_ID,
+                    getIntent().getStringExtra(PatientDetailFragment.ARG_ITEM_ID));
+            PatientDetailFragment fragment = new PatientDetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.patient_detail_container, fragment)
+                    .commit();
         }
     }
 

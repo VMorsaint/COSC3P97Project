@@ -2,6 +2,7 @@ package com.ben.cosc3p97project.PatientClasses;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,9 @@ import java.util.List;
  * Created by VMorsaint on 12/5/2015.
  */
 public class PatientFileRecyclerViewAdapter
-        extends RecyclerView.Adapter<PatientFileRecyclerViewAdapter.ViewHolder>
+        extends RecyclerView.Adapter<PatientFileRecyclerViewAdapter.PatientFileViewHolder>
 {
-
+    private LayoutInflater inflaterPatientFile;
     private final List<PatientFile> mValues;
 
     public PatientFileRecyclerViewAdapter(List<PatientFile> items)
@@ -27,16 +28,30 @@ public class PatientFileRecyclerViewAdapter
         mValues = items;
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public PatientFileRecyclerViewAdapter(FragmentActivity activity, List<PatientFile> items)
     {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.patient_files_list_content, parent, false);
-        return new ViewHolder(view);
+        inflaterPatientFile = LayoutInflater.from(activity);
+        mValues = items;
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position)
+    public PatientFileViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        View view;
+        if (inflaterPatientFile != null)
+        {
+            view = inflaterPatientFile.inflate(R.layout.patient_files_list_content, parent, false);
+        }
+        else
+        {
+            view = LayoutInflater.from(parent.getContext())
+                  .inflate(R.layout.patient_files_list_content, parent, false);
+        }
+        return new PatientFileViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(final PatientFileViewHolder holder, int position)
     {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(String.valueOf(holder.mItem.getPatientFileID()));
@@ -47,14 +62,13 @@ public class PatientFileRecyclerViewAdapter
             @Override
             public void onClick(View v)
             {
-
                 Context context = v.getContext();
                 Intent intent = new Intent(context, PatientFileDetailActivity.class);
-                intent.putExtra(PatientDetailFragment.ARG_ITEM_ID, String.valueOf(holder.mItem.getPatientFileID()));
-
+                intent.putExtra(PatientFileDetailActivity.ARG_ITEM_ID, String.valueOf(holder.mItem.getPatientFileID()));
                 context.startActivity(intent);
             }
         });
+
     }
 
     @Override
@@ -63,14 +77,14 @@ public class PatientFileRecyclerViewAdapter
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder
+    public class PatientFileViewHolder extends RecyclerView.ViewHolder
     {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
         public PatientFile mItem;
 
-        public ViewHolder(View view)
+        public PatientFileViewHolder(View view)
         {
             super(view);
             mView = view;

@@ -1,4 +1,4 @@
-package com.ben.cosc3p97project.PatientClasses;
+package com.ben.cosc3p97project.PatientClasses.OldClasses;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,16 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
 import com.ben.cosc3p97project.DatabaseClasses.PatientFile;
 import com.ben.cosc3p97project.DatabaseClasses.PatientNote;
 import com.ben.cosc3p97project.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class PatientFileDetailFragment extends Fragment
 {
@@ -24,7 +21,7 @@ public class PatientFileDetailFragment extends Fragment
     private PatientFile mPatientFileItem;
     private ArrayList<PatientNote> mPatientNoteList;
     private RecyclerView recyclerViewPatientNotes;
-
+    private DBHelper dbHelperPatientFileDetail;
     public PatientFileDetailFragment() {}
 
     @Override
@@ -34,7 +31,7 @@ public class PatientFileDetailFragment extends Fragment
 
         if (getArguments().containsKey(ARG_ITEM_ID))
         {
-            DBHelper dbHelperPatientFileDetail = new DBHelper(getActivity());
+            dbHelperPatientFileDetail = new DBHelper(getActivity());
             sPatientFileID = getArguments().getString(ARG_ITEM_ID);
             mPatientFileItem = dbHelperPatientFileDetail.getPatientFile(sPatientFileID);
 

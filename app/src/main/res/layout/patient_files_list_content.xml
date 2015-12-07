@@ -3,8 +3,7 @@
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:orientation="horizontal"
-              android:weightSum="1"
-              android:background="#c91818">
+              android:weightSum="1">
 
     <TextView
         android:id="@+id/txtViewPatientFileId"
