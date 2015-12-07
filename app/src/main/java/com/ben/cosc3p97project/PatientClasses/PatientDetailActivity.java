@@ -3,7 +3,6 @@ package com.ben.cosc3p97project.PatientClasses;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -26,7 +25,6 @@ public class PatientDetailActivity extends AppCompatActivity
     private ArrayList<PatientFile> mPatientFileList;
     private DBHelper dbHelperPatientDetail;
     private PatientFileRecyclerViewAdapter myTestAdapter;
-    private LinearLayoutManager myTestLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,6 +43,7 @@ public class PatientDetailActivity extends AppCompatActivity
                 mPatientFileList = dbHelperPatientDetail.getPatientFileListByPatientId(sPatientID);
                 if (mPatientFileList != null)
                 {
+                    mPatientFileList.add(new PatientFile(0,Integer.parseInt(sPatientID),"New File","",""));
                     myTestAdapter = new PatientFileRecyclerViewAdapter(mPatientFileList);
                     ((RecyclerView) findViewById(R.id.listView_patientFile_items)).setAdapter(myTestAdapter);
                 }

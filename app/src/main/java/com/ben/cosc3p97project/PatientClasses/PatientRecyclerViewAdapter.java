@@ -39,7 +39,7 @@ public class PatientRecyclerViewAdapter
     public void onBindViewHolder(final PatientViewHolder holder, int position)
     {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText("" + holder.mItem.getPatientID());
+        holder.mIdView.setText(String.valueOf(holder.mItem.getPatientID()));
         holder.mContentView.setText(holder.mItem.getFirstName());
 
         holder.mView.setOnClickListener(new View.OnClickListener()
@@ -50,7 +50,6 @@ public class PatientRecyclerViewAdapter
 
                 Context context = v.getContext();
                 Intent intent = new Intent(context, PatientDetailActivity.class);
-                //intent.putExtra(PatientDetailFragment.ARG_ITEM_ID, String.valueOf(holder.mItem.getPatientID()));
                 intent.putExtra(PatientDetailActivity.ARG_ITEM_ID, String.valueOf(holder.mItem.getPatientID()));
                 context.startActivity(intent);
             }

@@ -270,7 +270,7 @@ public class DBHelper extends SQLiteOpenHelper
         {
             do
             {
-                PatientFileList.add(new PatientFile(Integer.parseInt(cursor.getString(cursor.getColumnIndex(PatientFile.COL_PATIENT_ID))),
+                PatientFileList.add(new PatientFile(Integer.parseInt(cursor.getString(cursor.getColumnIndex(PatientFile.COL_PATIENT_FILE_ID))),
                         Integer.parseInt(cursor.getString(cursor.getColumnIndex(PatientFile.COL_PATIENT_ID))),
                         cursor.getString(cursor.getColumnIndex(PatientFile.COL_NAME)),
                         cursor.getString(cursor.getColumnIndex(PatientFile.COL_DATETIME_START)),

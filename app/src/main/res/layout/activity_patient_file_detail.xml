@@ -4,13 +4,16 @@
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
                                                  android:fitsSystemWindows="true"
-                                                 tools:context=".PatientClasses.PatientDetailActivity"
+                                                 tools:context=".PatientClasses.PatientFileDetailActivity"
                                                  tools:ignore="MergeRootFrame">
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/patient_detail_container"
+    <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <include layout="@layout/patient_file_detail"/>
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

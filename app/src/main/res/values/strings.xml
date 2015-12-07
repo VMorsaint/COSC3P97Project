@@ -7,4 +7,7 @@
     <string name="title_activity_rajawali">Rajawali</string>
     <string name="title_activity_appointment_list">Appointment List</string>
     <string name="title_activity_patient_list">Patient List</string>
+    <string name="title_activity_patient_detail">Patient Detail</string>
+    <string name="title_activity_patient_file_detail">Patient File Detail</string>
 </resources>
+

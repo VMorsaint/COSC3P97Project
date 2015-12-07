@@ -40,12 +40,21 @@
         </activity>
         <activity
             android:name=".PatientClasses.PatientDetailActivity"
-            android:label="@string/title_activity_patient_list"
+            android:label="@string/title_activity_patient_detail"
             android:parentActivityName=".PatientClasses.PatientListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".PatientClasses.PatientListActivity"/>
+        </activity>
+        <activity
+            android:name=".PatientClasses.PatientFileDetailActivity"
+            android:label="@string/title_activity_patient_file_detail"
+            android:parentActivityName=".PatientClasses.PatientDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PatientClasses.PatientDetailActivity"/>
         </activity>
     </application>
 

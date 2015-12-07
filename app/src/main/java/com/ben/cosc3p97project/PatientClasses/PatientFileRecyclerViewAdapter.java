@@ -2,7 +2,6 @@ package com.ben.cosc3p97project.PatientClasses;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,33 +27,28 @@ public class PatientFileRecyclerViewAdapter
         mValues = items;
     }
 
-    public PatientFileRecyclerViewAdapter(FragmentActivity activity, List<PatientFile> items)
-    {
-        inflaterPatientFile = LayoutInflater.from(activity);
-        mValues = items;
-    }
-
     @Override
     public PatientFileViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        View view;
-        if (inflaterPatientFile != null)
-        {
-            view = inflaterPatientFile.inflate(R.layout.patient_files_list_content, parent, false);
-        }
-        else
-        {
-            view = LayoutInflater.from(parent.getContext())
+          View view = LayoutInflater.from(parent.getContext())
                   .inflate(R.layout.patient_files_list_content, parent, false);
-        }
         return new PatientFileViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final PatientFileViewHolder holder, int position)
     {
+        int iPatientFileId;
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(String.valueOf(holder.mItem.getPatientFileID()));
+        iPatientFileId = holder.mItem.getPatientFileID();
+        if (iPatientFileId == 0)
+        {
+            holder.mIdView.setText("+");
+        }
+        else
+        {
+            holder.mIdView.setText(String.valueOf(iPatientFileId));
+        }
         holder.mContentView.setText(holder.mItem.getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener()
