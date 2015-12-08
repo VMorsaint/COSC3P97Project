@@ -20,10 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--
         <activity
             android:name=".Min3DTest"
             android:label="@string/title_activity_min3_dtest" >
         </activity>
+        -->
         <activity
             android:name=".BodyActivity"
             android:label="@string/title_activity_rajawali" >
@@ -33,36 +35,26 @@
             android:label="@string/title_activity_appointment_list" >
         </activity>
         <activity
-            android:name=".AppointmentEdit"
-            android:label="@string/title_activity_appointment_edit" >
-        </activity>
-        <activity
-            android:name=".AppointmentCreate"
-            android:label="@string/title_activity_appointment_create" >
-        </activity>
-        <activity
-            android:name=".PatientList"
+            android:name=".PatientClasses.PatientListActivity"
             android:label="@string/title_activity_patient_list" >
         </activity>
         <activity
-            android:name=".PatientEdit"
-            android:label="@string/title_activity_patient_edit" >
+            android:name=".PatientClasses.PatientDetailActivity"
+            android:label="@string/title_activity_patient_detail"
+            android:parentActivityName=".PatientClasses.PatientListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PatientClasses.PatientListActivity"/>
         </activity>
         <activity
-            android:name=".PatientCreate"
-            android:label="@string/title_activity_patient_create" >
-        </activity>
-        <activity
-            android:name=".FileList"
-            android:label="@string/title_activity_file_list" >
-        </activity>
-        <activity
-            android:name=".FileCreate"
-            android:label="@string/title_activity_file_create" >
-        </activity>
-        <activity
-            android:name=".FileEdit"
-            android:label="@string/title_activity_file_edit" >
+            android:name=".PatientClasses.PatientFileDetailActivity"
+            android:label="@string/title_activity_patient_file_detail"
+            android:parentActivityName=".PatientClasses.PatientDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PatientClasses.PatientDetailActivity"/>
         </activity>
     </application>
 

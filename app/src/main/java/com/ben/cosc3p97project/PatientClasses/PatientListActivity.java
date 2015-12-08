@@ -1,26 +1,31 @@
-package com.ben.cosc3p97project;
+package com.ben.cosc3p97project.PatientClasses;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-public class FileEdit extends AppCompatActivity {
+import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
+import com.ben.cosc3p97project.R;
+
+public class PatientListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_file_edit);
+        setContentView(R.layout.activity_patient_list);
+        DBHelper dbHelperPatientList = new DBHelper(this);
+        RecyclerView recyclerViewPatients = (RecyclerView) findViewById(R.id.listView_patient_items);
+        assert recyclerViewPatients != null;
+        //dbHelperPatientList.addPatient(new Patient(0, "", "Vincent2", "Morsaint2"));
+        recyclerViewPatients.setAdapter(new PatientRecyclerViewAdapter(dbHelperPatientList.getPatientList()));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_file_edit, menu);
+        getMenuInflater().inflate(R.menu.menu_appointment_list, menu);
         return true;
     }
 
@@ -40,16 +45,4 @@ public class FileEdit extends AppCompatActivity {
     }
 
 
-    public void selectBodyPart(View v){
-        Intent intent = new Intent(this, BodyActivity.class);
-        startActivityForResult(intent, 1);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent){
-        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
-            String bodyPart = intent.getStringExtra("body_part");
-            Log.d("FileEdit", bodyPart);
-        }
-    }
 }

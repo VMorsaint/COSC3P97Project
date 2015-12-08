@@ -8,18 +8,34 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 
+import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
+import com.ben.cosc3p97project.DatabaseClasses.PatientAppointment;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AppointmentList extends AppCompatActivity {
+
+    String date;
+    private int patientId;
+    private DBHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment_list);
-        String date = getIntent().getStringExtra("date");
+
+        db = new DBHelper(this);
+
+        date = getIntent().getStringExtra("date");
         if(date!=null){
             //get todays date
-        };
+            date = new Date().toString();
+        }
+        patientId = getIntent().getIntExtra("patient_id", -1);
+
+
     }
 
     @Override
@@ -58,5 +74,15 @@ public class AppointmentList extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void loadAppointments(){
+        ArrayList<PatientAppointment> apps;
+        apps = db.getAppointmentList(date, patientId);
+
+        for(PatientAppointment pa: apps){
+            //display list
+        }
+
     }
 }
