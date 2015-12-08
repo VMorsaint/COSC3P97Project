@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="fill_parent"
@@ -16,18 +17,18 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Name:"
             android:layout_marginLeft="16dp"
-            android:id="@+id/textViewPatientFirstNameLabel"
+            android:id="@+id/textViewPatientFileNameLabel"
             android:gravity="center_vertical"/>
 
-        <TextView android:id="@+id/textViewPatientFirstNameEdit"
+        <TextView android:id="@+id/textViewPatientFileNameEdit"
                   style="?android:attr/textAppearanceLarge"
                   xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:tools="http://schemas.android.com/tools"
                   android:layout_width="match_parent"
                   android:layout_height="fill_parent"
                   android:textIsSelectable="true"
-                  tools:context=".PatientClasses.OldClasses.PatientDetailFragment"
-                  android:text="test"
+                  tools:context=".PatientClasses.PatientDetailActivity"
+                  android:text=""
                   android:gravity="center_vertical"/>
 
     </LinearLayout>
@@ -43,7 +44,7 @@
             android:layout_marginLeft="16dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Start:"
-            android:id="@+id/textViewPatientLastNameLabel"
+            android:id="@+id/textViewPatientFileStartLabel"
             android:gravity="center_vertical"/>
 
         <TextView
@@ -51,11 +52,11 @@
             tools:context=".PatientClasses.OldClasses.PatientDetailFragment"
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/textViewPatientLastNameEdit"
+            android:id="@+id/textViewPatientFileStartEdit"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:textIsSelectable="true"
-            android:text="test"
+            android:text=""
             android:gravity="center_vertical"/>
     </LinearLayout>
 
@@ -65,7 +66,7 @@
         android:layout_marginLeft="16dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Notes:"
-        android:id="@+id/textViewPatientFilesLabel"
+        android:id="@+id/textViewPatientFileNotesLabel"
         android:gravity="center_vertical"/>
 
     <android.support.v7.widget.RecyclerView android:id="@+id/listView_patientFile_items"

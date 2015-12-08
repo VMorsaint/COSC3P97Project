@@ -6,7 +6,6 @@
                                                  android:fitsSystemWindows="true"
                                                  tools:context=".PatientClasses.PatientFileDetailActivity"
                                                  tools:ignore="MergeRootFrame">
-
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"

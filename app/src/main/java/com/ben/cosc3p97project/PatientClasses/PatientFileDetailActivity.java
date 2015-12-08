@@ -1,8 +1,8 @@
 package com.ben.cosc3p97project.PatientClasses;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -24,16 +24,23 @@ public class PatientFileDetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_detail);
+        setContentView(R.layout.activity_patient_file_detail);
 
         if (savedInstanceState == null)
         {
             sPatientFileID = getIntent().getStringExtra(ARG_ITEM_ID);
             dbHelperPatientFileDetail = new DBHelper(this);
             mPatientFileItem = dbHelperPatientFileDetail.getPatientFile(sPatientFileID);
-            ((TextView) findViewById(R.id.textViewPatientFirstNameEdit)).setText(mPatientFileItem.getName());
-            ((TextView) findViewById(R.id.textViewPatientLastNameEdit)).setText(mPatientFileItem.getStart());
+            ((TextView) findViewById(R.id.textViewPatientFileNameEdit)).setText(mPatientFileItem.getName());
+            ((TextView) findViewById(R.id.textViewPatientFileStartEdit)).setText(mPatientFileItem.getStart());
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_patient_file_detail, menu);
+        return true;
     }
 
     @Override
@@ -42,9 +49,16 @@ public class PatientFileDetailActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == android.R.id.home)
         {
-            navigateUpTo(new Intent(this, PatientListActivity.class));
+            //navigateUpTo(new Intent(this, PatientDetailActivity.class));
+            this.finish();
+            return true;
+        }
+        else if (id == R.id.action_edit)
+        {
+
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

@@ -25,7 +25,7 @@ public class PatientListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_appointment_list, menu);
+        getMenuInflater().inflate(R.menu.menu_patient_list, menu);
         return true;
     }
 
@@ -38,6 +38,10 @@ public class PatientListActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        else if (id == R.id.action_addPatient)
+        {
             return true;
         }
 

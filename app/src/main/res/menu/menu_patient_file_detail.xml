@@ -1,10 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".PatientClasses.PatientListActivity">
+    tools:context=".PatientClasses.PatientFileDetailActivity">
 
-        <item android:id="@+id/action_addPatient"
-              android:icon="@android:drawable/ic_menu_add"
+        <item android:id="@+id/action_edit"
+              android:icon="@android:drawable/ic_menu_edit"
               android:title="@string/edit"
               app:showAsAction="always" />
 </menu>
