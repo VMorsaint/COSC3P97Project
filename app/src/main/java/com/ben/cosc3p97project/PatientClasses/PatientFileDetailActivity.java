@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
@@ -19,6 +20,7 @@ public class PatientFileDetailActivity extends AppCompatActivity
     String sPatientFileID = "";
     DBHelper dbHelperPatientFileDetail;
     PatientFile mPatientFileItem;
+    Boolean bEditMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,18 +33,40 @@ public class PatientFileDetailActivity extends AppCompatActivity
             sPatientFileID = getIntent().getStringExtra(ARG_ITEM_ID);
             dbHelperPatientFileDetail = new DBHelper(this);
             mPatientFileItem = dbHelperPatientFileDetail.getPatientFile(sPatientFileID);
-            ((TextView) findViewById(R.id.textViewPatientFileNameEdit)).setText(mPatientFileItem.getName());
-            ((TextView) findViewById(R.id.textViewPatientFileStartEdit)).setText(mPatientFileItem.getStart());
+            setLayout();
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_patient_file_detail, menu);
+        if (bEditMode)
+        {
+            getMenuInflater().inflate(R.menu.menu_patient_file_detail_edit, menu);
+        }
+        else
+        {
+            getMenuInflater().inflate(R.menu.menu_patient_file_detail, menu);
+        }
+
         return true;
     }
 
+    private void setLayout()
+    {
+        if (bEditMode)
+        {
+            ((TextView) findViewById(R.id.textViewPatientFileNameEdit)).setText(mPatientFileItem.getName());
+            ((TextView) findViewById(R.id.textViewPatientFileNameView)).setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.textViewPatientFileNameEdit)).setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            ((TextView) findViewById(R.id.textViewPatientFileNameView)).setText(mPatientFileItem.getName());
+            ((TextView) findViewById(R.id.textViewPatientFileNameEdit)).setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.textViewPatientFileNameView)).setVisibility(View.VISIBLE);
+        }
+        ((TextView) findViewById(R.id.textViewPatientFileStartView)).setText(mPatientFileItem.getStart());
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -55,7 +79,34 @@ public class PatientFileDetailActivity extends AppCompatActivity
         }
         else if (id == R.id.action_edit)
         {
+            bEditMode = true;
+            invalidateOptionsMenu();
+            setLayout();
+            return true;
+        }
+        else if (id == R.id.action_cancel)
+        {
+            bEditMode = false;
+            invalidateOptionsMenu();
+            setLayout();
+            return true;
 
+        }
+        else if (id == R.id.action_accept)
+        {
+            bEditMode = false;
+            String sName = ((TextView) findViewById(R.id.textViewPatientFileNameEdit)).getText().toString();
+            if (mPatientFileItem.getPatientFileID() == 0)
+            {
+                mPatientFileItem = dbHelperPatientFileDetail.updatePatientFile(mPatientFileItem, mPatientFileItem.getPatientID(), sName, mPatientFileItem.getStart(), mPatientFileItem.getEnd());
+            }
+            else
+            {
+
+            }
+
+            invalidateOptionsMenu();
+            setLayout();
             return true;
         }
         return super.onOptionsItemSelected(item);

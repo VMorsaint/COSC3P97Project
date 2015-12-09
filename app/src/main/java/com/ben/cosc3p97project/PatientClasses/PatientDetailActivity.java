@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
@@ -25,8 +26,9 @@ public class PatientDetailActivity extends AppCompatActivity
     private Patient mPatientItem;
     private ArrayList<PatientFile> mPatientFileList;
     private DBHelper dbHelperPatientDetail;
-    private PatientFileRecyclerViewAdapter myTestAdapter;
+    private PatientFileRecyclerViewAdapter myPatientAdapter;
     private boolean bEditMode = false;
+    private boolean bNewRecord = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,23 +37,29 @@ public class PatientDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_patient_detail);
         if (savedInstanceState == null)
         {
-            sPatientID = getIntent().getStringExtra(ARG_ITEM_ID);
             dbHelperPatientDetail = new DBHelper(this);
-            mPatientItem = dbHelperPatientDetail.getPatient(sPatientID);
-            if (mPatientItem != null)
+            sPatientID = getIntent().getStringExtra(ARG_ITEM_ID);
+            bNewRecord = bEditMode = sPatientID.equals("0");
+            if (bNewRecord)
             {
-                bEditMode = (mPatientItem.getPatientID() == 0);
-                ((TextView) findViewById(R.id.textViewPatientFirstNameEdit)).setText(mPatientItem.getFirstName());
-                ((TextView) findViewById(R.id.textViewPatientLastNameEdit)).setText(mPatientItem.getLastName());
-                mPatientFileList = dbHelperPatientDetail.getPatientFileListByPatientId(sPatientID);
-                if (mPatientFileList != null)
+                mPatientItem = new Patient();
+//                mPatientFileList.add(new PatientFile(0, 0, "New File", "", ""));
+            }
+            else
+            {
+                mPatientItem = dbHelperPatientDetail.getPatient(sPatientID);
+                if (mPatientItem != null)
                 {
-                    mPatientFileList.add(new PatientFile(0, Integer.parseInt(sPatientID), "New File","",""));
-                    myTestAdapter = new PatientFileRecyclerViewAdapter(mPatientFileList);
-                    ((RecyclerView) findViewById(R.id.listView_patientFile_items)).setAdapter(myTestAdapter);
+                    mPatientFileList = dbHelperPatientDetail.getPatientFileListByPatientId(sPatientID);
+                    if (mPatientFileList != null)
+                    {
+                        mPatientFileList.add(new PatientFile(0, Integer.parseInt(sPatientID), "New File", "", ""));
+                        myPatientAdapter = new PatientFileRecyclerViewAdapter(mPatientFileList);
+                        ((RecyclerView) findViewById(R.id.listView_patientFile_items)).setAdapter(myPatientAdapter);
+                    }
                 }
             }
-
+            setLayout();
         }
     }
 
@@ -69,7 +77,28 @@ public class PatientDetailActivity extends AppCompatActivity
         return true;
     }
 
+    private void setLayout()
+    {
+        if (bEditMode)
+        {
+            ((TextView) findViewById(R.id.textViewPatientFirstNameEdit)).setText(mPatientItem.getFirstName());
+            ((TextView) findViewById(R.id.textViewPatientLastNameEdit)).setText(mPatientItem.getLastName());
+            ((TextView) findViewById(R.id.textViewPatientFirstNameView)).setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.textViewPatientLastNameView)).setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.textViewPatientFirstNameEdit)).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.textViewPatientLastNameEdit)).setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            ((TextView) findViewById(R.id.textViewPatientFirstNameView)).setText(mPatientItem.getFirstName());
+            ((TextView) findViewById(R.id.textViewPatientLastNameView)).setText(mPatientItem.getLastName());
+            ((TextView) findViewById(R.id.textViewPatientFirstNameEdit)).setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.textViewPatientLastNameEdit)).setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.textViewPatientFirstNameView)).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.textViewPatientLastNameView)).setVisibility(View.VISIBLE);
+        }
 
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -83,19 +112,39 @@ public class PatientDetailActivity extends AppCompatActivity
         {
             bEditMode = true;
             invalidateOptionsMenu();
+            setLayout();
             return true;
         }
         else if (id == R.id.action_cancel)
         {
             bEditMode = false;
             invalidateOptionsMenu();
+            setLayout();
             return true;
 
         }
         else if (id == R.id.action_accept)
         {
             bEditMode = false;
+            String sFirstName = ((TextView) findViewById(R.id.textViewPatientFirstNameEdit)).getText().toString();
+            String sLastName = ((TextView) findViewById(R.id.textViewPatientLastNameEdit)).getText().toString();
+            if (bNewRecord)
+            {
+
+                mPatientItem = new Patient(0,"",sFirstName,sLastName);
+                dbHelperPatientDetail.addPatient(mPatientItem);
+                sPatientID = String.valueOf(mPatientItem.getPatientID());
+                mPatientFileList.add(new PatientFile(0, mPatientItem.getPatientID(), "New File", "", ""));
+                myPatientAdapter = new PatientFileRecyclerViewAdapter(mPatientFileList);
+                ((RecyclerView) findViewById(R.id.listView_patientFile_items)).setAdapter(myPatientAdapter);
+                bNewRecord = false;
+            }
+            else
+            {
+                mPatientItem = dbHelperPatientDetail.updatePatient(mPatientItem,mPatientItem.getAndroidId(),sFirstName,sLastName);
+            }
             invalidateOptionsMenu();
+            setLayout();
             return true;
         }
 

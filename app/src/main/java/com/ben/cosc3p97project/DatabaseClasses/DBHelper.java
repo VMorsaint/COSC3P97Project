@@ -93,9 +93,10 @@ public class DBHelper extends SQLiteOpenHelper
         return bFlagOk;
     }
 
-    public boolean addPatient(Patient newPatient)
+    public long addPatient(Patient newPatient)
     {
         boolean bFlagOk = true;
+        long iPatientID = 0;
         ContentValues values = new ContentValues();
         values.put(Patient.COL_FIRST_NAME, newPatient.getFirstName());
         values.put(Patient.COL_LAST_NAME, newPatient.getLastName());
@@ -104,14 +105,15 @@ public class DBHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
         try
         {
-            db.insertOrThrow(Patient.TABLE_NAME, null, values);
+            iPatientID = db.insertOrThrow(Patient.TABLE_NAME, null, values);
+            newPatient.setPatientID(iPatientID);
         }
         catch (Exception e)
         {
             bFlagOk = false;
         }
         db.close();
-        return bFlagOk;
+        return iPatientID;
     }
 
     public boolean addPatientNote(PatientNote newPatientNote)
@@ -369,4 +371,30 @@ public class DBHelper extends SQLiteOpenHelper
         return iReturn > 0;
     }
 
+    public Patient updatePatient(Patient patientOld, String sAndroidIDParam, String sPatientFileFirstNameParam, String sPatientFileLastNameParam)
+    {
+        Patient patientUpdated;
+        ContentValues values = new ContentValues();
+        values.put(Patient.COL_ANDROID_ID, sAndroidIDParam);
+        values.put(Patient.COL_FIRST_NAME, sPatientFileFirstNameParam);
+        values.put(Patient.COL_LAST_NAME, sPatientFileLastNameParam);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(Patient.TABLE_NAME, values, Patient.COL_PATIENT_ID + " = ?", new String[]{String.valueOf(patientOld.getPatientID())});
+        return new Patient(patientOld.getPatientID(),sAndroidIDParam,sPatientFileFirstNameParam,sPatientFileLastNameParam);
+    }
+
+    public PatientFile updatePatientFile(PatientFile patientfileOld, long iPatientIDParam, String sPatientFileNameParam, String sStartParam, String sEndParam)
+    {
+        PatientFile patientUpdated;
+        ContentValues values = new ContentValues();
+        values.put(PatientFile.COL_PATIENT_ID, iPatientIDParam);
+        values.put(PatientFile.COL_NAME, sPatientFileNameParam);
+        values.put(PatientFile.COL_DATETIME_START, sStartParam);
+        values.put(PatientFile.COL_DATETIME_END, sStartParam);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(PatientFile.TABLE_NAME,values,PatientFile.COL_PATIENT_FILE_ID + " = ?", new String[]{String.valueOf(patientfileOld.getPatientFileID())});
+        return new PatientFile(patientfileOld.getPatientFileID(),iPatientIDParam,sPatientFileNameParam,sStartParam,sEndParam);
+    }
 }

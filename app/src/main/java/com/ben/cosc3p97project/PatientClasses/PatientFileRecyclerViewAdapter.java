@@ -38,7 +38,7 @@ public class PatientFileRecyclerViewAdapter
     @Override
     public void onBindViewHolder(final PatientFileViewHolder holder, int position)
     {
-        int iPatientFileId;
+        long iPatientFileId;
         holder.mItem = mValues.get(position);
         iPatientFileId = holder.mItem.getPatientFileID();
         if (iPatientFileId == 0)

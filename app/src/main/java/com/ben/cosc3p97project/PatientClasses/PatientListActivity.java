@@ -1,5 +1,6 @@
 package com.ben.cosc3p97project.PatientClasses;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +43,9 @@ public class PatientListActivity extends AppCompatActivity {
         }
         else if (id == R.id.action_addPatient)
         {
+            Intent intent = new Intent(this, PatientDetailActivity.class);
+            intent.putExtra(PatientDetailActivity.ARG_ITEM_ID, "0");
+            this.startActivity(intent);
             return true;
         }
 

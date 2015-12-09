@@ -9,8 +9,8 @@ import android.provider.BaseColumns;
 
 public class PatientFile implements BaseColumns
 {
-    private int iPatientFileID;
-    private int iPatientID;
+    private long iPatientFileID;
+    private long iPatientID;
     private String sPatientFileName;
     private String sPatientFileStart;
     private String sPatientFileEnd;
@@ -30,20 +30,20 @@ public class PatientFile implements BaseColumns
         sPatientFileEnd = "";
     }
 
-    public PatientFile(int iPatientFileIDParam, int iPatientIDParam, String sPatientFileNameParam, String sStart, String sEnd)
+    public PatientFile(long iPatientFileIDParam, long iPatientIDParam, String sPatientFileNameParam, String sStartParam, String sEndParam)
     {
         iPatientFileID = iPatientFileIDParam;
         iPatientID = iPatientIDParam;
         sPatientFileName = sPatientFileNameParam;
-        sPatientFileStart = sStart;
-        sPatientFileEnd = sEnd;
+        sPatientFileStart = sStartParam;
+        sPatientFileEnd = sEndParam;
     }
 
-    public int getPatientFileID()
+    public long getPatientFileID ()
     {
         return iPatientFileID;
     }
-    public int getPatientID()
+    public long getPatientID()
     {
         return iPatientID;
     }

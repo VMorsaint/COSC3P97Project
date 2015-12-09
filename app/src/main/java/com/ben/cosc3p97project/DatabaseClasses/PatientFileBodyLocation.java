@@ -9,9 +9,9 @@ import android.provider.BaseColumns;
 
 public class PatientFileBodyLocation implements BaseColumns
 {
-    private int iPatientFileBodyLocationID;
-    private int iPatientFileID;
-    private int iBodyLocationID;
+    private long iPatientFileBodyLocationID;
+    private long iPatientFileID;
+    private long iBodyLocationID;
     public static final String TABLE_NAME = "tPatientFiles";
     public static final String COL_PATIENT_FILE_BODY_LOCATION_ID = "cBodyLocationId";
     public static final String COL_BODY_LOCATION_ID = "cBodyLocationId";
@@ -25,22 +25,22 @@ public class PatientFileBodyLocation implements BaseColumns
         iBodyLocationID = 0;
     }
 
-    public PatientFileBodyLocation(int iPatientFileIDParam, int iPatientFileBodyLocationIDParam, int iBodyLocationIdParam)
+    public PatientFileBodyLocation(long iPatientFileIDParam, long iPatientFileBodyLocationIDParam, long iBodyLocationIdParam)
     {
         iPatientFileBodyLocationID = iPatientFileBodyLocationIDParam;
         iPatientFileID = iPatientFileIDParam;
         iBodyLocationID = iBodyLocationIdParam;
     }
 
-    public int getID()
+    public long getPatientFileBodyLocationID()
     {
         return iPatientFileBodyLocationID;
     }
-    public int getPatientFileID()
+    public long getPatientFileID()
     {
         return iPatientFileID;
     }
-    public int getBodyLocationID()
+    public long getBodyLocationID()
     {
         return iBodyLocationID;
     }

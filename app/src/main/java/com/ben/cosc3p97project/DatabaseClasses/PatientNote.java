@@ -9,8 +9,8 @@ import android.provider.BaseColumns;
 
 public class PatientNote implements BaseColumns
 {
-    private int iPatientNoteID;
-    private int iPatientFileID;
+    private long iPatientNoteID;
+    private long iPatientFileID;
     private String sPatientNote;
 
     public static final String TABLE_NAME = "tPatientNotes";
@@ -25,17 +25,17 @@ public class PatientNote implements BaseColumns
         sPatientNote = "";
     }
 
-    public PatientNote(int iPatientNoteIDParam, int iPatientFileIDParam, String sPatientNoteParam)
+    public PatientNote(long iPatientNoteIDParam, long iPatientFileIDParam, String sPatientNoteParam)
     {
         iPatientNoteID = iPatientNoteIDParam;
         iPatientFileID = iPatientFileIDParam;
         sPatientNote = sPatientNoteParam;
     }
-    public int getPatientNoteID()
+    public long getPatientNoteID()
     {
-        return iPatientFileID;
+        return iPatientNoteID;
     }
-    public int getPatientFileID()
+    public long getPatientFileID()
     {
         return iPatientFileID;
     }
