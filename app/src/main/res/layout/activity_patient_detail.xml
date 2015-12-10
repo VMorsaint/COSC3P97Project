@@ -105,7 +105,6 @@
                                                 android:layout_marginRight="16dp"
                                                 android:choiceMode="singleChoice"
                                                 app:layoutManager="LinearLayoutManager"
-                                                tools:context=".PatientClasses.OldClasses.PatientDetailActivity"
                                                 tools:listitem="@layout/patient_files_list_content"
                                                 android:visibility="visible"/>
 

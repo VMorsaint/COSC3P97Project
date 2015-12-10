@@ -7,6 +7,9 @@ package com.ben.cosc3p97project.DatabaseClasses;
 
 import android.provider.BaseColumns;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class PatientFile implements BaseColumns
 {
     private long iPatientFileID;
@@ -23,10 +26,12 @@ public class PatientFile implements BaseColumns
 
     public PatientFile()
     {
+        Calendar calDateNow = Calendar.getInstance();
+        SimpleDateFormat dfDateNow = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         iPatientFileID = 0;
         iPatientID = 0;
         sPatientFileName = "";
-        sPatientFileStart = "";
+        sPatientFileStart = dfDateNow.format(calDateNow.getTime());;
         sPatientFileEnd = "";
     }
 

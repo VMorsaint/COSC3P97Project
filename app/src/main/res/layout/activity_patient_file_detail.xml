@@ -44,7 +44,6 @@
                       android:layout_width="match_parent"
                       android:layout_height="fill_parent"
                       android:textIsSelectable="true"
-                      tools:context=".PatientClasses.PatientDetailActivity"
                       android:text=""
                       android:gravity="center_vertical"
                       android:visibility="visible"/>
@@ -89,7 +88,7 @@
             android:id="@+id/textViewPatientFileNotesLabel"
             android:gravity="center_vertical"/>
 
-        <android.support.v7.widget.RecyclerView android:id="@+id/listView_patientFile_items"
+        <android.support.v7.widget.RecyclerView android:id="@+id/listView_patientNote_items"
                                                 android:name="com.ben.cosc3p97project.FragmentPatientFileList"
                                                 xmlns:android="http://schemas.android.com/apk/res/android"
                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -100,7 +99,6 @@
                                                 android:layout_marginRight="16dp"
                                                 android:choiceMode="singleChoice"
                                                 app:layoutManager="LinearLayoutManager"
-                                                tools:context=".PatientClasses.OldClasses.PatientDetailFragment"
                                                 tools:listitem="@layout/patient_notes_list_content"
                                                 android:visibility="visible"/>
 

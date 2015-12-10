@@ -31,10 +31,16 @@ public class PatientNote implements BaseColumns
         iPatientFileID = iPatientFileIDParam;
         sPatientNote = sPatientNoteParam;
     }
+
     public long getPatientNoteID()
     {
         return iPatientNoteID;
     }
+    public void setPatientNoteID(long iPatientNoteIDParam)
+    {
+        iPatientNoteID = iPatientNoteIDParam;
+    }
+
     public long getPatientFileID()
     {
         return iPatientFileID;

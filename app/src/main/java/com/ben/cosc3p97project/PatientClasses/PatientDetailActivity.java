@@ -43,7 +43,7 @@ public class PatientDetailActivity extends AppCompatActivity
             if (bNewRecord)
             {
                 mPatientItem = new Patient();
-//                mPatientFileList.add(new PatientFile(0, 0, "New File", "", ""));
+                ((TextView) findViewById(R.id.textViewPatientFilesLabel)).setVisibility(View.GONE);
             }
             else
             {
@@ -134,8 +134,10 @@ public class PatientDetailActivity extends AppCompatActivity
                 mPatientItem = new Patient(0,"",sFirstName,sLastName);
                 dbHelperPatientDetail.addPatient(mPatientItem);
                 sPatientID = String.valueOf(mPatientItem.getPatientID());
+                mPatientFileList = new ArrayList<>();
                 mPatientFileList.add(new PatientFile(0, mPatientItem.getPatientID(), "New File", "", ""));
                 myPatientAdapter = new PatientFileRecyclerViewAdapter(mPatientFileList);
+                ((TextView) findViewById(R.id.textViewPatientFilesLabel)).setVisibility(View.VISIBLE);
                 ((RecyclerView) findViewById(R.id.listView_patientFile_items)).setAdapter(myPatientAdapter);
                 bNewRecord = false;
             }

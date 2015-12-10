@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class DBHelper extends SQLiteOpenHelper
 {
     public static final String DATABASE_NAME = "PatientFiles.db";
-    public static final int DATABASE_VERSION = 10;
+    public static final int DATABASE_VERSION = 11;
 
     public DBHelper(Context context)
     {
@@ -44,7 +44,19 @@ public class DBHelper extends SQLiteOpenHelper
                     PatientFile.COL_DATETIME_END + " TEXT)";
             db.execSQL(CREATE_TABLE);
 
+            CREATE_TABLE = "CREATE TABLE " +
+                    PatientNote.TABLE_NAME + " (" +
+                    PatientNote.COL_PATIENT_NOTE_ID + " INTEGER PRIMARY KEY, " +
+                    PatientNote.COL_PATIENT_FILE_ID + " INTEGER, " +
+                    PatientNote.COL_NOTE + " TEXT)";
+            db.execSQL(CREATE_TABLE);
 
+            CREATE_TABLE = "CREATE TABLE " +
+                    PatientFileBodyLocation.TABLE_NAME + " (" +
+                    PatientFileBodyLocation.COL_PATIENT_FILE_BODY_LOCATION_ID + " INTEGER PRIMARY KEY, " +
+                    PatientFileBodyLocation.COL_PATIENT_FILE_ID + " INTEGER, " +
+                    PatientFileBodyLocation.COL_BODY_LOCATION_ID + " INTEGER)";
+            db.execSQL(CREATE_TABLE);
 
             CREATE_TABLE = "CREATE TABLE " +
                     BodyLocation.TABLE_NAME + "(" +
@@ -60,10 +72,11 @@ public class DBHelper extends SQLiteOpenHelper
     }
     public void onUpgrade(SQLiteDatabase dbSQL, int iOldVersion, int iNewVersion)
     {
-        dbSQL.execSQL("DROP TABLE IF EXISTS " + PatientFile.TABLE_NAME);
-        dbSQL.execSQL("DROP TABLE IF EXISTS " + BodyLocation.TABLE_NAME);
-        dbSQL.execSQL("DROP TABLE IF EXISTS " + PatientNote.TABLE_NAME);
         dbSQL.execSQL("DROP TABLE IF EXISTS " + Patient.TABLE_NAME);
+        dbSQL.execSQL("DROP TABLE IF EXISTS " + PatientFile.TABLE_NAME);
+        dbSQL.execSQL("DROP TABLE IF EXISTS " + PatientNote.TABLE_NAME);
+        dbSQL.execSQL("DROP TABLE IF EXISTS " + PatientFileBodyLocation.TABLE_NAME);
+        dbSQL.execSQL("DROP TABLE IF EXISTS " + BodyLocation.TABLE_NAME);
         onCreate(dbSQL);
     }
     public void onDowngrade(SQLiteDatabase dbSQL, int iOldVersion, int iNewVersion)
@@ -119,6 +132,7 @@ public class DBHelper extends SQLiteOpenHelper
     public boolean addPatientNote(PatientNote newPatientNote)
     {
         boolean bFlagOk = true;
+        long iPatientNoteID = 0;
         ContentValues values = new ContentValues();
         values.put(PatientNote.COL_PATIENT_FILE_ID, newPatientNote.getPatientFileID());
         values.put(PatientNote.COL_NOTE, newPatientNote.getNote());
@@ -127,7 +141,8 @@ public class DBHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
         try
         {
-            db.insertOrThrow(Patient.TABLE_NAME, null, values);
+            iPatientNoteID = db.insertOrThrow(PatientNote.TABLE_NAME, null, values);
+            newPatientNote.setPatientNoteID(iPatientNoteID);
         }
         catch (Exception e)
         {
@@ -288,6 +303,36 @@ public class DBHelper extends SQLiteOpenHelper
         return PatientFileList;
     }
 
+    public ArrayList<PatientNote> getPatientNoteListByPatientFileId(String sPatientFileId)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery =  "SELECT " +
+                PatientNote.COL_PATIENT_NOTE_ID + "," +
+                PatientNote.COL_PATIENT_FILE_ID + "," +
+                PatientNote.COL_NOTE +
+                " FROM " + PatientNote.TABLE_NAME +
+                " WHERE " + PatientNote.COL_PATIENT_FILE_ID + " = " + sPatientFileId;
+
+        ArrayList<PatientNote> PatientNoteList = new ArrayList<>();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                PatientNoteList.add(new PatientNote(Integer.parseInt(cursor.getString(cursor.getColumnIndex(PatientNote.COL_PATIENT_NOTE_ID))),
+                        Integer.parseInt(cursor.getString(cursor.getColumnIndex(PatientNote.COL_PATIENT_FILE_ID))),
+                        cursor.getString(cursor.getColumnIndex(PatientNote.COL_NOTE))
+                        ));
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null && !cursor.isClosed())
+        {
+            cursor.close();
+        }
+
+        db.close();
+        return PatientNoteList;
+    }
 
 
     public ArrayList<String> getLocationList()
@@ -396,5 +441,17 @@ public class DBHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(PatientFile.TABLE_NAME,values,PatientFile.COL_PATIENT_FILE_ID + " = ?", new String[]{String.valueOf(patientfileOld.getPatientFileID())});
         return new PatientFile(patientfileOld.getPatientFileID(),iPatientIDParam,sPatientFileNameParam,sStartParam,sEndParam);
+    }
+
+    public PatientNote updatePatientNote(PatientNote patientnoteOld, long iPatientFileIDParam, String sPatientNoteParam)
+    {
+        PatientFile patientUpdated;
+        ContentValues values = new ContentValues();
+        values.put(PatientNote.COL_PATIENT_FILE_ID, iPatientFileIDParam);
+        values.put(PatientNote.COL_NOTE, sPatientNoteParam);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(PatientNote.TABLE_NAME,values,PatientNote.COL_PATIENT_NOTE_ID + " = ?", new String[]{String.valueOf(patientnoteOld.getPatientNoteID())});
+        return new PatientNote(patientnoteOld.getPatientNoteID(),iPatientFileIDParam,sPatientNoteParam);
     }
 }
