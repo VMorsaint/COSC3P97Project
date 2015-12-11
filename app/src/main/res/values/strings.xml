@@ -16,7 +16,7 @@
     <string name="sortByName">Sort By Name</string>
     <string name="sortByActivity">Sort By Activity</string>
     <string name="showAll">Show All</string>
-    <string name="showActive">Show Active</string>
+    <string name="showActive">Show Active Only</string>
     <string name="closeFile">Close File</string>
     <string name="edit">Edit</string>
     <string name="cancel">Cancel</string>

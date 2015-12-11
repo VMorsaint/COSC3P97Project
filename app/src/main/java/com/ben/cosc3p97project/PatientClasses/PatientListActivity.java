@@ -8,21 +8,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
+import com.ben.cosc3p97project.DatabaseClasses.Patient;
 import com.ben.cosc3p97project.R;
+
+import java.util.ArrayList;
 
 public class PatientListActivity extends AppCompatActivity {
 
     private boolean bShowActive = false;
     private boolean bSortByActivity = false;
+    DBHelper dbHelperPatientList;
+    private ArrayList<Patient>  mPatientFileList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_list);
-        DBHelper dbHelperPatientList = new DBHelper(this);
-        RecyclerView recyclerViewPatients = (RecyclerView) findViewById(R.id.listView_patient_items);
-        assert recyclerViewPatients != null;
-        recyclerViewPatients.setAdapter(new PatientRecyclerViewAdapter(dbHelperPatientList.getPatientList(false, false)));
+        dbHelperPatientList = new DBHelper(this);
+        buildPatientList();
     }
 
     @Override
@@ -33,6 +36,11 @@ public class PatientListActivity extends AppCompatActivity {
         ((MenuItem) menu.findItem(R.id.action_sort_by_name)).setVisible(bSortByActivity);
         ((MenuItem) menu.findItem(R.id.action_sort_by_activity)).setVisible(!bSortByActivity);
         return true;
+    }
+    private void buildPatientList()
+    {
+        mPatientFileList = dbHelperPatientList.getPatientList(bShowActive, bSortByActivity);
+        ((RecyclerView) findViewById(R.id.listView_patient_items)).setAdapter(new PatientRecyclerViewAdapter(mPatientFileList));
     }
 
     @Override
@@ -53,25 +61,25 @@ public class PatientListActivity extends AppCompatActivity {
         else if (id == R.id.action_show_active)
         {
             bShowActive = true;
-            //buildFileList();
+            buildPatientList();
             invalidateOptionsMenu();
         }
         else if (id == R.id.action_show_all)
         {
             bShowActive = false;
-            //buildFileList();
+            buildPatientList();
             invalidateOptionsMenu();
         }
         else if (id == R.id.action_sort_by_activity)
         {
             bSortByActivity = true;
-            //buildFileList();
+            buildPatientList();
             invalidateOptionsMenu();
         }
         else if (id == R.id.action_sort_by_name)
         {
             bSortByActivity = false;
-            //buildFileList();
+            buildPatientList();
             invalidateOptionsMenu();
         }
 

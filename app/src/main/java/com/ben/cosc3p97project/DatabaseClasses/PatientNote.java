@@ -14,8 +14,8 @@ public class PatientNote implements BaseColumns
     private String sPatientNote;
 
     public static final String TABLE_NAME = "tPatientNotes";
-    public static final String COL_PATIENT_NOTE_ID = "cPatientNoteId";
-    public static final String COL_PATIENT_FILE_ID = "cPatientFileId";
+    public static final String COL_PATIENT_NOTE_ID = "cPatientNotePk";
+    public static final String COL_PATIENT_FILE_ID = "cPatientFileFk";
     public static final String COL_NOTE = "cNotes";
 
     public PatientNote()

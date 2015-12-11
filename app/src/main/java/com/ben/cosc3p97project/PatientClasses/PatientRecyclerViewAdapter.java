@@ -39,8 +39,17 @@ public class PatientRecyclerViewAdapter
     public void onBindViewHolder(final PatientViewHolder holder, int position)
     {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(String.valueOf(holder.mItem.getPatientID()));
-        holder.mContentView.setText(holder.mItem.getFirstName());
+        holder.mIdView.setText(String.valueOf(position+1));
+        if(holder.mItem.getLastName().length() == 0)
+        {
+            holder.mContentView.setText(holder.mItem.getFirstName());
+        }
+        else
+        {
+            holder.mContentView.setText(holder.mItem.getLastName() + ", " + holder.mItem.getFirstName());
+        }
+
+
 
         holder.mView.setOnClickListener(new View.OnClickListener()
         {

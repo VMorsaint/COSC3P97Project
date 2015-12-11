@@ -10,5 +10,5 @@
 
     <item android:id="@+id/action_close_file"
           android:title="@string/closeFile"
-          app:showAsAction="ifRoom" />
+          app:showAsAction="never" />
 </menu>

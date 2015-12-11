@@ -125,7 +125,7 @@ public class PatientDetailActivity extends AppCompatActivity
             if (bNewRecord)
             {
 
-                mPatientItem = new Patient(0,"",sFirstName,sLastName);
+                mPatientItem = new Patient(0,"",sFirstName,sLastName,mPatientItem.getsDateAdded());
                 dbHelperPatientDetail.addPatient(mPatientItem);
                 sPatientID = String.valueOf(mPatientItem.getPatientID());
                 mPatientFileList = new ArrayList<>();
@@ -137,7 +137,7 @@ public class PatientDetailActivity extends AppCompatActivity
             }
             else
             {
-                mPatientItem = dbHelperPatientDetail.updatePatient(mPatientItem,mPatientItem.getAndroidId(),sFirstName,sLastName);
+                mPatientItem = dbHelperPatientDetail.updatePatient(mPatientItem,mPatientItem.getAndroidId(),sFirstName,sLastName,mPatientItem.getsDateAdded());
             }
             invalidateOptionsMenu();
             setLayout();

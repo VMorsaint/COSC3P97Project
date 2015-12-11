@@ -18,8 +18,8 @@ public class PatientFile implements BaseColumns
     private String sPatientFileStart;
     private String sPatientFileEnd;
     public static final String TABLE_NAME = "tPatientFiles";
-    public static final String COL_PATIENT_FILE_ID = "cPatientFileId";
-    public static final String COL_PATIENT_ID = "cPatientId";
+    public static final String COL_PATIENT_FILE_ID = "cPatientFilePk";
+    public static final String COL_PATIENT_ID = "cPatientFk";
     public static final String COL_NAME = "cName";
     public static final String COL_DATETIME_START = "cTimeStart";
     public static final String COL_DATETIME_END = "cTimeEnd";
@@ -32,7 +32,7 @@ public class PatientFile implements BaseColumns
         iPatientFileID = 0;
         iPatientID = 0;
         sPatientFileName = "";
-        sPatientFileStart = dfDateNow.format(calDateNow.getTime());;
+        sPatientFileStart = dfDateNow.format(calDateNow.getTime());
         sPatientFileEnd = "";
     }
 

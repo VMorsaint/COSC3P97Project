@@ -12,7 +12,7 @@ public class BodyLocation implements BaseColumns
     private int iLocationID;
     private String sLocationName;
     public static final String TABLE_NAME = "tLocations";
-    public static final String COL_LOCATION_ID = "cLocationId";
+    public static final String COL_LOCATION_ID = "cLocationPk";
     public static final String COL_NAME = "cName";
 
     public BodyLocation(String sName)
