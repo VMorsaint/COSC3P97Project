@@ -21,7 +21,6 @@ public class PatientNoteRecyclerViewAdapter
 {
     private LayoutInflater inflaterPatientNote;
     private final List<PatientNote> mValues;
-
     public PatientNoteRecyclerViewAdapter(List<PatientNote> items)
     {
         mValues = items;
@@ -49,7 +48,7 @@ public class PatientNoteRecyclerViewAdapter
         {
             holder.mIdView.setText(String.valueOf(iPatientNoteId));
         }
-        holder.mContentView.setText(holder.mItem.getNote());
+        holder.mContentView.setText( holder.mItem.getNote());
 
         holder.mView.setOnClickListener(new View.OnClickListener()
         {

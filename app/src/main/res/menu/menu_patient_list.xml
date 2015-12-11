@@ -5,6 +5,26 @@
 
         <item android:id="@+id/action_addPatient"
               android:icon="@android:drawable/ic_menu_add"
-              android:title="@string/edit"
+              android:title="@string/add"
               app:showAsAction="always" />
+
+
+    <item android:id="@+id/action_show_active"
+          android:title="@string/showActive"
+          app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_show_all"
+          android:title="@string/showAll"
+          app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_sort_by_activity"
+          android:title="@string/sortByActivity"
+          app:showAsAction="ifRoom"
+        />
+    <item android:id="@+id/action_sort_by_name"
+          android:title="@string/sortByName"
+          app:showAsAction="ifRoom"
+          android:visible="false"
+        />
+
 </menu>

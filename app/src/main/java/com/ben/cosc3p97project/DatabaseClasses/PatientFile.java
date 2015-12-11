@@ -23,6 +23,7 @@ public class PatientFile implements BaseColumns
     public static final String COL_NAME = "cName";
     public static final String COL_DATETIME_START = "cTimeStart";
     public static final String COL_DATETIME_END = "cTimeEnd";
+    private boolean bClosed = false;
 
     public PatientFile()
     {
@@ -42,6 +43,16 @@ public class PatientFile implements BaseColumns
         sPatientFileName = sPatientFileNameParam;
         sPatientFileStart = sStartParam;
         sPatientFileEnd = sEndParam;
+    }
+    public void closeFile()
+    {
+        Calendar calDateNow = Calendar.getInstance();
+        SimpleDateFormat dfDateNow = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sPatientFileEnd = dfDateNow.format(calDateNow.getTime());
+    }
+    public boolean isClosed()
+    {
+        return (sPatientFileEnd.length() != 0);
     }
 
     public long getPatientFileID ()

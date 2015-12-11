@@ -7,4 +7,12 @@
               android:icon="@android:drawable/ic_menu_edit"
               android:title="@string/edit"
               app:showAsAction="always" />
+
+        <item android:id="@+id/action_show_active"
+              android:title="@string/showActive"
+              app:showAsAction="ifRoom" />
+
+        <item android:id="@+id/action_show_all"
+              android:title="@string/showAll"
+              app:showAsAction="ifRoom" />
 </menu>

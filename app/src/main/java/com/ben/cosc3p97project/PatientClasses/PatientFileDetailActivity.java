@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
 import com.ben.cosc3p97project.DatabaseClasses.PatientFile;
@@ -62,7 +63,6 @@ public class PatientFileDetailActivity extends AppCompatActivity
                     }
                 }
             }
-
             setLayout();
         }
     }
@@ -72,10 +72,12 @@ public class PatientFileDetailActivity extends AppCompatActivity
         if (bEditMode)
         {
             getMenuInflater().inflate(R.menu.menu_patient_file_detail_edit, menu);
+
         }
         else
         {
             getMenuInflater().inflate(R.menu.menu_patient_file_detail, menu);
+            ((MenuItem) menu.findItem(R.id.action_close_file)).setVisible(!mPatientFileItem.isClosed());
         }
 
         return true;
@@ -96,6 +98,19 @@ public class PatientFileDetailActivity extends AppCompatActivity
             ((TextView) findViewById(R.id.textViewPatientFileNameView)).setVisibility(View.VISIBLE);
         }
         ((TextView) findViewById(R.id.textViewPatientFileStartView)).setText(mPatientFileItem.getStart());
+        if (mPatientFileItem.isClosed())
+        {
+            ((TextView) findViewById(R.id.textViewPatientFileEndView)).setText(mPatientFileItem.getEnd());
+            ((TextView) findViewById(R.id.textViewPatientFileEndView)).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.textViewPatientFileEndLabel)).setVisibility(View.VISIBLE);
+
+        }
+        else
+        {
+            ((TextView) findViewById(R.id.textViewPatientFileEndView)).setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.textViewPatientFileEndLabel)).setVisibility(View.GONE);
+        }
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -130,12 +145,12 @@ public class PatientFileDetailActivity extends AppCompatActivity
             {
                 mPatientFileItem = new PatientFile(0,Long.valueOf(sPatientID),sName,mPatientFileItem.getStart(),"");
                 dbHelperPatientFileDetail.addPatientFile(mPatientFileItem);
-                sPatientFileID = String.valueOf(mPatientFileItem.getPatientID());
+                sPatientFileID = String.valueOf(mPatientFileItem.getPatientFileID());
                 mPatientNoteList = new ArrayList<>();
                 mPatientNoteList.add(new PatientNote(0, mPatientFileItem.getPatientFileID(), "New Note"));
                 myPatientNoteAdapter = new PatientNoteRecyclerViewAdapter(mPatientNoteList);
-                ((TextView) findViewById(R.id.textViewPatientFilesLabel)).setVisibility(View.VISIBLE);
-                ((RecyclerView) findViewById(R.id.listView_patientFile_items)).setAdapter(myPatientNoteAdapter);
+                ((TextView) findViewById(R.id.textViewPatientFileNotesLabel)).setVisibility(View.VISIBLE);
+                ((RecyclerView) findViewById(R.id.listView_patientNote_items)).setAdapter(myPatientNoteAdapter);
                 bNewRecord = false;
             }
             else
@@ -146,6 +161,14 @@ public class PatientFileDetailActivity extends AppCompatActivity
             invalidateOptionsMenu();
             setLayout();
             return true;
+        }
+        else if (id == R.id.action_close_file)
+        {
+            dbHelperPatientFileDetail.closePatientFile(mPatientFileItem);
+            Toast.makeText(getApplicationContext(), "File Closed",
+                    Toast.LENGTH_SHORT).show();
+            invalidateOptionsMenu();
+            setLayout();
         }
         return super.onOptionsItemSelected(item);
     }

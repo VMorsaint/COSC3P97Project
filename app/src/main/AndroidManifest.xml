@@ -56,6 +56,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".PatientClasses.PatientDetailActivity"/>
         </activity>
+        <activity
+            android:name=".PatientClasses.PatientNoteDetailActivity"
+            android:label="@string/title_activity_patient_note_detail"
+            android:parentActivityName=".PatientClasses.PatientFileDetailActivity">
+
+        </activity>
     </application>
 
 </manifest>

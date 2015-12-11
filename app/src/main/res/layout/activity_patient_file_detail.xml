@@ -35,7 +35,8 @@
                 android:id="@+id/textViewPatientFileNameEdit"
                 android:layout_weight="1"
                 android:visibility="gone"
-                style="?android:attr/textAppearanceLarge"/>
+                style="?android:attr/textAppearanceLarge"
+                android:singleLine="true"/>
 
             <TextView android:id="@+id/textViewPatientFileNameView"
                       style="?android:attr/textAppearanceLarge"
@@ -46,7 +47,8 @@
                       android:textIsSelectable="true"
                       android:text=""
                       android:gravity="center_vertical"
-                      android:visibility="visible"/>
+                      android:visibility="visible"
+                      android:singleLine="true"/>
 
         </LinearLayout>
 
@@ -75,8 +77,38 @@
                 android:textIsSelectable="true"
                 android:text=""
                 android:gravity="center_vertical"
-                android:visibility="visible"/>
+                android:visibility="visible"
+                android:singleLine="true"/>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:layout_width="108dp"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="16dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="End:"
+                android:id="@+id/textViewPatientFileEndLabel"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                style="?android:attr/textAppearanceLarge"
+                tools:context=".PatientClasses.OldClasses.PatientDetailFragment"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/textViewPatientFileEndView"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:textIsSelectable="true"
+                android:text=""
+                android:gravity="center_vertical"
+                android:visibility="visible"
+                android:singleLine="true"/>
         </LinearLayout>
 
         <TextView

@@ -12,6 +12,9 @@ import com.ben.cosc3p97project.R;
 
 public class PatientListActivity extends AppCompatActivity {
 
+    private boolean bShowActive = false;
+    private boolean bSortByActivity = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,22 +22,21 @@ public class PatientListActivity extends AppCompatActivity {
         DBHelper dbHelperPatientList = new DBHelper(this);
         RecyclerView recyclerViewPatients = (RecyclerView) findViewById(R.id.listView_patient_items);
         assert recyclerViewPatients != null;
-        //dbHelperPatientList.addPatient(new Patient(0, "", "Vincent2", "Morsaint2"));
-        recyclerViewPatients.setAdapter(new PatientRecyclerViewAdapter(dbHelperPatientList.getPatientList()));
+        recyclerViewPatients.setAdapter(new PatientRecyclerViewAdapter(dbHelperPatientList.getPatientList(false, false)));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_patient_list, menu);
+        ((MenuItem) menu.findItem(R.id.action_show_all)).setVisible(bShowActive);
+        ((MenuItem) menu.findItem(R.id.action_show_active)).setVisible(!bShowActive);
+        ((MenuItem) menu.findItem(R.id.action_sort_by_name)).setVisible(bSortByActivity);
+        ((MenuItem) menu.findItem(R.id.action_sort_by_activity)).setVisible(!bSortByActivity);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -47,6 +49,30 @@ public class PatientListActivity extends AppCompatActivity {
             intent.putExtra(PatientDetailActivity.ARG_ITEM_ID, "0");
             this.startActivity(intent);
             return true;
+        }
+        else if (id == R.id.action_show_active)
+        {
+            bShowActive = true;
+            //buildFileList();
+            invalidateOptionsMenu();
+        }
+        else if (id == R.id.action_show_all)
+        {
+            bShowActive = false;
+            //buildFileList();
+            invalidateOptionsMenu();
+        }
+        else if (id == R.id.action_sort_by_activity)
+        {
+            bSortByActivity = true;
+            //buildFileList();
+            invalidateOptionsMenu();
+        }
+        else if (id == R.id.action_sort_by_name)
+        {
+            bSortByActivity = false;
+            //buildFileList();
+            invalidateOptionsMenu();
         }
 
         return super.onOptionsItemSelected(item);

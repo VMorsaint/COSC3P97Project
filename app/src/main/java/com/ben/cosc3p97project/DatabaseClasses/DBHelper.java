@@ -173,38 +173,7 @@ public class DBHelper extends SQLiteOpenHelper
     }
 
 
-    public ArrayList<String> getPatientFileList()
-    {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String selectQuery =  "SELECT  " +
-                PatientFile.COL_PATIENT_FILE_ID + "," +
-                PatientFile.COL_NAME + "," +
-                PatientFile.COL_DATETIME_START + "," +
-                PatientFile.COL_DATETIME_END +
-                " FROM " + PatientFile.TABLE_NAME;
-
-        ArrayList<String> PatientFileList = new ArrayList<>();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst())
-        {
-            do
-            {
-                PatientFileList.add(cursor.getString(cursor.getColumnIndex(PatientFile.COL_NAME)) + " (" +
-                        cursor.getString(cursor.getColumnIndex(PatientFile.COL_DATETIME_START)) + " - " +
-                        cursor.getString(cursor.getColumnIndex(PatientFile.COL_DATETIME_END)) + ")");
-            }
-            while (cursor.moveToNext());
-        }
-        if (cursor != null && !cursor.isClosed())
-        {
-            cursor.close();
-        }
-
-        db.close();
-        return PatientFileList;
-    }
-
-    public ArrayList<Patient> getPatientList()
+    public ArrayList<Patient> getPatientList(boolean bActiveOnly, boolean bSortByActivity)
     {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery =  "SELECT  " +
@@ -213,7 +182,21 @@ public class DBHelper extends SQLiteOpenHelper
                 Patient.COL_FIRST_NAME + "," +
                 Patient.COL_LAST_NAME +
                 " FROM " + Patient.TABLE_NAME;
+        /*
+        selectQuery += " LEFT JOIN (SELECT " + PatientFile.COL_PATIENT_ID + ", MAX(" + PatientFile.COL_DATETIME_START  + ") AS cMaxStart"
+                + " FROM " + PatientFile.TABLE_NAME
+                + " GROUP BY " + PatientFile.COL_PATIENT_ID + ") AS tFileActivity ON " + Patient.TABLE_NAME + "." + Patient.COL_PATIENT_ID
+                + " = tFileActivity." + PatientFile.COL_PATIENT_ID;
 
+        if (bSortByActivity)
+        {
+            selectQuery += " ORDER BY tFileActivity.cMaxStart";
+        }
+        else
+        {
+            selectQuery += " ORDER BY " + Patient.COL_LAST_NAME + ", " + Patient.COL_FIRST_NAME;
+        }
+        */
         ArrayList<Patient> PatientList = new ArrayList<>();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst())
@@ -269,7 +252,7 @@ public class DBHelper extends SQLiteOpenHelper
         return patientReturned;
     }
 
-    public ArrayList<PatientFile> getPatientFileListByPatientId(String sPatientId)
+    public ArrayList<PatientFile> getPatientFileListByPatientId(String sPatientId,boolean bActiveOnly)
     {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery =  "SELECT  " +
@@ -280,6 +263,10 @@ public class DBHelper extends SQLiteOpenHelper
                 PatientFile.COL_DATETIME_END +
                 " FROM " + PatientFile.TABLE_NAME +
                 " WHERE " + PatientFile.COL_PATIENT_ID + " = " + sPatientId;
+        if (bActiveOnly)
+        {
+            selectQuery += " AND " + PatientFile.COL_DATETIME_END + " = ''";
+        }
 
         ArrayList<PatientFile> PatientFileList = new ArrayList<>();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -418,7 +405,6 @@ public class DBHelper extends SQLiteOpenHelper
 
     public Patient updatePatient(Patient patientOld, String sAndroidIDParam, String sPatientFileFirstNameParam, String sPatientFileLastNameParam)
     {
-        Patient patientUpdated;
         ContentValues values = new ContentValues();
         values.put(Patient.COL_ANDROID_ID, sAndroidIDParam);
         values.put(Patient.COL_FIRST_NAME, sPatientFileFirstNameParam);
@@ -431,12 +417,11 @@ public class DBHelper extends SQLiteOpenHelper
 
     public PatientFile updatePatientFile(PatientFile patientfileOld, long iPatientIDParam, String sPatientFileNameParam, String sStartParam, String sEndParam)
     {
-        PatientFile patientUpdated;
         ContentValues values = new ContentValues();
         values.put(PatientFile.COL_PATIENT_ID, iPatientIDParam);
         values.put(PatientFile.COL_NAME, sPatientFileNameParam);
         values.put(PatientFile.COL_DATETIME_START, sStartParam);
-        values.put(PatientFile.COL_DATETIME_END, sStartParam);
+        values.put(PatientFile.COL_DATETIME_END, sEndParam);
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(PatientFile.TABLE_NAME,values,PatientFile.COL_PATIENT_FILE_ID + " = ?", new String[]{String.valueOf(patientfileOld.getPatientFileID())});
@@ -445,7 +430,6 @@ public class DBHelper extends SQLiteOpenHelper
 
     public PatientNote updatePatientNote(PatientNote patientnoteOld, long iPatientFileIDParam, String sPatientNoteParam)
     {
-        PatientFile patientUpdated;
         ContentValues values = new ContentValues();
         values.put(PatientNote.COL_PATIENT_FILE_ID, iPatientFileIDParam);
         values.put(PatientNote.COL_NOTE, sPatientNoteParam);
@@ -453,5 +437,15 @@ public class DBHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(PatientNote.TABLE_NAME,values,PatientNote.COL_PATIENT_NOTE_ID + " = ?", new String[]{String.valueOf(patientnoteOld.getPatientNoteID())});
         return new PatientNote(patientnoteOld.getPatientNoteID(),iPatientFileIDParam,sPatientNoteParam);
+    }
+
+    public void closePatientFile(PatientFile patientfileToClose)
+    {
+        ContentValues values = new ContentValues();
+        patientfileToClose.closeFile();
+        values.put(PatientFile.COL_DATETIME_END, patientfileToClose.getEnd());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(PatientFile.TABLE_NAME,values,PatientFile.COL_PATIENT_FILE_ID + " = ?", new String[]{String.valueOf(patientfileToClose.getPatientFileID())});
     }
 }

@@ -29,6 +29,7 @@ public class PatientDetailActivity extends AppCompatActivity
     private PatientFileRecyclerViewAdapter myPatientAdapter;
     private boolean bEditMode = false;
     private boolean bNewRecord = false;
+    private boolean bShowActive = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,16 +49,7 @@ public class PatientDetailActivity extends AppCompatActivity
             else
             {
                 mPatientItem = dbHelperPatientDetail.getPatient(sPatientID);
-                if (mPatientItem != null)
-                {
-                    mPatientFileList = dbHelperPatientDetail.getPatientFileListByPatientId(sPatientID);
-                    if (mPatientFileList != null)
-                    {
-                        mPatientFileList.add(new PatientFile(0, Integer.parseInt(sPatientID), "New File", "", ""));
-                        myPatientAdapter = new PatientFileRecyclerViewAdapter(mPatientFileList);
-                        ((RecyclerView) findViewById(R.id.listView_patientFile_items)).setAdapter(myPatientAdapter);
-                    }
-                }
+                buildFileList();
             }
             setLayout();
         }
@@ -72,6 +64,8 @@ public class PatientDetailActivity extends AppCompatActivity
         else
         {
             getMenuInflater().inflate(R.menu.menu_patient_detail, menu);
+            ((MenuItem) menu.findItem(R.id.action_show_all)).setVisible(bShowActive);
+            ((MenuItem) menu.findItem(R.id.action_show_active)).setVisible(!bShowActive);
         }
 
         return true;
@@ -149,7 +143,33 @@ public class PatientDetailActivity extends AppCompatActivity
             setLayout();
             return true;
         }
+        else if (id == R.id.action_show_active)
+        {
+            bShowActive = true;
+            buildFileList();
+            invalidateOptionsMenu();
+        }
+        else if (id == R.id.action_show_all)
+        {
+            bShowActive = false;
+            buildFileList();
+            invalidateOptionsMenu();
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void buildFileList()
+    {
+        if (mPatientItem != null)
+        {
+            mPatientFileList = dbHelperPatientDetail.getPatientFileListByPatientId(sPatientID, bShowActive);
+            if (mPatientFileList != null)
+            {
+                mPatientFileList.add(new PatientFile(0, Integer.parseInt(sPatientID), "New File", "", ""));
+                myPatientAdapter = new PatientFileRecyclerViewAdapter(mPatientFileList);
+                ((RecyclerView) findViewById(R.id.listView_patientFile_items)).setAdapter(myPatientAdapter);
+            }
+        }
     }
 }

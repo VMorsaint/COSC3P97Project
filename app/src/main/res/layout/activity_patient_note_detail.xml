@@ -5,7 +5,7 @@
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
                                                  android:fitsSystemWindows="true"
-                                                 tools:context=".PatientClasses.PatientDetailActivity"
+                                                 tools:context=".PatientClasses.PatientNoteDetailActivity"
                                                  tools:ignore="MergeRootFrame">
 
 
@@ -25,35 +25,23 @@
             android:gravity="center_vertical"
             />
 
-        <ScrollView
+        <TextView android:id="@+id/textViewPatientNoteView"
+                  style="?android:attr/textAppearanceLarge"
+                  xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:textIsSelectable="true"
+                  android:gravity="center_vertical"
+                  />
+
+        <EditText
+            android:id="@+id/textViewPatientNoteEdit"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:id="@+id/scrollView">
-
-            <TextView android:id="@+id/textViewPatientNoteView"
-                      style="?android:attr/textAppearanceLarge"
-                      xmlns:android="http://schemas.android.com/apk/res/android"
-                      xmlns:tools="http://schemas.android.com/tools"
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:textIsSelectable="true"
-                      android:gravity="center_vertical"
-                      />
-        </ScrollView>
-
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/scrollViewEdit">
-
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/textViewPatientNoteEdit"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                android:visibility="gone"/>
-        </ScrollView>
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:visibility="gone"/>
 
 
     </LinearLayout>
