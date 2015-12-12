@@ -1,11 +1,15 @@
 package com.ben.cosc3p97project.DatabaseClasses;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
 /**
  * Created by Ben on 12/7/2015.
  */
 public class PatientAppointment {
 
-    private int iPatientID;
+    private String iPatientID;
+    private String patientName;
     private String startTime;
     private String endTime;
     private int noteId;
@@ -15,22 +19,15 @@ public class PatientAppointment {
     public static final String COL_END_TIME = "cEndTime";
     public static final String COL_NOTE_ID = "cNoteId";
 
-    public PatientAppointment()
-    {
-        iPatientID = 0;
-        startTime = "";
-        endTime = "";
-        noteId = 0;
-    }
-
-    public PatientAppointment(int iPatientIDParam, String iStartTime, String iEndTime, int noteIdParam)
+    public PatientAppointment(String iPatientIDParam, String iStartTime, String iEndTime, int noteIdParam)
     {
         iPatientID = iPatientIDParam;
         startTime = iStartTime;
         endTime = iEndTime;
         noteId = noteIdParam;
+        patientName = "";
     }
-    public int getPatientID ()
+    public String getPatientID ()
     {
         return iPatientID;
     }
@@ -45,5 +42,14 @@ public class PatientAppointment {
     public String getStartTime()
     {
         return startTime;
+    }
+
+    public void setName(String name){
+        patientName = name;
+    }
+    
+    @Override
+    public String toString(){
+        return patientName + "\n" + startTime +"-"+endTime;
     }
 }

@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
+import com.ben.cosc3p97project.DatabaseClasses.Patient;
 import com.ben.cosc3p97project.DatabaseClasses.PatientAppointment;
 
 import java.util.ArrayList;
@@ -34,8 +37,12 @@ public class AppointmentList extends AppCompatActivity {
             date = new Date().toString();
         }
         patientId = getIntent().getIntExtra("patient_id", -1);
+    }
 
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        loadAppointments();
     }
 
     @Override
@@ -76,13 +83,19 @@ public class AppointmentList extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //load appointments for the current day
     private void loadAppointments(){
         ArrayList<PatientAppointment> apps;
         apps = db.getAppointmentList(date, patientId);
-
+        ViewGroup root = (ViewGroup)findViewById(android.R.id.content);
+        root.removeAllViews();
         for(PatientAppointment pa: apps){
             //display list
+            Patient p = db.getPatient(pa.getPatientID());
+            TextView tv = new TextView(this);
+            tv.append(p.getFirstName() + " " + p.getLastName() + "\n");
+            tv.append(pa.getStartTime() + "-" + pa.getEndTime());
+            root.addView(tv);
         }
-
     }
 }

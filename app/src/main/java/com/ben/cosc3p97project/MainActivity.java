@@ -23,8 +23,8 @@ public class MainActivity extends Activity {
         
         setContentView(R.layout.activity_main);
         //startActivityForResult(new Intent(this, BodyActivity.class), 1);
-        startActivity(new Intent(this, PatientListActivity.class));
-
+        //startActivity(new Intent(this, PatientListActivity.class));
+        startActivity(new Intent(this, AppointmentList.class));
     }
 
     @Override
