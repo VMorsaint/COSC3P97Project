@@ -9,13 +9,13 @@ import android.provider.BaseColumns;
 
 public class PatientNote implements BaseColumns
 {
-    private int iPatientNoteID;
-    private int iPatientFileID;
+    private long iPatientNoteID;
+    private long iPatientFileID;
     private String sPatientNote;
 
     public static final String TABLE_NAME = "tPatientNotes";
-    public static final String COL_PATIENT_NOTE_ID = "cPatientNoteId";
-    public static final String COL_PATIENT_FILE_ID = "cPatientFileId";
+    public static final String COL_PATIENT_NOTE_ID = "cPatientNotePk";
+    public static final String COL_PATIENT_FILE_ID = "cPatientFileFk";
     public static final String COL_NOTE = "cNotes";
 
     public PatientNote()
@@ -25,17 +25,23 @@ public class PatientNote implements BaseColumns
         sPatientNote = "";
     }
 
-    public PatientNote(int iPatientNoteIDParam, int iPatientFileIDParam, String sPatientNoteParam)
+    public PatientNote(long iPatientNoteIDParam, long iPatientFileIDParam, String sPatientNoteParam)
     {
         iPatientNoteID = iPatientNoteIDParam;
         iPatientFileID = iPatientFileIDParam;
         sPatientNote = sPatientNoteParam;
     }
-    public int getPatientNoteID()
+
+    public long getPatientNoteID()
     {
-        return iPatientFileID;
+        return iPatientNoteID;
     }
-    public int getPatientFileID()
+    public void setPatientNoteID(long iPatientNoteIDParam)
+    {
+        iPatientNoteID = iPatientNoteIDParam;
+    }
+
+    public long getPatientFileID()
     {
         return iPatientFileID;
     }

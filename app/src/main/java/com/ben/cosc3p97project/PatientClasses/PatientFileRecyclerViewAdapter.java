@@ -38,7 +38,7 @@ public class PatientFileRecyclerViewAdapter
     @Override
     public void onBindViewHolder(final PatientFileViewHolder holder, int position)
     {
-        int iPatientFileId;
+        long iPatientFileId;
         holder.mItem = mValues.get(position);
         iPatientFileId = holder.mItem.getPatientFileID();
         if (iPatientFileId == 0)
@@ -58,7 +58,8 @@ public class PatientFileRecyclerViewAdapter
             {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, PatientFileDetailActivity.class);
-                intent.putExtra(PatientFileDetailActivity.ARG_ITEM_ID, String.valueOf(holder.mItem.getPatientFileID()));
+                intent.putExtra(PatientFileDetailActivity.ARG_PATIENT_FILE_ID, String.valueOf(holder.mItem.getPatientFileID()));
+                intent.putExtra(PatientFileDetailActivity.ARG_PATIENT_ID, String.valueOf(holder.mItem.getPatientID()));
                 context.startActivity(intent);
             }
         });

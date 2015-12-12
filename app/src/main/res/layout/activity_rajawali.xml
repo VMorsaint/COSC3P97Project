@@ -8,15 +8,8 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:singleLine="false"
-        android:autoText="false"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_gravity="center_horizontal"
-        android:paddingRight="0dp"
-        android:paddingLeft="0dp" />
+    <TextView android:text="@string/title_main" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <FrameLayout
         android:layout_width="match_parent"
