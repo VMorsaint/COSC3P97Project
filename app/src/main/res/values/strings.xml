@@ -11,6 +11,7 @@
     <string name="title_activity_patient_detail">Patient Detail</string>
     <string name="title_activity_patient_file_detail">Patient File Detail</string>
     <string name="title_activity_patient_note_detail">Patient Note Detail</string>
+    <string name="title_activity_appointment_form">AppointmentForm</string>
 
     <string name="add">Add</string>
     <string name="sortByName">Sort By Name</string>
@@ -21,5 +22,8 @@
     <string name="edit">Edit</string>
     <string name="cancel">Cancel</string>
     <string name="accept">Accept</string>
+
+
+    <string name="hello_world">Hello world!</string>
 </resources>
 

@@ -427,4 +427,35 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(PatientFile.TABLE_NAME,values,PatientFile.COL_PATIENT_FILE_ID + " = ?", new String[]{String.valueOf(patientfileToClose.getPatientFileID())});
     }
+
+    public void addAppointment(String iPatientIDParam, String date, String iStartTime, String iEndTime){
+
+    }
+
+    public void updateAppointment(int appId,String iPatientIDParam, String date, String iStartTime, String iEndTime){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PatientAppointment.COL_PATIENT_ID, iPatientIDParam);
+        values.put(PatientAppointment.COL_START_TIME, iStartTime);
+        values.put(PatientAppointment.COL_END_TIME, iEndTime);
+        values.put(PatientAppointment.COL_DATE, date);
+        db.update(PatientAppointment.TABLE_NAME, values, PatientAppointment.COL_ID  + " = ? ", new String[]{String.valueOf(appId)});
+        db.close();
+    }
+
+    public PatientAppointment getAppointment(String appId){
+        String sQuery = "Select rowid, * FROM " + PatientAppointment.TABLE_NAME + " WHERE rowid = " + appId;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursorResult = db.rawQuery(sQuery, null);
+        PatientAppointment app;
+        if (cursorResult.moveToFirst()) {
+            app = new PatientAppointment(Integer.parseInt(cursorResult.getString(0)), cursorResult.getString(1),cursorResult.getString(2), cursorResult.getString(3), cursorResult.getString(4));
+            cursorResult.close();
+        } else {
+            app = null;
+        }
+        db.close();
+        return app;
+    }
 }

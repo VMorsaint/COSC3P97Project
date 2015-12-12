@@ -1,6 +1,7 @@
 package com.ben.cosc3p97project;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -73,6 +74,14 @@ public class AppointmentList extends AppCompatActivity {
                         }
                     }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
                 dpd.show();
+                break;
+            case R.id.new_app:
+                Intent it = new Intent(this, AppointmentForm.class);
+                it.putExtra("date", date);
+                if(patientId > 0) {
+                    it.putExtra("patient", patientId);
+                }
+                startActivity(it);
                 break;
         }
         //noinspection SimplifiableIfStatement

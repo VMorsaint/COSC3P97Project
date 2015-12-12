@@ -42,25 +42,28 @@
             android:name=".PatientClasses.PatientDetailActivity"
             android:label="@string/title_activity_patient_detail"
             android:parentActivityName=".PatientClasses.PatientListActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".PatientClasses.PatientListActivity"/>
+                android:value=".PatientClasses.PatientListActivity" />
         </activity>
         <activity
             android:name=".PatientClasses.PatientFileDetailActivity"
             android:label="@string/title_activity_patient_file_detail"
             android:parentActivityName=".PatientClasses.PatientDetailActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".PatientClasses.PatientDetailActivity"/>
+                android:value=".PatientClasses.PatientDetailActivity" />
         </activity>
         <activity
             android:name=".PatientClasses.PatientNoteDetailActivity"
             android:label="@string/title_activity_patient_note_detail"
-            android:parentActivityName=".PatientClasses.PatientFileDetailActivity">
-
+            android:parentActivityName=".PatientClasses.PatientFileDetailActivity" >
+        </activity>
+        <activity
+            android:name=".AppointmentForm"
+            android:label="@string/title_activity_appointment_form" >
         </activity>
     </application>
 

@@ -49,9 +49,6 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void viewPatient(View v){
-
-    }
 
     @Override
     protected void onActivityResult(int request, int status, Intent intent) {

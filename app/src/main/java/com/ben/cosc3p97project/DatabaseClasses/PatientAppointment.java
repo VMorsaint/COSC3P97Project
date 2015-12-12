@@ -8,23 +8,27 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public class PatientAppointment {
 
+    private int id;
     private String iPatientID;
     private String patientName;
+    private String date;
     private String startTime;
     private String endTime;
-    private int noteId;
+
     public static final String TABLE_NAME = "tPatients";
+    public static final String COL_ID = "rowid";
     public static final String COL_PATIENT_ID = "cPatientId";
+    public static final String COL_DATE = "cDate";
     public static final String COL_START_TIME = "cStartTime";
     public static final String COL_END_TIME = "cEndTime";
-    public static final String COL_NOTE_ID = "cNoteId";
 
-    public PatientAppointment(String iPatientIDParam, String iStartTime, String iEndTime, int noteIdParam)
+    public PatientAppointment(int appId, String iPatientIDParam, String iDate, String iStartTime, String iEndTime)
     {
+        id = appId;
         iPatientID = iPatientIDParam;
         startTime = iStartTime;
+        date = iDate;
         endTime = iEndTime;
-        noteId = noteIdParam;
         patientName = "";
     }
     public String getPatientID ()
@@ -35,10 +39,6 @@ public class PatientAppointment {
     {
         return endTime;
     }
-    public int getNoteId()
-    {
-        return noteId;
-    }
     public String getStartTime()
     {
         return startTime;
@@ -47,7 +47,9 @@ public class PatientAppointment {
     public void setName(String name){
         patientName = name;
     }
-    
+
+    public int getId(){ return id; }
+
     @Override
     public String toString(){
         return patientName + "\n" + startTime +"-"+endTime;
