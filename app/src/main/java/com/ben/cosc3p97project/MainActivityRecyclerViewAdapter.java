@@ -65,7 +65,7 @@ public class MainActivityRecyclerViewAdapter
                         context.startActivity(intent);
                         break;
                     case 3:
-                        intent = new Intent(context, PatientListActivity.class);
+                        intent = new Intent(context, AboutActivity.class);
                         context.startActivity(intent);
                         break;
                     default:
