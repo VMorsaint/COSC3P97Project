@@ -13,20 +13,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 
 
-public class DBHelper extends SQLiteOpenHelper
-{
+public class DBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "PatientFiles.db";
     public static final int DATABASE_VERSION = 14;
 
-    public DBHelper(Context context)
-    {
-        super(context,DATABASE_NAME,null,DATABASE_VERSION);
+    public DBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public void onCreate(SQLiteDatabase db)
-    {
-        try
-        {
+    public void onCreate(SQLiteDatabase db) {
+        try {
             String CREATE_TABLE = "CREATE TABLE " +
                     Patient.TABLE_NAME + " (" +
                     Patient.COL_PATIENT_ID + " INTEGER PRIMARY KEY, " +
@@ -65,9 +61,7 @@ public class DBHelper extends SQLiteOpenHelper
                     BodyLocation.COL_NAME + " TEXT)";
             db.execSQL(CREATE_TABLE);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -80,13 +74,12 @@ public class DBHelper extends SQLiteOpenHelper
         dbSQL.execSQL("DROP TABLE IF EXISTS " + BodyLocation.TABLE_NAME);
         onCreate(dbSQL);
     }
-    public void onDowngrade(SQLiteDatabase dbSQL, int iOldVersion, int iNewVersion)
-    {
+
+    public void onDowngrade(SQLiteDatabase dbSQL, int iOldVersion, int iNewVersion) {
         onUpgrade(dbSQL, iOldVersion, iNewVersion);
     }
 
-    public boolean addPatientFile(PatientFile newPatientFile)
-    {
+    public boolean addPatientFile(PatientFile newPatientFile) {
         boolean bFlagOk = true;
         ContentValues values = new ContentValues();
         values.put(PatientFile.COL_PATIENT_ID, newPatientFile.getPatientID());
@@ -95,12 +88,9 @@ public class DBHelper extends SQLiteOpenHelper
         values.put(PatientFile.COL_DATETIME_END, newPatientFile.getEnd());
 
         SQLiteDatabase db = this.getWritableDatabase();
-        try
-        {
+        try {
             db.insertOrThrow(PatientFile.TABLE_NAME, null, values);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             bFlagOk = false;
         }
         db.close();
@@ -130,8 +120,7 @@ public class DBHelper extends SQLiteOpenHelper
         return iPatientID;
     }
 
-    public boolean addPatientNote(PatientNote newPatientNote)
-    {
+    public boolean addPatientNote(PatientNote newPatientNote) {
         boolean bFlagOk = true;
         long iPatientNoteID = 0;
         ContentValues values = new ContentValues();
@@ -154,19 +143,15 @@ public class DBHelper extends SQLiteOpenHelper
     }
 
 
-    public boolean addLocation(BodyLocation newLocation)
-    {
+    public boolean addLocation(BodyLocation newLocation) {
         boolean bFlagOk = true;
         ContentValues values = new ContentValues();
         values.put(BodyLocation.COL_NAME, newLocation.getName());
 
         SQLiteDatabase db = this.getWritableDatabase();
-        try
-        {
+        try {
             db.insertOrThrow(BodyLocation.TABLE_NAME, null, values);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             bFlagOk = false;
         }
         db.close();
@@ -200,21 +185,10 @@ public class DBHelper extends SQLiteOpenHelper
         }
 
 
-        if (bSortByActivity)
-        {
-            selectQuery += " ORDER BY coalesce(tFileActivity.cMaxStart," + Patient.COL_DATE_ADDED + ") DESC";
-        }
-        else
-        {
-            selectQuery += " ORDER BY " + Patient.COL_LAST_NAME + ", " + Patient.COL_FIRST_NAME;
-        }
-
         ArrayList<Patient> PatientList = new ArrayList<>();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst())
-        {
-            do
-            {
+        if (cursor.moveToFirst()) {
+            do {
                 PatientList.add(new Patient(Integer.parseInt(cursor.getString(cursor.getColumnIndex(Patient.COL_PATIENT_ID))),
                         cursor.getString(cursor.getColumnIndex(Patient.COL_ANDROID_ID)),
                         cursor.getString(cursor.getColumnIndex(Patient.COL_FIRST_NAME)),
@@ -223,8 +197,7 @@ public class DBHelper extends SQLiteOpenHelper
             }
             while (cursor.moveToNext());
         }
-        if (cursor != null && !cursor.isClosed())
-        {
+        if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
 
@@ -232,10 +205,9 @@ public class DBHelper extends SQLiteOpenHelper
         return PatientList;
     }
 
-    public Patient getPatient(String iPatientID)
-    {
+    public Patient getPatient(String iPatientID) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String selectQuery =  "SELECT  " +
+        String selectQuery = "SELECT  " +
                 Patient.COL_PATIENT_ID + "," +
                 Patient.COL_ANDROID_ID + "," +
                 Patient.COL_FIRST_NAME + "," +
@@ -246,8 +218,7 @@ public class DBHelper extends SQLiteOpenHelper
 
         Patient patientReturned;
         Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst())
-        {
+        if (cursor.moveToFirst()) {
             patientReturned = new Patient(Integer.parseInt(cursor.getString(cursor.getColumnIndex(Patient.COL_PATIENT_ID))),
                         cursor.getString(cursor.getColumnIndex(Patient.COL_ANDROID_ID)),
                         cursor.getString(cursor.getColumnIndex(Patient.COL_FIRST_NAME)),
@@ -258,8 +229,7 @@ public class DBHelper extends SQLiteOpenHelper
         {
             patientReturned = null;
         }
-        if (cursor != null && !cursor.isClosed())
-        {
+        if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
 
@@ -270,7 +240,7 @@ public class DBHelper extends SQLiteOpenHelper
     public ArrayList<PatientFile> getPatientFileListByPatientId(String sPatientId,boolean bActiveOnly)
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        String selectQuery =  "SELECT  " +
+        String selectQuery = "SELECT  " +
                 PatientFile.COL_PATIENT_FILE_ID + "," +
                 PatientFile.COL_PATIENT_ID + "," +
                 PatientFile.COL_NAME + "," +
@@ -285,10 +255,8 @@ public class DBHelper extends SQLiteOpenHelper
 
         ArrayList<PatientFile> PatientFileList = new ArrayList<>();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst())
-        {
-            do
-            {
+        if (cursor.moveToFirst()) {
+            do {
                 PatientFileList.add(new PatientFile(Integer.parseInt(cursor.getString(cursor.getColumnIndex(PatientFile.COL_PATIENT_FILE_ID))),
                         Integer.parseInt(cursor.getString(cursor.getColumnIndex(PatientFile.COL_PATIENT_ID))),
                         cursor.getString(cursor.getColumnIndex(PatientFile.COL_NAME)),
@@ -296,8 +264,7 @@ public class DBHelper extends SQLiteOpenHelper
                         cursor.getString(cursor.getColumnIndex(PatientFile.COL_DATETIME_END))));
             } while (cursor.moveToNext());
         }
-        if (cursor != null && !cursor.isClosed())
-        {
+        if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
 
@@ -336,11 +303,9 @@ public class DBHelper extends SQLiteOpenHelper
         return PatientNoteList;
     }
 
-
-    public ArrayList<String> getLocationList()
-    {
+    public ArrayList<String> getLocationList() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String selectQuery =  "SELECT  " +
+        String selectQuery = "SELECT  " +
                 BodyLocation.COL_LOCATION_ID + ", " +
                 BodyLocation.COL_NAME +
                 " FROM " + BodyLocation.TABLE_NAME +
@@ -348,15 +313,12 @@ public class DBHelper extends SQLiteOpenHelper
 
         ArrayList<String> LocationList = new ArrayList<>();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst())
-        {
-            do
-            {
+        if (cursor.moveToFirst()) {
+            do {
                 LocationList.add(cursor.getString(cursor.getColumnIndex(BodyLocation.COL_NAME)));
             } while (cursor.moveToNext());
         }
-        if (cursor != null && !cursor.isClosed())
-        {
+        if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
 
@@ -364,21 +326,17 @@ public class DBHelper extends SQLiteOpenHelper
         return LocationList;
     }
 
-    public PatientFile getPatientFile(String iID)
-    {
-        String sQuery = "Select * FROM " + PatientFile.TABLE_NAME + " WHERE " + PatientFile.COL_PATIENT_FILE_ID + " = " + iID ;
+    public PatientFile getPatientFile(String iID) {
+        String sQuery = "Select * FROM " + PatientFile.TABLE_NAME + " WHERE " + PatientFile.COL_PATIENT_FILE_ID + " = " + iID;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursorResult = db.rawQuery(sQuery, null);
         PatientFile objSelectedPatientFile;
-        if (cursorResult.moveToFirst())
-        {
+        if (cursorResult.moveToFirst()) {
             objSelectedPatientFile = new PatientFile(Integer.parseInt(cursorResult.getString(0)), Integer.parseInt(cursorResult.getString(1)),
                     cursorResult.getString(2), cursorResult.getString(3), cursorResult.getString(4));
             cursorResult.close();
-        }
-        else
-        {
+        } else {
             objSelectedPatientFile = null;
         }
         db.close();
@@ -389,33 +347,38 @@ public class DBHelper extends SQLiteOpenHelper
     public PatientNote getPatientNote(String iID)
 
     {
-        String sQuery = "Select * FROM " + PatientNote.TABLE_NAME + " WHERE " + PatientNote.COL_PATIENT_NOTE_ID + " = " + iID ;
+        String sQuery = "Select * FROM " + PatientNote.TABLE_NAME + " WHERE " + PatientNote.COL_PATIENT_NOTE_ID + " = " + iID;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursorResult = db.rawQuery(sQuery, null);
         PatientNote objSelectedPatientNote;
-        if (cursorResult.moveToFirst())
-        {
+        if (cursorResult.moveToFirst()) {
             objSelectedPatientNote = new PatientNote(Integer.parseInt(cursorResult.getString(0)), Integer.parseInt(cursorResult.getString(1)),
                     cursorResult.getString(2));
             cursorResult.close();
-        }
-        else
-        {
+        } else {
             objSelectedPatientNote = null;
         }
         db.close();
         return objSelectedPatientNote;
     }
 
-    public boolean deletePatientFile(int iID)
-    {
+    public boolean deletePatientFile(int iID) {
 
         int iReturn;
         SQLiteDatabase db = this.getWritableDatabase();
         iReturn = db.delete(PatientFile.TABLE_NAME, PatientFile.COL_PATIENT_FILE_ID + " = ?", new String[]{Integer.toString(iID)});
         db.close();
         return iReturn > 0;
+    }
+
+    public ArrayList<PatientAppointment> getAppointmentList(String date, int patientId) {
+        if (patientId == -1) {
+            //get list of appointments on day
+        } else {
+            //get list of appointments for patient on day
+        }
+        return new ArrayList<>();
     }
 
     public Patient updatePatient(Patient patientOld, String sAndroidIDParam, String sPatientFirstNameParam, String sPatientLastNameParam,String sPatientDateAddedParam )
