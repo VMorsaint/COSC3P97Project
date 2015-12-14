@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public class PatientAppointment {
 
+
     private int id;
     private String iPatientID;
     private String patientName;
@@ -39,10 +40,12 @@ public class PatientAppointment {
     {
         return endTime;
     }
+
     public String getStartTime()
     {
         return startTime;
     }
+    
     public String getDate(){return date;}
     public void setName(String name){
         patientName = name;

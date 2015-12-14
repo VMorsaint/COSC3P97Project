@@ -1,6 +1,7 @@
 package com.ben.cosc3p97project;
 
 import android.app.DatePickerDialog;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
 import com.ben.cosc3p97project.DatabaseClasses.Patient;

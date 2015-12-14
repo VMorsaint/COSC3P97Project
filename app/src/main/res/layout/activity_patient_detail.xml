@@ -45,7 +45,6 @@
                       android:layout_width="match_parent"
                       android:layout_height="fill_parent"
                       android:textIsSelectable="true"
-                      tools:context=".PatientClasses.OldClasses.PatientDetailFragment"
                       android:gravity="center_vertical"
                       android:editable="true"
                       android:singleLine="true"/>
@@ -77,7 +76,6 @@
 
             <TextView
                 style="?android:attr/textAppearanceLarge"
-                tools:context=".PatientClasses.OldClasses.PatientDetailFragment"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/textViewPatientLastNameView"
@@ -100,7 +98,7 @@
             android:gravity="center_vertical"/>
 
         <android.support.v7.widget.RecyclerView android:id="@+id/listView_patientFile_items"
-                                                android:name="com.ben.cosc3p97project.FragmentPatientFileList"
+                                                android:name="com.ben.cosc3p97project.RecyclerPatientFileList"
                                                 xmlns:android="http://schemas.android.com/apk/res/android"
                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
                                                 xmlns:tools="http://schemas.android.com/tools"
