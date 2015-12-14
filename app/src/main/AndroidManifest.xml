@@ -32,7 +32,8 @@
         </activity>
         <activity
             android:name=".AppointmentList"
-            android:label="@string/title_activity_appointment_list" >
+            android:label="@string/title_activity_appointment_list"
+            android:parentActivityName=".MainActivity" >
         </activity>
         <activity
             android:name=".PatientClasses.PatientListActivity"

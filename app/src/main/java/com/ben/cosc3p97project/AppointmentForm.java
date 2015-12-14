@@ -180,29 +180,32 @@ public class AppointmentForm extends AppCompatActivity {
                 //text view to edit
                 final EditText view = (EditText) v;
 
-                /*
-                int year, month, day;
 
-                if (view.getText().toString() != "") {
+                int year=2015, month=11, day=1;
+
+                if (view.getText().toString().isEmpty()) {
                     try {
                         Date setDate = new SimpleDateFormat("yyyy-MM-dd").parse(view.getText().toString());
                         day = setDate.getDay();
+                        year = setDate.getYear();
+                        month = setDate.getMonth();
                     }catch(ParseException pe){
                         Log.d("DateTimePicker", pe.getMessage());
                     }
+                }else{
+                    Calendar c = Calendar.getInstance();
+                    year = c.get(Calendar.YEAR);
+                    month = c.get(Calendar.MONTH);
+                    day = c.get(Calendar.DATE);
                 }
-                */
-
-                //get current date
-                final Calendar c = Calendar.getInstance();
 
                 //launch datepicker dialog
                 DatePickerDialog d = new DatePickerDialog(AppointmentForm.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker dateView, int year, int monthOfYear, int dayOfMonth) {
-                        view.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                        view.setText(year + "-" + (monthOfYear+1) + "-" + dayOfMonth);
                     }
-                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+                }, year,month , day);
                 d.show();
 
                 view.clearFocus();

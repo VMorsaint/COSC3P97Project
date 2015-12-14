@@ -377,8 +377,8 @@ public class DBHelper extends SQLiteOpenHelper {
             query = "SELECT a.rowid, a.*, p." + Patient.COL_FIRST_NAME + ", p." + Patient.COL_LAST_NAME +
                     " FROM " + PatientAppointment.TABLE_NAME + " a LEFT JOIN " +
                     Patient.TABLE_NAME + " p ON a." + PatientAppointment.COL_PATIENT_ID + " = p." + Patient.COL_PATIENT_ID +
-                    //" WHERE a." + PatientAppointment.COL_DATE + " = '" + date +
-                    ";";
+                    " WHERE a." + PatientAppointment.COL_DATE + " = '" + date +
+                    "';";
 
         } else {
             //get list of appointments for patient on day
@@ -388,17 +388,10 @@ public class DBHelper extends SQLiteOpenHelper {
                     " WHERE a." + PatientAppointment.COL_DATE + " = '" + date +
                     "' AND p." + PatientAppointment.COL_PATIENT_ID + " = " + patientId + ";";
         }
+        Log.d("DBHelper AppList", query);
         cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
-            Log.d("DBHelper AppList", "Cursor");
-            Log.d("DBHelper AppList", cursor.getString(0));
-            Log.d("DBHelper AppList", cursor.getString(1));
-            Log.d("DBHelper AppList", cursor.getString(2));
-            Log.d("DBHelper AppList", cursor.getString(3));
-            Log.d("DBHelper AppList", cursor.getString(4));
-            Log.d("DBHelper AppList", cursor.getString(5));
-            Log.d("DBHelper AppList", cursor.getString(6));
 
             list.add(new PatientAppointment(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5) + " " + cursor.getString(6)));
 
@@ -466,6 +459,8 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         boolean status = true;
 
+        Log.d("DBHelper App", iPatientIDParam+ "  " + date+ "  " +  iStartTime+ "  " +  iEndTime);
+
         //set values
         values.put(PatientAppointment.COL_PATIENT_ID, iPatientIDParam);
         values.put(PatientAppointment.COL_START_TIME, iStartTime);
@@ -502,6 +497,8 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         boolean status = false;
         int rows;
+
+        Log.d("DBHelper App", appId + "  " + iPatientIDParam+ "  " + date+ "  " +  iStartTime+ "  " +  iEndTime);
 
         //set values
         values.put(PatientAppointment.COL_PATIENT_ID, iPatientIDParam);

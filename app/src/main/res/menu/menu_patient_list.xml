@@ -27,7 +27,7 @@
         />
     <item android:id="@+id/action_appointment_list"
         android:title="Appt. List"
-        android:showAsAction="never"
+        app:showAsAction="never"
         />
 
 </menu>
