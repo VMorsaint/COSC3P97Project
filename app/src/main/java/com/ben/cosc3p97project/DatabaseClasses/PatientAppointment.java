@@ -15,21 +15,21 @@ public class PatientAppointment {
     private String startTime;
     private String endTime;
 
-    public static final String TABLE_NAME = "tPatients";
+    public static final String TABLE_NAME = "tPatientAppointments";
     public static final String COL_ID = "rowid";
     public static final String COL_PATIENT_ID = "cPatientId";
     public static final String COL_DATE = "cDate";
     public static final String COL_START_TIME = "cStartTime";
     public static final String COL_END_TIME = "cEndTime";
 
-    public PatientAppointment(int appId, String iPatientIDParam, String iDate, String iStartTime, String iEndTime)
+    public PatientAppointment(int appId, String iPatientIDParam, String iDate, String iStartTime, String iEndTime, String name)
     {
         id = appId;
         iPatientID = iPatientIDParam;
         startTime = iStartTime;
         date = iDate;
         endTime = iEndTime;
-        patientName = "";
+        patientName = name;
     }
     public String getPatientID ()
     {
@@ -43,7 +43,7 @@ public class PatientAppointment {
     {
         return startTime;
     }
-
+    public String getDate(){return date;}
     public void setName(String name){
         patientName = name;
     }

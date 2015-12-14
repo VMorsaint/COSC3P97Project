@@ -67,4 +67,8 @@ public class Patient implements BaseColumns
     {
         return sDateAdded;
     }
+
+    public String toString(){
+        return sPatientFileFirstName + " " + sPatientFileLastName;
+    }
 }

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ben.cosc3p97project.AppointmentList;
 import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
 import com.ben.cosc3p97project.DatabaseClasses.Patient;
 import com.ben.cosc3p97project.R;
@@ -81,8 +82,10 @@ public class PatientListActivity extends AppCompatActivity {
             bSortByActivity = false;
             buildPatientList();
             invalidateOptionsMenu();
+        }else if (id == R.id.action_appointment_list)
+        {
+            startActivity(new Intent(this, AppointmentList.class));
         }
-
         return super.onOptionsItemSelected(item);
     }
 

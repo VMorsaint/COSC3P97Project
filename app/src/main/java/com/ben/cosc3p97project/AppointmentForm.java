@@ -17,18 +17,23 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
 import com.ben.cosc3p97project.DatabaseClasses.Patient;
 import com.ben.cosc3p97project.DatabaseClasses.PatientAppointment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AppointmentForm extends AppCompatActivity {
 
     DBHelper db;
     PatientAppointment currentAppointment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,31 +43,40 @@ public class AppointmentForm extends AppCompatActivity {
         db = new DBHelper(this);
 
         String date = getIntent().getStringExtra("date");
-        String editApp = getIntent().getStringExtra("appointmentId");
+        int editApp = getIntent().getIntExtra("appointmentId", -1);
 
-        ArrayList<Patient> pats = db.getPatientList(true, false);
+        //get list of all patients
+        ArrayList<Patient> pats = db.getPatientList(false, false);
 
         PatientAdapter adapter = new PatientAdapter(this, pats);
 
-
-
         Spinner sp = (Spinner)findViewById(R.id.spinner);
-        if(editApp != null){
+        sp.setAdapter(adapter);
+
+        EditText dText = (EditText) findViewById(R.id.editText);
+        EditText sText = (EditText) findViewById(R.id.editText2);
+        EditText eText = (EditText) findViewById(R.id.editText3);
+
+        if(editApp != -1){
             currentAppointment = db.getAppointment(editApp);
-            Patient p = db.getPatient(currentAppointment.getPatientID());
-            if(p != null)
-                sp.setSelection(adapter.getPosition(p));
+            if(currentAppointment != null) {
+                Log.d("App Edit", "Got app");
+                Patient p = db.getPatient(currentAppointment.getPatientID());
+                if (p != null) {
+
+                    sp.setSelection(adapter.getPosition(p));
+
+                    dText.setText(currentAppointment.getDate());
+                    sText.setText(currentAppointment.getStartTime());
+                    eText.setText(currentAppointment.getEndTime());
+
+                }
+            }
         }
-        //sp.setAdapter(adapter);
 
-        TextView dateText = (TextView) findViewById(R.id.editText);
-        dateText.setOnFocusChangeListener(new DatePickerListener());
-
-        TextView timeText = (TextView) findViewById(R.id.editText2);
-        timeText.setOnFocusChangeListener(new TimePickerListener());
-
-        TextView timeText2 = (TextView) findViewById(R.id.editText3);
-        timeText2.setOnFocusChangeListener(new TimePickerListener());
+        dText.setOnFocusChangeListener(new DatePickerListener());
+        sText.setOnFocusChangeListener(new TimePickerListener());
+        eText.setOnFocusChangeListener(new TimePickerListener());
     }
 
 
@@ -99,11 +113,18 @@ public class AppointmentForm extends AppCompatActivity {
         String sTime = ((EditText)findViewById(R.id.editText2)).getText().toString();
         String eTime = ((EditText)findViewById(R.id.editText3)).getText().toString();
 
+        boolean status = false;
         if(currentAppointment == null){
-            db.addAppointment(Long.toString(p.getPatientID()), date, sTime, eTime);
+            status = db.addAppointment(Long.toString(p.getPatientID()), date, sTime, eTime);
         }else{
-            db.updateAppointment(currentAppointment.getId(), Long.toString(p.getPatientID()), date, sTime, eTime);
+            status = db.updateAppointment(currentAppointment.getId(), Long.toString(p.getPatientID()), date, sTime, eTime);
         }
+
+        Toast toaster = Toast.makeText(getApplicationContext(),status ? "Appointment Saved" : "Error occurred.\nPlease try again.", Toast.LENGTH_SHORT);
+        toaster.show();
+
+        if(status)
+            finish();
     }
 
     /**
@@ -111,13 +132,30 @@ public class AppointmentForm extends AppCompatActivity {
      */
     public class PatientAdapter extends ArrayAdapter<Patient> {
 
+
         public PatientAdapter(Context context, ArrayList<Patient> list) {
-            super(context, 0, list);
+            super(context, android.R.layout.simple_spinner_item, list);
         }
 
-        public View getView(int viewPosn, View view, ViewGroup parent) {
+        @Override
+        public int getPosition(Patient p){
+            int index = 0;
+            for(int x = 0; x < getCount(); x ++){
+                if(p.getPatientID() == getItem(x).getPatientID()){
+                    index = x;
+                    break;
+                }
+            }
+            return index;
+        }
+
+        @Override
+        public View getDropDownView(int viewPosn, View view, ViewGroup parent) {
 
             Patient pat = getItem(viewPosn);
+
+            Log.d("Appointment Form Spin", pat.getFirstName());
+
             // Check if an existing view is being reused, otherwise inflate the view
             if (view == null) {
                 view = LayoutInflater.from(getContext()).inflate(R.layout.patient_item, parent, false);
@@ -142,6 +180,19 @@ public class AppointmentForm extends AppCompatActivity {
                 //text view to edit
                 final EditText view = (EditText) v;
 
+                /*
+                int year, month, day;
+
+                if (view.getText().toString() != "") {
+                    try {
+                        Date setDate = new SimpleDateFormat("yyyy-MM-dd").parse(view.getText().toString());
+                        day = setDate.getDay();
+                    }catch(ParseException pe){
+                        Log.d("DateTimePicker", pe.getMessage());
+                    }
+                }
+                */
+
                 //get current date
                 final Calendar c = Calendar.getInstance();
 
@@ -153,6 +204,8 @@ public class AppointmentForm extends AppCompatActivity {
                     }
                 }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
                 d.show();
+
+                view.clearFocus();
             }
         }
     }
@@ -175,10 +228,12 @@ public class AppointmentForm extends AppCompatActivity {
                 tp = new TimePickerDialog(AppointmentForm.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker tpView, int hourOfDay, int minute) {
-                        view.setText(String.format("%01d",hourOfDay) + ":" + String.format("%01d",minute));
+                        view.setText(String.format("%02d",hourOfDay) + ":" + String.format("%02d",minute));
                     }
                 }, 0, 0, true);
                 tp.show();
+
+                view.clearFocus();
             }
         }
     }
