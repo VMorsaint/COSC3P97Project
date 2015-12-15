@@ -16,6 +16,8 @@ import java.util.List;
 /**
  * Created by VMorsaint on 12/5/2015.
  */
+
+//This class is used to manage the patient list in the patient list activity
 public class PatientRecyclerViewAdapter
         extends RecyclerView.Adapter<PatientRecyclerViewAdapter.PatientViewHolder>
 {
@@ -35,6 +37,7 @@ public class PatientRecyclerViewAdapter
         return new PatientViewHolder(view);
     }
 
+    //assigns objects in list to appropriate data
     @Override
     public void onBindViewHolder(final PatientViewHolder holder, int position)
     {
@@ -48,9 +51,6 @@ public class PatientRecyclerViewAdapter
         {
             holder.mContentView.setText(holder.mItem.getLastName() + ", " + holder.mItem.getFirstName());
         }
-
-
-
         holder.mView.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -71,6 +71,8 @@ public class PatientRecyclerViewAdapter
         return mValues.size();
     }
 
+
+    //class used to represent the item in the listview
     public class PatientViewHolder extends RecyclerView.ViewHolder
     {
         public final View mView;
@@ -85,7 +87,6 @@ public class PatientRecyclerViewAdapter
             mIdView = (TextView) view.findViewById(R.id.id);
             mContentView = (TextView) view.findViewById(R.id.content);
         }
-
         @Override
         public String toString()
         {

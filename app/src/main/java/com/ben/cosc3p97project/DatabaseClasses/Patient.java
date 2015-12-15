@@ -1,8 +1,8 @@
-
 /**
- * Created by VMorsaint - 4864450 on 11/7/2015.
+ * Created by VMorsaint/BMannell on 11/7/2015.
  * Cosc 3p97 Assignment 2
  */
+
 package com.ben.cosc3p97project.DatabaseClasses;
 
 import android.provider.BaseColumns;
@@ -24,6 +24,7 @@ public class Patient implements BaseColumns
     public static final String COL_LAST_NAME = "cLastName";
     public static final String COL_DATE_ADDED = "cDateAdded";
 
+    //constructor
     public Patient()
     {
         iPatientID = 0;
@@ -35,6 +36,7 @@ public class Patient implements BaseColumns
         sDateAdded = dfDateNow.format(calDateNow.getTime());
     }
 
+    //constructor
     public Patient(long iPatientIDParam, String sAndroidIDParam, String sPatientFileFirstNameParam, String sPatientFileLastNameParam, String sDateAddedParam)
     {
         iPatientID = iPatientIDParam;
@@ -43,6 +45,8 @@ public class Patient implements BaseColumns
         sPatientFileLastName = sPatientFileLastNameParam;
         sDateAdded = sDateAddedParam;
     }
+
+    //accessor
     public long getPatientID ()
     {
         return iPatientID;

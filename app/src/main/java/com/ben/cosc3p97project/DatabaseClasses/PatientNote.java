@@ -1,5 +1,5 @@
 /**
- * Created by VMorsaint - 4864450 on 11/7/2015.
+ * Created by VMorsaint/BMannell on 11/7/2015.
  * Cosc 3p97 Assignment 2
  */
 
@@ -18,6 +18,7 @@ public class PatientNote implements BaseColumns
     public static final String COL_PATIENT_FILE_ID = "cPatientFileFk";
     public static final String COL_NOTE = "cNotes";
 
+    //blank constructor
     public PatientNote()
     {
         iPatientNoteID = 0;
@@ -25,13 +26,14 @@ public class PatientNote implements BaseColumns
         sPatientNote = "";
     }
 
+    //regular constractor
     public PatientNote(long iPatientNoteIDParam, long iPatientFileIDParam, String sPatientNoteParam)
     {
         iPatientNoteID = iPatientNoteIDParam;
         iPatientFileID = iPatientFileIDParam;
         sPatientNote = sPatientNoteParam;
     }
-
+    //accessors
     public long getPatientNoteID()
     {
         return iPatientNoteID;
@@ -40,15 +42,12 @@ public class PatientNote implements BaseColumns
     {
         iPatientNoteID = iPatientNoteIDParam;
     }
-
     public long getPatientFileID()
     {
         return iPatientFileID;
     }
-
     public String getNote()
     {
         return sPatientNote;
     }
-
 }

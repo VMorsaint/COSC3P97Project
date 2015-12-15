@@ -48,12 +48,9 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_file_detail);
-
-        ((TextView) findViewById(R.id.textViewPatientFileBodyPartKeyEdit)).setOnClickListener(this);
-
         if (savedInstanceState == null && getIntent().hasExtra(ARG_PATIENT_ID) && getIntent().hasExtra(ARG_PATIENT_FILE_ID))
-
         {
+            ((TextView) findViewById(R.id.textViewPatientFileBodyPartKeyEdit)).setOnClickListener(this);
             sPatientFileID = getIntent().getStringExtra(ARG_PATIENT_FILE_ID);
             sPatientID = getIntent().getStringExtra(ARG_PATIENT_ID);
             dbHelperPatientFileDetail = new DBHelper(this);
@@ -66,6 +63,7 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
             else
             {
                 mPatientFileItem = dbHelperPatientFileDetail.getPatientFile(sPatientFileID);
+                sBodyPartKey = mPatientFileItem.getBodyPartKey();
             }
              setLayout();
         }
@@ -74,6 +72,7 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
             this.finish();
         }
     }
+    //calls open gl body part selector activity
     @Override
     public void onClick(View v)
     {
@@ -82,6 +81,7 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
             startActivityForResult(new Intent(this, BodyActivity.class), 1);
         }
     }
+    //returns from open gl body part selector and assigns value and displays it
     @Override
     protected void onActivityResult(int request, int status, Intent intent)
     {
@@ -96,12 +96,13 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
             if (status == Activity.RESULT_CANCELED){}
         }
     }
+
+    //build menu based on edit state
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (bEditMode)
         {
             getMenuInflater().inflate(R.menu.menu_patient_file_detail_edit, menu);
-
         }
         else
         {
@@ -110,6 +111,8 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
         }
         return true;
     }
+
+    //call db note list for patient file and assigns adapter
     private void buildNoteList()
     {
         if (mPatientFileItem != null && !bNewRecord)
@@ -124,12 +127,12 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
         }
     }
 
+    //converts the body part key to a user friendly body part description
     private String getBodyPartKeyString(String sKey)
     {
         String sBodyPartKeyString;
         int iIdentifierBodyPartKey;
         sBodyPartKeyString = sKey;
-
         if (sBodyPartKeyString.length()>0)
         {
             iIdentifierBodyPartKey = getResources().getIdentifier(sBodyPartKeyString,"string",getPackageName());
@@ -141,10 +144,10 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
         return sBodyPartKeyString;
     }
 
+    //builds gui
     private void setLayout()
     {
         String sPatientFileBodyPartString = getBodyPartKeyString(mPatientFileItem.getBodyPartKey());
-
         if (bEditMode)
         {
             ((TextView) findViewById(R.id.textViewPatientFileNameEdit)).setText(mPatientFileItem.getName());
@@ -153,7 +156,6 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
             ((TextView) findViewById(R.id.textViewPatientFileBodyPartKeyEdit)).setText(sPatientFileBodyPartString);
             ((TextView) findViewById(R.id.textViewPatientFileBodyPartKeyView)).setVisibility(View.GONE);
             ((TextView) findViewById(R.id.textViewPatientFileBodyPartKeyEdit)).setVisibility(View.VISIBLE);
-
             ((TextView) findViewById(R.id.textViewPatientFileNotesLabel)).setVisibility(View.GONE);
             ((RecyclerView) findViewById(R.id.listView_patientNote_items)).setVisibility(View.GONE);
         }
@@ -165,7 +167,6 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
             ((TextView) findViewById(R.id.textViewPatientFileBodyPartKeyView)).setText(sPatientFileBodyPartString);
             ((TextView) findViewById(R.id.textViewPatientFileBodyPartKeyEdit)).setVisibility(View.GONE);
             ((TextView) findViewById(R.id.textViewPatientFileBodyPartKeyView)).setVisibility(View.VISIBLE);
-
             ((TextView) findViewById(R.id.textViewPatientFileNotesLabel)).setVisibility(View.VISIBLE);
             ((RecyclerView) findViewById(R.id.listView_patientNote_items)).setVisibility(View.VISIBLE);
         }
@@ -182,26 +183,25 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
             ((TextView) findViewById(R.id.textViewPatientFileEndView)).setVisibility(View.GONE);
             ((TextView) findViewById(R.id.textViewPatientFileEndLabel)).setVisibility(View.GONE);
         }
-
     }
+    //handle menu selection
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-        if (id == android.R.id.home)
+        if (id == android.R.id.home) //return to previous screen
         {
-            //navigateUpTo(new Intent(this, PatientDetailActivity.class));
             this.finish();
             return true;
         }
-        else if (id == R.id.action_edit)
+        else if (id == R.id.action_edit) //start edit state
         {
             bEditMode = true;
             invalidateOptionsMenu();
             setLayout();
             return true;
         }
-        else if (id == R.id.action_cancel)
+        else if (id == R.id.action_cancel) //cancel edit state
         {
             if (bNewRecord)
             {
@@ -215,15 +215,13 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
             }
             return true;
         }
-        else if (id == R.id.action_accept)
+        else if (id == R.id.action_accept) // accept changes and saves them to db
         {
             bEditMode = false;
             String sName = ((TextView) findViewById(R.id.textViewPatientFileNameEdit)).getText().toString();
             if (bNewRecord)
             {
-
                 mPatientFileItem = new PatientFile(0,Long.valueOf(sPatientID),sName,sBodyPartKey,mPatientFileItem.getStart(),"");
-
                 dbHelperPatientFileDetail.addPatientFile(mPatientFileItem);
                 sPatientFileID = String.valueOf(mPatientFileItem.getPatientFileID());
                 mPatientNoteList = new ArrayList<>();
@@ -234,16 +232,13 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
             }
             else
             {
-
                 mPatientFileItem = dbHelperPatientFileDetail.updatePatientFile(mPatientFileItem, mPatientFileItem.getPatientID(), sName,sBodyPartKey, mPatientFileItem.getStart(), mPatientFileItem.getEnd());
-
             }
-
             invalidateOptionsMenu();
             setLayout();
             return true;
         }
-        else if (id == R.id.action_close_file)
+        else if (id == R.id.action_close_file) //close the file by giving it a close date
         {
             dbHelperPatientFileDetail.closePatientFile(mPatientFileItem);
             Toast.makeText(getApplicationContext(), "File Closed",
@@ -254,6 +249,7 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
         return super.onOptionsItemSelected(item);
     }
 
+    //rebuild list on resume
     @Override
     public void onResume()
     {

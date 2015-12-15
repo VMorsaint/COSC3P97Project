@@ -1,5 +1,5 @@
 /**
- * Created by VMorsaint - 4864450 on 11/7/2015.
+ * Created by VMorsaint/BMannell on 11/7/2015.
  * Cosc 3p97 Assignment 2
  */
 package com.ben.cosc3p97project.DatabaseClasses;
@@ -10,45 +10,44 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 
 
 public class DBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "PatientFiles.db";
-    public static final int DATABASE_VERSION = 16;
+    public static final int DATABASE_VERSION = 17;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
+    //db create tables
     public void onCreate(SQLiteDatabase db) {
         try {
             String CREATE_TABLE = "CREATE TABLE " +
                     Patient.TABLE_NAME + " (" +
                     Patient.COL_PATIENT_ID + " INTEGER PRIMARY KEY, " +
                     Patient.COL_ANDROID_ID + " INTEGER, " +
-                    Patient.COL_FIRST_NAME + " TEXT, " +
-                    Patient.COL_LAST_NAME + " TEXT, " +
-                    Patient.COL_DATE_ADDED + " TEXT)";
+                    Patient.COL_FIRST_NAME + " TEXT NOT NULL DEFAULT '', " +
+                    Patient.COL_LAST_NAME + " TEXT NOT NULL DEFAULT '', " +
+                    Patient.COL_DATE_ADDED + " TEXT NOT NULL DEFAULT '')";
             db.execSQL(CREATE_TABLE);
 
             CREATE_TABLE = "CREATE TABLE " +
                     PatientFile.TABLE_NAME + " (" +
                     PatientFile.COL_PATIENT_FILE_ID + " INTEGER PRIMARY KEY, " +
                     PatientFile.COL_PATIENT_ID + " INTEGER, " +
-                    PatientFile.COL_NAME + " TEXT, " +
-                    PatientFile.COL_BODYPART_KEY + " TEXT, " +
-                    PatientFile.COL_DATETIME_START + " TEXT, " +
-                    PatientFile.COL_DATETIME_END + " TEXT)";
+                    PatientFile.COL_NAME + " TEXT NOT NULL DEFAULT '', " +
+                    PatientFile.COL_BODYPART_KEY + " TEXT NOT NULL DEFAULT '', " +
+                    PatientFile.COL_DATETIME_START + " TEXT NOT NULL DEFAULT '', " +
+                    PatientFile.COL_DATETIME_END + " TEXT NOT NULL DEFAULT '')";
             db.execSQL(CREATE_TABLE);
 
             CREATE_TABLE = "CREATE TABLE " +
                     PatientNote.TABLE_NAME + " (" +
                     PatientNote.COL_PATIENT_NOTE_ID + " INTEGER PRIMARY KEY, " +
                     PatientNote.COL_PATIENT_FILE_ID + " INTEGER, " +
-                    PatientNote.COL_NOTE + " TEXT)";
+                    PatientNote.COL_NOTE + " TEXT NOT NULL DEFAULT '')";
             db.execSQL(CREATE_TABLE);
 
             CREATE_TABLE = "CREATE TABLE " +
@@ -64,13 +63,13 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    //drop old tables
     public void onUpgrade(SQLiteDatabase dbSQL, int iOldVersion, int iNewVersion) {
         dbSQL.execSQL("DROP TABLE IF EXISTS " + Patient.TABLE_NAME);
         dbSQL.execSQL("DROP TABLE IF EXISTS " + PatientFile.TABLE_NAME);
         dbSQL.execSQL("DROP TABLE IF EXISTS " + PatientNote.TABLE_NAME);
         dbSQL.execSQL("DROP TABLE IF EXISTS tPatientFileBodyLocations");
         dbSQL.execSQL("DROP TABLE IF EXISTS tLocations");
-
         dbSQL.execSQL("DROP TABLE IF EXISTS " + PatientAppointment.TABLE_NAME);
         onCreate(dbSQL);
     }
@@ -79,6 +78,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onUpgrade(dbSQL, iOldVersion, iNewVersion);
     }
 
+    //insert file to db
     public boolean addPatientFile(PatientFile newPatientFile) {
         boolean bFlagOk = true;
         ContentValues values = new ContentValues();
@@ -98,6 +98,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return bFlagOk;
     }
 
+    //insert patient to db
     public long addPatient(Patient newPatient) {
         boolean bFlagOk = true;
         long iPatientID = 0;
@@ -117,13 +118,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return iPatientID;
     }
 
+    //insert note to db
     public boolean addPatientNote(PatientNote newPatientNote) {
         boolean bFlagOk = true;
         long iPatientNoteID = 0;
         ContentValues values = new ContentValues();
         values.put(PatientNote.COL_PATIENT_FILE_ID, newPatientNote.getPatientFileID());
         values.put(PatientNote.COL_NOTE, newPatientNote.getNote());
-
 
         SQLiteDatabase db = this.getWritableDatabase();
         try {
@@ -136,6 +137,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return bFlagOk;
     }
 
+
+    //get a list of patients, paramters for sorting and filtering
     public ArrayList<Patient> getPatientList(boolean bActiveOnly, boolean bSortByActivity) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT  " +
@@ -157,8 +160,6 @@ public class DBHelper extends SQLiteOpenHelper {
                     + " FROM " + PatientFile.TABLE_NAME
                     + " WHERE " + PatientFile.COL_DATETIME_END + " = '')";
         }
-
-
         ArrayList<Patient> PatientList = new ArrayList<>();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null)
@@ -185,6 +186,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return PatientList;
     }
 
+
+    //seek single patient using primary key
     public Patient getPatient(String iPatientID) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT  " +
@@ -219,6 +222,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return patientReturned;
     }
 
+    //gets a list of files based on patient id parent key
     public ArrayList<PatientFile> getPatientFileListByPatientId(String sPatientId, boolean bActiveOnly) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT  " +
@@ -259,6 +263,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return PatientFileList;
     }
 
+    //gets a list of notes using a file parent key
     public ArrayList<PatientNote> getPatientNoteListByPatientFileId(String sPatientFileId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT " +
@@ -291,6 +296,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return PatientNoteList;
     }
 
+    //gets a single file from db using primary key
     public PatientFile getPatientFile(String iID) {
         String sQuery = "Select * FROM " + PatientFile.TABLE_NAME + " WHERE " + PatientFile.COL_PATIENT_FILE_ID + " = " + iID;
 
@@ -301,8 +307,10 @@ public class DBHelper extends SQLiteOpenHelper {
         {
             if (cursorResult.moveToFirst())
             {
-                objSelectedPatientFile = new PatientFile(Integer.parseInt(cursorResult.getString(0)), Integer.parseInt(cursorResult.getString(1)),
-                        cursorResult.getString(2), cursorResult.getString(3), cursorResult.getString(4), cursorResult.getString(5));
+                objSelectedPatientFile = new PatientFile(Integer.parseInt(cursorResult.getString(0)),
+                        Integer.parseInt(cursorResult.getString(1)),
+                        cursorResult.getString(2), cursorResult.getString(3),
+                        cursorResult.getString(4), cursorResult.getString(5));
             }
             if (!cursorResult.isClosed())
             {
@@ -312,7 +320,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return objSelectedPatientFile;
     }
-
 
     public PatientNote getPatientNote(String iID)
 
@@ -338,6 +345,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return objSelectedPatientNote;
     }
 
+    //delete a single patient file using primary key
     public boolean deletePatientFile(int iID) {
 
         int iReturn;
@@ -347,6 +355,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return iReturn > 0;
     }
 
+    //update a patient using patient object and new values, then returns the new object
     public Patient updatePatient(Patient patientOld, String sAndroidIDParam, String sPatientFirstNameParam, String sPatientLastNameParam, String sPatientDateAddedParam) {
         ContentValues values = new ContentValues();
         values.put(Patient.COL_ANDROID_ID, sAndroidIDParam);
@@ -359,6 +368,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return new Patient(patientOld.getPatientID(), sAndroidIDParam, sPatientFirstNameParam, sPatientLastNameParam, sPatientDateAddedParam);
     }
 
+    //update a patient using patient file object and new values, then returns the new object
     public PatientFile updatePatientFile(PatientFile patientfileOld, long iPatientIDParam,
                      String sPatientFileNameParam,String sPatientFileBodyPartKeyParam, String sStartParam, String sEndParam) {
         ContentValues values = new ContentValues();
@@ -373,6 +383,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return new PatientFile(patientfileOld.getPatientFileID(), iPatientIDParam, sPatientFileNameParam, sPatientFileBodyPartKeyParam, sStartParam, sEndParam);
     }
 
+    //update a patient note using patient object and new values, then returns the new object
     public PatientNote updatePatientNote(PatientNote patientnoteOld, long iPatientFileIDParam, String sPatientNoteParam) {
         ContentValues values = new ContentValues();
         values.put(PatientNote.COL_PATIENT_FILE_ID, iPatientFileIDParam);
@@ -383,6 +394,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return new PatientNote(patientnoteOld.getPatientNoteID(), iPatientFileIDParam, sPatientNoteParam);
     }
 
+    //sets the close date on a file, uses param to pass file
     public void closePatientFile(PatientFile patientfileToClose) {
         ContentValues values = new ContentValues();
         patientfileToClose.closeFile();
@@ -392,7 +404,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.update(PatientFile.TABLE_NAME, values, PatientFile.COL_PATIENT_FILE_ID + " = ?", new String[]{String.valueOf(patientfileToClose.getPatientFileID())});
     }
 
-        /**
+    /**
      * Get a list of appointments for a given day and patient
      * @param date
      * @param patientId

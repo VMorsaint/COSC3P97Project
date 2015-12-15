@@ -14,6 +14,8 @@ import com.ben.cosc3p97project.R;
 /**
  * Created by VMorsaint on 12/5/2015.
  */
+
+//this activity is used to display the note details
 public class PatientNoteDetailActivity extends AppCompatActivity
 {
     public static final String ARG_PATIENT_NOTE_ID = "patient_note_id";
@@ -25,12 +27,13 @@ public class PatientNoteDetailActivity extends AppCompatActivity
     Boolean bEditMode = false;
     Boolean bNewRecord = false;
 
+    //sets default variables and builds gui
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_note_detail);
-
+        //checks for key and parent key param, and builds gui
         if (savedInstanceState == null)
         {
             sPatientNoteID = getIntent().getStringExtra(ARG_PATIENT_NOTE_ID);
@@ -49,6 +52,7 @@ public class PatientNoteDetailActivity extends AppCompatActivity
         }
     }
 
+    //sets menu depending on state(edit or read)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (bEditMode)
@@ -59,10 +63,10 @@ public class PatientNoteDetailActivity extends AppCompatActivity
         {
             getMenuInflater().inflate(R.menu.menu_patient_note_detail, menu);
         }
-
         return true;
     }
 
+    //sets layout for gui called from create and onresume
     private void setLayout()
     {
         if (bEditMode)
@@ -110,7 +114,7 @@ public class PatientNoteDetailActivity extends AppCompatActivity
             return true;
 
         }
-        else if (id == R.id.action_accept)
+        else if (id == R.id.action_accept) //accept changes, will add record if new otherwise update
         {
             bEditMode = false;
             String sNote = ((TextView) findViewById(R.id.textViewPatientNoteEdit)).getText().toString();
@@ -125,7 +129,7 @@ public class PatientNoteDetailActivity extends AppCompatActivity
             {
                 mPatientNoteItem = dbHelperPatientNoteDetail.updatePatientNote(mPatientNoteItem, mPatientNoteItem.getPatientFileID(), sNote);
             }
-
+            //rebuild menu/layout
             invalidateOptionsMenu();
             setLayout();
             return true;

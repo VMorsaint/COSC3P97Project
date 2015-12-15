@@ -1,5 +1,5 @@
 /**
- * Created by VMorsaint - 4864450 on 11/7/2015.
+ * Created by VMorsaint/BMannell on 11/7/2015.
  * Cosc 3p97 Assignment 2
  */
 package com.ben.cosc3p97project.DatabaseClasses;
@@ -28,6 +28,7 @@ public class PatientFile implements BaseColumns
     public static final String COL_DATETIME_END = "cTimeEnd";
     private boolean bClosed = false;
 
+    //blank constructor, sets starting date
     public PatientFile()
     {
         Calendar calDateNow = Calendar.getInstance();
@@ -39,30 +40,30 @@ public class PatientFile implements BaseColumns
         sPatientFileStart = dfDateNow.format(calDateNow.getTime());
         sPatientFileEnd = "";
     }
-
+    //constructor
     public PatientFile(long iPatientFileIDParam, long iPatientIDParam, String sPatientFileNameParam, String sPatientFileBodyPartKeyParam, String sStartParam, String sEndParam)
 
     {
         iPatientFileID = iPatientFileIDParam;
         iPatientID = iPatientIDParam;
         sPatientFileName = sPatientFileNameParam;
-
         sPatientFileBodyPartKey = sPatientFileBodyPartKeyParam;
-
         sPatientFileStart = sStartParam;
         sPatientFileEnd = sEndParam;
     }
+    //close the file by adding close date
     public void closeFile()
     {
         Calendar calDateNow = Calendar.getInstance();
         SimpleDateFormat dfDateNow = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         sPatientFileEnd = dfDateNow.format(calDateNow.getTime());
     }
+
+    //accessors
     public boolean isClosed()
     {
         return (sPatientFileEnd.length() != 0);
     }
-
     public long getPatientFileID ()
     {
         return iPatientFileID;

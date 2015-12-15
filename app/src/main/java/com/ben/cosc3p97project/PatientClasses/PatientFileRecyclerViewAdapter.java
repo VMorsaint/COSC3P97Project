@@ -35,6 +35,7 @@ public class PatientFileRecyclerViewAdapter
         return new PatientFileViewHolder(view);
     }
 
+    //assigns objects in list to appropriate data, binds key listener
     @Override
     public void onBindViewHolder(final PatientFileViewHolder holder, int position)
     {
@@ -47,12 +48,9 @@ public class PatientFileRecyclerViewAdapter
         }
         else
         {
-
             holder.mIdView.setText(String.valueOf(position+1));
-
         }
         holder.mContentView.setText(holder.mItem.getName());
-
         holder.mView.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -65,7 +63,6 @@ public class PatientFileRecyclerViewAdapter
                 context.startActivity(intent);
             }
         });
-
     }
 
     @Override
@@ -74,6 +71,7 @@ public class PatientFileRecyclerViewAdapter
         return mValues.size();
     }
 
+    //class used to represent the item in the listview
     public class PatientFileViewHolder extends RecyclerView.ViewHolder
     {
         public final View mView;

@@ -1,7 +1,6 @@
+
 package com.ben.cosc3p97project.DatabaseClasses;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 
 /**
  * Created by Ben on 12/7/2015.
@@ -23,6 +22,7 @@ public class PatientAppointment {
     public static final String COL_START_TIME = "cStartTime";
     public static final String COL_END_TIME = "cEndTime";
 
+    //constructor
     public PatientAppointment(int appId, String iPatientIDParam, String iDate, String iStartTime, String iEndTime, String name)
     {
         id = appId;
@@ -32,6 +32,8 @@ public class PatientAppointment {
         endTime = iEndTime;
         patientName = name;
     }
+
+
     public String getPatientID ()
     {
         return iPatientID;

@@ -21,7 +21,7 @@ import com.ben.cosc3p97project.R;
 import java.util.ArrayList;
 
 /**
- * Created by VMorsaint on 12/5/2015.
+ * Created by VMorsaint/BenMannell on 12/5/2015.
  */
 public class PatientDetailActivity extends AppCompatActivity
 {
@@ -74,10 +74,10 @@ public class PatientDetailActivity extends AppCompatActivity
             ((MenuItem) menu.findItem(R.id.action_show_all)).setVisible(bShowActive);
             ((MenuItem) menu.findItem(R.id.action_show_active)).setVisible(!bShowActive);
         }
-
         return true;
     }
 
+    //build gui based on state
     private void setLayout()
     {
         if (bEditMode)
@@ -88,10 +88,8 @@ public class PatientDetailActivity extends AppCompatActivity
             ((TextView) findViewById(R.id.textViewPatientLastNameView)).setVisibility(View.GONE);
             ((TextView) findViewById(R.id.textViewPatientFirstNameEdit)).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.textViewPatientLastNameEdit)).setVisibility(View.VISIBLE);
-
             ((TextView) findViewById(R.id.textViewPatientFilesLabel)).setVisibility(View.GONE);
             ((RecyclerView) findViewById(R.id.listView_patientFile_items)).setVisibility(View.GONE);
-
         }
         else
         {
@@ -101,33 +99,31 @@ public class PatientDetailActivity extends AppCompatActivity
             ((TextView) findViewById(R.id.textViewPatientLastNameEdit)).setVisibility(View.GONE);
             ((TextView) findViewById(R.id.textViewPatientFirstNameView)).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.textViewPatientLastNameView)).setVisibility(View.VISIBLE);
-
-
             ((TextView) findViewById(R.id.textViewPatientFilesLabel)).setVisibility(View.VISIBLE);
             ((RecyclerView) findViewById(R.id.listView_patientFile_items)).setVisibility(View.VISIBLE);
-
         }
 
     }
+
+    //handle menu actions
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-        if (id == android.R.id.home)
+        if (id == android.R.id.home)//back to last screen
         {
-            navigateUpTo(new Intent(this, PatientListActivity.class));
+            this.finish();
             return true;
         }
-        else if (id == R.id.action_edit)
+        else if (id == R.id.action_edit) //starts edit
         {
             bEditMode = true;
             invalidateOptionsMenu();
             setLayout();
             return true;
         }
-        else if (id == R.id.action_cancel)
+        else if (id == R.id.action_cancel) //cancels edit, edits form if in addnew mode
         {
-
             if (bNewRecord)
             {
                 this.finish();
@@ -138,11 +134,9 @@ public class PatientDetailActivity extends AppCompatActivity
                 invalidateOptionsMenu();
                 setLayout();
             }
-
             return true;
-
         }
-        else if (id == R.id.action_accept)
+        else if (id == R.id.action_accept) //accepts edit and updates patient
         {
             bEditMode = false;
             String sFirstName = ((TextView) findViewById(R.id.textViewPatientFirstNameEdit)).getText().toString();
@@ -167,31 +161,33 @@ public class PatientDetailActivity extends AppCompatActivity
             setLayout();
             return true;
         }
-        else if (id == R.id.action_show_active)
+        else if (id == R.id.action_show_active) //changes filter to active patients only
         {
             bShowActive = true;
             buildFileList();
             invalidateOptionsMenu();
         }
-        else if (id == R.id.action_show_all)
+        else if (id == R.id.action_show_all) //changes filter to show all
         {
             bShowActive = false;
             buildFileList();
             invalidateOptionsMenu();
         }
-        else if(id == R.id.action_view_apps){
+        else if(id == R.id.action_view_apps) //link appointment to patient
+        {
             Intent intent = new Intent(this, AppointmentList.class);
             intent.putExtra("patient_id", sPatientID);
             startActivity(intent);
-        }else if(id == R.id.action_new_app){
+        }else if(id == R.id.action_new_app)//link appointment to patient
+        {
             Intent intent = new Intent(this, AppointmentForm.class);
             intent.putExtra("patient_id", sPatientID);
             startActivity(intent);
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    //calls sql query and assigns adapter
     private void buildFileList()
     {
         if (mPatientItem != null && !bNewRecord)
@@ -208,7 +204,7 @@ public class PatientDetailActivity extends AppCompatActivity
         }
     }
 
-
+    //rebuilds gui
     @Override
     public void onResume()
     {

@@ -34,6 +34,7 @@ public class PatientNoteRecyclerViewAdapter
         return new PatientNoteViewHolder(view);
     }
 
+    //assigns objects in list to appropriate data
     @Override
     public void onBindViewHolder(final PatientNoteViewHolder holder, int position)
     {
@@ -71,6 +72,7 @@ public class PatientNoteRecyclerViewAdapter
         return mValues.size();
     }
 
+    //class used to represent the item in the listview
     public class PatientNoteViewHolder extends RecyclerView.ViewHolder
     {
         public final View mView;
