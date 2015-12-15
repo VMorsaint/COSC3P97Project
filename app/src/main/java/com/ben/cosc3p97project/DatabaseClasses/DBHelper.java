@@ -355,8 +355,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Patient.COL_DATE_ADDED, sPatientDateAddedParam);
 
         SQLiteDatabase db = this.getWritableDatabase();
-        db.upda
-        te(Patient.TABLE_NAME, values, Patient.COL_PATIENT_ID + " = ?", new String[]{String.valueOf(patientOld.getPatientID())});
+        db.update(Patient.TABLE_NAME, values, Patient.COL_PATIENT_ID + " = ?", new String[]{String.valueOf(patientOld.getPatientID())});
         return new Patient(patientOld.getPatientID(), sAndroidIDParam, sPatientFirstNameParam, sPatientLastNameParam, sPatientDateAddedParam);
     }
 

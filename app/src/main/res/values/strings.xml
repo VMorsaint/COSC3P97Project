@@ -28,10 +28,6 @@
     <string name="accept">Accept</string>
 
 
-<<<<<<< HEAD
-    <string name="hello_world">Hello world!</string>
-=======
-
     <string name="LeftHand">Left Hand</string>
     <string name="RightHand">Right Hand</string>
     <string name="LeftUpperArm">Left Upper Arm</string>
@@ -47,6 +43,6 @@
     <string name="RightFoot">Right Foot</string>
     <string name="LowerBack">Lower Back</string>
     <string name="UpperBack">Upper Back</string>
->>>>>>> finalstuff
+
 </resources>
 
