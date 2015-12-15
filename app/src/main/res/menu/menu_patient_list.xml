@@ -1,0 +1,33 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".PatientClasses.PatientListActivity">
+
+        <item android:id="@+id/action_addPatient"
+              android:icon="@android:drawable/ic_menu_add"
+              android:title="@string/add"
+              app:showAsAction="always" />
+
+
+    <item android:id="@+id/action_show_active"
+          android:title="@string/showActive"
+          app:showAsAction="never" />
+
+    <item android:id="@+id/action_show_all"
+          android:title="@string/showAll"
+          app:showAsAction="never" />
+
+    <item android:id="@+id/action_sort_by_activity"
+          android:title="@string/sortByActivity"
+          app:showAsAction="never"
+        />
+    <item android:id="@+id/action_sort_by_name"
+          android:title="@string/sortByName"
+          app:showAsAction="never"
+        />
+    <item android:id="@+id/action_appointment_list"
+        android:title="Appt. List"
+        app:showAsAction="never"
+        />
+
+</menu>

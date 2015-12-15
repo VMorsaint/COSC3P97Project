@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:fitsSystemWindows="true"
+                                                 tools:context=".PatientClasses.PatientDetailActivity"
+                                                 tools:ignore="MergeRootFrame">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:layout_width="108dp"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="First Name:"
+                android:layout_marginLeft="16dp"
+                android:id="@+id/textViewPatientFirstNameLabel"
+                android:gravity="center_vertical"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewPatientFirstNameEdit"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:singleLine="true"/>
+
+            <TextView android:id="@+id/textViewPatientFirstNameView"
+                      style="?android:attr/textAppearanceLarge"
+                      xmlns:android="http://schemas.android.com/apk/res/android"
+                      xmlns:tools="http://schemas.android.com/tools"
+                      android:layout_width="match_parent"
+                      android:layout_height="fill_parent"
+                      android:textIsSelectable="true"
+                      android:gravity="center_vertical"
+                      android:editable="true"
+                      android:singleLine="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:layout_width="108dp"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="16dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Last Name:"
+                android:id="@+id/textViewPatientLastNameLabel"
+                android:gravity="center_vertical"
+                />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewPatientLastNameEdit"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:singleLine="true"/>
+
+            <TextView
+                style="?android:attr/textAppearanceLarge"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/textViewPatientLastNameView"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:textIsSelectable="true"
+                android:gravity="center_vertical"
+                android:editable="false"
+                android:visibility="visible"
+                android:singleLine="true"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="16dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Files:"
+            android:id="@+id/textViewPatientFilesLabel"
+            android:gravity="center_vertical"/>
+
+        <android.support.v7.widget.RecyclerView android:id="@+id/listView_patientFile_items"
+                                                android:name="com.ben.cosc3p97project.RecyclerPatientFileList"
+                                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                                xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                xmlns:tools="http://schemas.android.com/tools"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_marginLeft="16dp"
+                                                android:layout_marginRight="16dp"
+                                                android:choiceMode="singleChoice"
+                                                app:layoutManager="LinearLayoutManager"
+                                                tools:listitem="@layout/patient_files_list_content"
+                                                android:visibility="visible"/>
+
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
