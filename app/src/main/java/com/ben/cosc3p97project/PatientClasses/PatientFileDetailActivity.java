@@ -57,6 +57,7 @@ public class PatientFileDetailActivity extends AppCompatActivity implements View
             else
             {
                 mPatientFileItem = dbHelperPatientFileDetail.getPatientFile(sPatientFileID);
+                sBodyPartKey = mPatientFileItem.getBodyPartKey();
             }
              setLayout();
         }
