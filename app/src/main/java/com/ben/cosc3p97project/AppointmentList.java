@@ -20,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +36,8 @@ import java.util.Date;
 
 public class AppointmentList extends AppCompatActivity {
 
-    String date;
-    private int patientId;
+    private String date;
+    private String patientId;
     private DBHelper db;
 
     @Override
@@ -44,18 +45,46 @@ public class AppointmentList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment_list);
 
+        //helper for database
         db = new DBHelper(this);
 
+        //get date string from intent
         date = getIntent().getStringExtra("date");
+
+        //if no date passed get to days date
         if (date == null) {
-            //get todays date
             date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         }
 
-        setTitle(date);
-        patientId = getIntent().getIntExtra("patient_id", -1);
+        //get patient variable from intent
+        patientId = getIntent().getStringExtra("patient_id");
+
+        //set title of activity
+        setActivityTitle();
+
+        ListView lv = (ListView)findViewById(R.id.expandableListView);
+        TextView tv = (TextView)findViewById(R.id.appListEmpty);
+        lv.setEmptyView(tv);
     }
 
+    /**
+     * Set title of the activity based on the date and if its filtered by a patient
+     */
+    private void setActivityTitle(){
+        if(patientId != null){
+            Patient p = db.getPatient(patientId);
+            if( p != null){
+                setTitle(p.getLastName() + ": " + date);
+            }else{
+                setTitle(date);
+            }
+        }else
+            setTitle(date);
+    }
+
+    /**
+     * reload appointments on resume
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -76,8 +105,11 @@ public class AppointmentList extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
         switch (id) {
             case R.id.view_day:
+
+                //dialog to pick a new day to view
                 final Calendar cal = Calendar.getInstance();
                 DatePickerDialog dpd = new DatePickerDialog(this,
                         new DatePickerDialog.OnDateSetListener() {
@@ -87,31 +119,37 @@ public class AppointmentList extends AppCompatActivity {
                                 Log.d("DatePicker", dayOfMonth + "-"
                                         + (monthOfYear + 1) + "-" + year);
 
+                                //set the new date variable
                                 date = year + "-"+ (monthOfYear + 1) + "-" + dayOfMonth;
-                                setTitle(date);
+
+                                //set the activity title
+                                setActivityTitle();
+
+                                //load the new appointments
                                 loadAppointments();
+
                             }
                         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
                 dpd.show();
                 break;
             case R.id.new_app:
+
+                //start the activity to create an appointment
                 Intent it = new Intent(this, AppointmentForm.class);
                 it.putExtra("date", date);
-                if (patientId > 0) {
+                if (patientId != null) {
                     it.putExtra("patient", patientId);
                 }
                 startActivity(it);
                 break;
         }
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
 
-    //load appointments for the current day
+    /**
+     *  load appointments for the current day
+     */
     private void loadAppointments() {
         ArrayList<PatientAppointment> apps;
         apps = db.getAppointmentList(date, patientId);
@@ -119,6 +157,9 @@ public class AppointmentList extends AppCompatActivity {
         exp.setAdapter(new AppointmentListAdapter(this, apps));
     }
 
+    /**
+     * Lista adapter to link appointment to the expandable list
+     */
     private class AppointmentListAdapter implements ExpandableListAdapter {
 
         private ArrayList<PatientAppointment> apps;
@@ -130,14 +171,10 @@ public class AppointmentList extends AppCompatActivity {
         }
 
         @Override
-        public void registerDataSetObserver(DataSetObserver observer) {
-
-        }
+        public void registerDataSetObserver(DataSetObserver observer) { }
 
         @Override
-        public void unregisterDataSetObserver(DataSetObserver observer) {
-
-        }
+        public void unregisterDataSetObserver(DataSetObserver observer) { }
 
         @Override
         public int getGroupCount() {
@@ -174,23 +211,30 @@ public class AppointmentList extends AppCompatActivity {
             return false;
         }
 
+
+        // return a view for the patient name and time of app
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
             //create text view for
 
             PatientAppointment pa = apps.get(groupPosition);
 
+            //if view hasnt been created yet inflate it
             if (convertView == null)
                 convertView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                         .inflate(R.layout.appointment_list_item, null);
 
+            //add string to view
             ((TextView) convertView.findViewById(R.id.appointment_text)).setText(pa.toString());
 
             return convertView;
         }
 
+        //view that contains the action button to display when an app has been clicked
         @Override
         public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+
+            //if view hasnt been created yet inflate it
             if (convertView == null)
                 convertView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                         .inflate(R.layout.appointment_list_item_child, null);
@@ -252,18 +296,14 @@ public class AppointmentList extends AppCompatActivity {
 
         @Override
         public boolean isEmpty() {
-            return false;
+            return apps.isEmpty();
         }
 
         @Override
-        public void onGroupExpanded(int groupPosition) {
-
-        }
+        public void onGroupExpanded(int groupPosition) {}
 
         @Override
-        public void onGroupCollapsed(int groupPosition) {
-
-        }
+        public void onGroupCollapsed(int groupPosition) {}
 
         @Override
         public long getCombinedChildId(long groupId, long childId) {

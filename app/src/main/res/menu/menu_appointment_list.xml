@@ -10,5 +10,5 @@
 
     <item
         android:id="@+id/view_day"
-        android:title="View Diff. Day" />
+        android:title="Change Day" />
 </menu>

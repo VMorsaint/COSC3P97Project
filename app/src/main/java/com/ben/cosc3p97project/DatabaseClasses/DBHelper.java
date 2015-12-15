@@ -72,13 +72,13 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE);
 
         } catch (Exception e) {
-            Log.d("DBHelper Create", e.getMessage());
+            
             e.printStackTrace();
         }
     }
 
     public void onUpgrade(SQLiteDatabase dbSQL, int iOldVersion, int iNewVersion) {
-        Log.d("DBHelper Upgrade", "Upgrading");
+        
         dbSQL.execSQL("DROP TABLE IF EXISTS " + Patient.TABLE_NAME);
         dbSQL.execSQL("DROP TABLE IF EXISTS " + PatientFile.TABLE_NAME);
         dbSQL.execSQL("DROP TABLE IF EXISTS " + PatientNote.TABLE_NAME);
@@ -367,38 +367,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return iReturn > 0;
     }
 
-    public ArrayList<PatientAppointment> getAppointmentList(String date, int patientId) {
-        ArrayList<PatientAppointment> list = new ArrayList<>();
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor;
-        String query;
-        if (patientId == -1) {
-            //get list of all appointments on day
-            query = "SELECT a.rowid, a.*, p." + Patient.COL_FIRST_NAME + ", p." + Patient.COL_LAST_NAME +
-                    " FROM " + PatientAppointment.TABLE_NAME + " a LEFT JOIN " +
-                    Patient.TABLE_NAME + " p ON a." + PatientAppointment.COL_PATIENT_ID + " = p." + Patient.COL_PATIENT_ID +
-                    " WHERE a." + PatientAppointment.COL_DATE + " = '" + date +
-                    "';";
-
-        } else {
-            //get list of appointments for patient on day
-            query = "SELECT a.rowid, a.*, p." + Patient.COL_FIRST_NAME + ", p." + Patient.COL_LAST_NAME +
-                    " FROM " + PatientAppointment.TABLE_NAME + " a LEFT JOIN " +
-                    Patient.TABLE_NAME + " p ON a." + PatientAppointment.COL_PATIENT_ID + " = p." + Patient.COL_PATIENT_ID +
-                    " WHERE a." + PatientAppointment.COL_DATE + " = '" + date +
-                    "' AND p." + PatientAppointment.COL_PATIENT_ID + " = " + patientId + ";";
-        }
-        Log.d("DBHelper AppList", query);
-        cursor = db.rawQuery(query, null);
-        cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
-
-            list.add(new PatientAppointment(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5) + " " + cursor.getString(6)));
-
-            cursor.moveToNext();
-        }
-        return list;
-    }
 
     public Patient updatePatient(Patient patientOld, String sAndroidIDParam, String sPatientFirstNameParam, String sPatientLastNameParam, String sPatientDateAddedParam) {
         ContentValues values = new ContentValues();
@@ -443,6 +411,50 @@ public class DBHelper extends SQLiteOpenHelper {
         db.update(PatientFile.TABLE_NAME, values, PatientFile.COL_PATIENT_FILE_ID + " = ?", new String[]{String.valueOf(patientfileToClose.getPatientFileID())});
     }
 
+        /**
+     * Get a list of appointments for a given day and patient
+     * @param date
+     * @param patientId
+     * @return
+     */
+    public ArrayList<PatientAppointment> getAppointmentList(String date, String patientId) {
+        //init variables
+        ArrayList<PatientAppointment> list = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor;
+        String query;
+
+        if (patientId == null) {
+            //get list of all appointments on day
+            query = "SELECT a.rowid, a.*, p." + Patient.COL_FIRST_NAME + ", p." + Patient.COL_LAST_NAME +
+                    " FROM " + PatientAppointment.TABLE_NAME + " a LEFT JOIN " +
+                    Patient.TABLE_NAME + " p ON a." + PatientAppointment.COL_PATIENT_ID + " = p." + Patient.COL_PATIENT_ID +
+                    " WHERE a." + PatientAppointment.COL_DATE + " = '" + date +
+                    "' ORDER BY a." + PatientAppointment.COL_START_TIME + ";";
+
+        } else {
+            //get list of appointments for patient on day
+            query = "SELECT a.rowid, a.*, p." + Patient.COL_FIRST_NAME + ", p." + Patient.COL_LAST_NAME +
+                    " FROM " + PatientAppointment.TABLE_NAME + " a LEFT JOIN " +
+                    Patient.TABLE_NAME + " p ON a." + PatientAppointment.COL_PATIENT_ID + " = p." + Patient.COL_PATIENT_ID +
+                    " WHERE a." + PatientAppointment.COL_DATE + " = '" + date +
+                    "' AND a." + PatientAppointment.COL_PATIENT_ID + " = " + patientId + " ORDER BY a." + PatientAppointment.COL_START_TIME + ";";
+        }
+        
+        //get cursor from db
+        cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        //build list to return 
+        while(!cursor.isAfterLast()){
+            list.add(new PatientAppointment(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5) + " " + cursor.getString(6)));
+            cursor.moveToNext();
+        }
+
+        //return list
+        return list;
+    }
+
     /**
      * add an appointment to the db
      *  return boolean on whether the file was succesffully added
@@ -459,8 +471,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         boolean status = true;
 
-        Log.d("DBHelper App", iPatientIDParam+ "  " + date+ "  " +  iStartTime+ "  " +  iEndTime);
-
+        
         //set values
         values.put(PatientAppointment.COL_PATIENT_ID, iPatientIDParam);
         values.put(PatientAppointment.COL_START_TIME, iStartTime);
@@ -472,7 +483,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             db.insertOrThrow(PatientAppointment.TABLE_NAME, null, values);
         } catch (SQLException e) {
-            Log.d("DBHelper AddApp", e.getMessage());
+            
             status = false;
         }
 
@@ -497,8 +508,6 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         boolean status = false;
         int rows;
-
-        Log.d("DBHelper App", appId + "  " + iPatientIDParam+ "  " + date+ "  " +  iStartTime+ "  " +  iEndTime);
 
         //set values
         values.put(PatientAppointment.COL_PATIENT_ID, iPatientIDParam);
@@ -531,33 +540,38 @@ public class DBHelper extends SQLiteOpenHelper {
                 Patient.TABLE_NAME + " p ON a." + PatientAppointment.COL_PATIENT_ID + " = p." + Patient.COL_PATIENT_ID +
                 " WHERE a.rowid = " + appId + ";";
 
-
-        Log.d("DBHelper Getting App", sQuery);
-
+        //init variables        
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursorResult = db.rawQuery(sQuery, null);
         PatientAppointment app;
 
+        //get the result if there is one
         if (cursorResult.moveToFirst()) {
-            Log.d("DBHelper Getting App", "Found App");
             app = new PatientAppointment(cursorResult.getInt(0), cursorResult.getString(1), cursorResult.getString(2), cursorResult.getString(3), cursorResult.getString(4), cursorResult.getString(5) + " " + cursorResult.getString(6));
         } else {
-            Log.d("DBHelper Getting App", "Did not find App");
             app = null;
         }
 
+        //close db connection
         db.close();
 
         return app;
     }
 
+
+    
     public boolean deleteAppointment(int id){
+        //inti values
         SQLiteDatabase db = getWritableDatabase();
         String clause = "rowid = ?";
+
+        //delte patient, get number of rows effected
         int effected = db.delete(PatientAppointment.TABLE_NAME, clause, new String[]{String.valueOf(id)});
-        boolean status = false;
-        if(effected >= 1)
-            status = true;
-        return status;
+
+        //close db connection
+        db.close();
+
+        //return boolean if rows were effected
+        return (effected >= 1);
     }
 }

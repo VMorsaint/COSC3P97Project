@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.ben.cosc3p97project.AppointmentForm;
+import com.ben.cosc3p97project.AppointmentList;
 import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
 import com.ben.cosc3p97project.DatabaseClasses.Patient;
 import com.ben.cosc3p97project.DatabaseClasses.PatientFile;
@@ -154,6 +156,15 @@ public class PatientDetailActivity extends AppCompatActivity
             bShowActive = false;
             buildFileList();
             invalidateOptionsMenu();
+        }
+        else if(id == R.id.action_view_apps){
+            Intent intent = new Intent(this, AppointmentList.class);
+            intent.putExtra("patient_id", sPatientID);
+            startActivity(intent);
+        }else if(id == R.id.action_new_app){
+            Intent intent = new Intent(this, AppointmentForm.class);
+            intent.putExtra("patient_id", sPatientID);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

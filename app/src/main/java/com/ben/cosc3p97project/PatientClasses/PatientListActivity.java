@@ -82,10 +82,8 @@ public class PatientListActivity extends AppCompatActivity {
             bSortByActivity = false;
             buildPatientList();
             invalidateOptionsMenu();
-        }else if (id == R.id.action_appointment_list)
-        {
-            startActivity(new Intent(this, AppointmentList.class));
         }
+
         return super.onOptionsItemSelected(item);
     }
 

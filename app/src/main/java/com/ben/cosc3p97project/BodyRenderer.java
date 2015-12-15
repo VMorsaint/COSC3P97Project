@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
+import android.widget.Toast;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -29,7 +30,7 @@ import rajawali.util.OnObjectPickedListener;
  */
 public class BodyRenderer extends RajawaliRenderer{
 
-    private DirectionalLight mLight;
+    private DirectionalLight gLight;
     private BaseObject3D bodyModel, bodyGroup;
     private ObjectColorPicker objectPicker;
     private TextureInfo transparentTexture;
@@ -48,39 +49,46 @@ public class BodyRenderer extends RajawaliRenderer{
         setFrameRate(60);
     }
 
+    //initialize the scene
     @Override
     public void initScene() {
+
+        //contians all the shapes of the body
         bodyGroup = new BaseObject3D();
 
+        //transparent texture for body part 
         transparentTexture = mTextureManager.addTexture(
                 BitmapFactory.decodeResource(mContext.getResources(), R.drawable.transparent));
 
-        mLight = new DirectionalLight(1f, 0.2f, -1.0f); // set the direction
-        mLight.setColor(1.0f, 1.0f, 1.0f);
-        mLight.setPower(2);
+        //init the light
+        gLight = new DirectionalLight(1f, 0.2f, -1.0f); // set the direction
+        gLight.setColor(1.0f, 1.0f, 1.0f);
+        gLight.setPower(2);
 
+        //create object picker
         objectPicker = new ObjectColorPicker(this);
+
+        //set activity as the listener to receive the body part clicked
         objectPicker.setOnObjectPickedListener((BodyActivity)getContext());
 
+        //parse body from file
         ObjParser objParser = new ObjParser(mContext.getResources(), mTextureManager, R.raw.male_figure_obj);
         try {
 
+            //parse the file
             objParser.parse();
+
+            //get the new parsed object
             bodyModel = objParser.getParsedObject();
-            GouraudMaterial mat = new GouraudMaterial();
-            mat.setSpecularColor(0xffffff00); // yellow
-            mat.setUseColor(true);
-            bodyModel.setMaterial(mat);
-            bodyModel.setColor(0x0066FF00);
-            bodyModel.addLight(mLight);
+
+            //add some light to the object
+            bodyModel.addLight(gLight);
 
         } catch (AParser.ParsingException e) {
-            Log.v("custom print", e.getMessage());
+            Log.e("Error Occured", e.getMessage());
+            Toast.makeText(getContext(), "Error occrued loading the model", Toast.LENGTH_SHORT).show();
+            ((BodyActivity) getContext()).finish();
         }
-
-        //.setMaterial(new SimpleMaterial(AMaterial.ALPHA_MASKING));
-        //.addTexture(mTextureManager.addTexture(
-        //BitmapFactory.decodeResource(mContext.getResources(), R.drawable.transparent)));
 
         /* touch detectors */
 
@@ -192,6 +200,8 @@ public class BodyRenderer extends RajawaliRenderer{
         rightLeg.setScaleX(1.5f);
         rightLeg.setScaleY(6.5f);
 
+        //add object to body group
+        //this will ensure the rotation is applied to all objects
         bodyGroup.addChild(leftHand);
         bodyGroup.addChild(rightHand);
         bodyGroup.addChild(leftFoot);
@@ -209,6 +219,7 @@ public class BodyRenderer extends RajawaliRenderer{
         bodyGroup.addChild(leftLeg);
         bodyGroup.addChild(rightLeg);
 
+        //register the object with the color picker
         objectPicker.registerObject(leftHand);
         objectPicker.registerObject(rightHand);
         objectPicker.registerObject(leftFoot);
@@ -225,14 +236,17 @@ public class BodyRenderer extends RajawaliRenderer{
         objectPicker.registerObject(leftLeg);
         objectPicker.registerObject(rightLeg);
 
+        //move camera back to see body
         mCamera.setZ(35f);
 
+        //add objects to scene
         addChild(bodyGroup);
     }
 
     public void getObjectAt(float x, float y) {
-        objectPicker.getObjectAt(x, (y-120));
-        Log.d("Obj At", x + " " + (y-120));
+        //call for object at click location
+        //offset to get accurate click
+        objectPicker.getObjectAt(x, (y - 120));
     }
 
 
@@ -240,6 +254,8 @@ public class BodyRenderer extends RajawaliRenderer{
         super.onDrawFrame(glUnused);
     }
     
+    //used to roatet the body on the screen
+    //gets called on touch events
     public void setRotation(float x, float y) {
         bodyGroup.setRotX(bodyGroup.getRotX() + x);
         bodyGroup.setRotY(bodyGroup.getRotY() + y);

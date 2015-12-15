@@ -15,4 +15,10 @@
         <item android:id="@+id/action_show_all"
               android:title="@string/showAll"
               app:showAsAction="ifRoom" />
+        <item android:id="@+id/action_view_apps"
+            android:title="See Appts."
+            app:showAsAction="never" />
+        <item android:id="@+id/action_new_app"
+            android:title="New Appt."
+            app:showAsAction="never" />
 </menu>

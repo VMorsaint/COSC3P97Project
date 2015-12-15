@@ -27,14 +27,15 @@ public class BodyActivity extends RajawaliActivity implements
         GestureDetector.OnDoubleTapListener, OnObjectPickedListener {
 
     //gesture detector to detect the different types of gestures
-    private GestureDetectorCompat mDetector;
+    private GestureDetectorCompat gDetector;
 
     //render, displays the graphics
-    private BodyRenderer mRenderer;
+    private BodyRenderer bRenderer;
 
     //text to display which body part has been selected
     private TextView selectedBodyText;
 
+    //current selected body part
     private String currentBodyPart;
 
     @Override
@@ -42,19 +43,22 @@ public class BodyActivity extends RajawaliActivity implements
 
         super.onCreate(savedInstanceState);
 
-
         //init the renderer
-        mRenderer = new BodyRenderer(this);
+        bRenderer = new BodyRenderer(this);
 
         //give it the surface to draw on
-        mRenderer.setSurfaceView(mSurfaceView);
+        bRenderer.setSurfaceView(mSurfaceView);
 
         //set the renderer for the activity
-        super.setRenderer(mRenderer);
+        super.setRenderer(bRenderer);
 
         //init the gesture detector
-        mDetector = new GestureDetectorCompat(this,this);
-        mDetector.setOnDoubleTapListener(this);
+        //used to register the touch gestures
+        gDetector = new GestureDetectorCompat(this,this);
+        gDetector.setOnDoubleTapListener(this);
+
+        //remove the current layout
+        ((ViewGroup) mLayout.getParent()).removeView(mLayout);
 
         //make a new layout
         LinearLayout newLayout = new LinearLayout(this);
@@ -70,47 +74,50 @@ public class BodyActivity extends RajawaliActivity implements
 
         selectedBodyText.setGravity(Gravity.CENTER_HORIZONTAL);
         selectedBodyText.setPadding(0, (int) (20 * DENSITY_SCALE + 0.5f), 0, 0);
-        //for testing
-        selectedBodyText.setText("Selected Body Part");
+        selectedBodyText.setText("Select Body Part");
         selectedBodyText.setTextColor(getResources().getColor(R.color.white));
         selectedBodyText.setBackgroundColor(getResources().getColor(R.color.black));
 
         //add the text view to be at the top of the screen
         newLayout.addView(selectedBodyText);
 
-        //remove the current layout
-        ((ViewGroup) mLayout.getParent()).removeView(mLayout);
-
+        //set new layout params
         mLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1));
 
         //add layout
         newLayout.addView(mLayout);
 
+        //container for the confirmation buttons
         LinearLayout buttonContainer = new LinearLayout(this);
         buttonContainer.setBackgroundColor(getResources().getColor(R.color.black));
 
+        //create layout params for the buttons
         LinearLayout.LayoutParams buttonRules = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         buttonRules.setMargins(10,10,10,10);
 
+        //create cancel button
         Button cancelButton = new Button(this);
         cancelButton.setText("Cancel");
         cancelButton.setLayoutParams(buttonRules);
         cancelButton.setBackgroundColor(getResources().getColor(R.color.white));
         cancelButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+                //when clicking cancel return to the starting activity
                 setResult(Activity.RESULT_CANCELED, new Intent());
                 finish();
             }
         });
 
+        // button to confirm the body part selected
         Button confirmButton = new Button(this);
         confirmButton.setText("OK");
         confirmButton.setLayoutParams(buttonRules);
         confirmButton.setBackgroundColor(getResources().getColor(R.color.white));
         confirmButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+                //clicking on ok returns the selected body part to statin activity
                 if(currentBodyPart != null){
                     Intent intent = new Intent();
                     intent.putExtra("body_part", currentBodyPart);
@@ -119,98 +126,37 @@ public class BodyActivity extends RajawaliActivity implements
                 }
             }
         });
-        
+
+        //add buttons to view
         buttonContainer.addView(cancelButton);
         buttonContainer.addView(confirmButton);
 
+        //add container view to the layout
         newLayout.addView(buttonContainer);
 
+        //set the new layout
         setContentView(newLayout);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_rajawali, menu);
-        return true;
-    }
-
-    @Override
     public boolean onTouchEvent(MotionEvent event){
-        this.mDetector.onTouchEvent(event);
-        // Be sure to call the superclass implementation
+        //send event to the touch detector
+        gDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onDown(MotionEvent event) {
-        Log.d("BodyActivity Gesture","onDown: " + event.toString());
-        return true;
-    }
-
-    @Override
-    public boolean onFling(MotionEvent event1, MotionEvent event2,
-                           float velocityX, float velocityY) {
-        Log.d("BodyActivity Gesture", "onFling: " + event1.toString()+event2.toString());
-        return true;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent event) {
-        Log.d("BodyActivity Gesture", "onLongPress: " + event.toString());
-    }
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
                             float distanceY) {
-        Log.d("BodyActivity Gesture", "onScroll: " + distanceX +" " +distanceY);
-        mRenderer.setRotation(distanceY, distanceX);
+        bRenderer.setRotation(distanceY, distanceX);
         return true;
     }
 
-    @Override
-    public void onShowPress(MotionEvent event) {
-        Log.d("BodyActivity Gesture", "onShowPress: " + event.toString());
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent event) {
-        Log.d("BodyActivity Gesture", "onSingleTapUp: " + event.toString());
-
-        return true;
-    }
-
-    @Override
-    public boolean onDoubleTap(MotionEvent event) {
-        Log.d("BodyActivity Gesture", "onDoubleTap: " + event.toString());
-        return true;
-    }
-
-    @Override
-    public boolean onDoubleTapEvent(MotionEvent event) {
-        Log.d("BodyActivity Gesture", "onDoubleTapEvent: " + event.toString());
-        return true;
-    }
-
+    
     @Override
     public boolean onSingleTapConfirmed(MotionEvent event) {
-        Log.d("BodyActivity Gesture", "onSingleTapConfirmed: " + event.toString());
-        mRenderer.getObjectAt(event.getX(), event.getY());
+        bRenderer.getObjectAt(event.getX(), event.getY());
         return true;
     }
 
@@ -232,4 +178,26 @@ public class BodyActivity extends RajawaliActivity implements
         //update class variable
         currentBodyPart = object.getName();
     }
+
+    @Override
+    public void onShowPress(MotionEvent event) { }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent event) { return true; }
+
+    @Override
+    public boolean onDoubleTap(MotionEvent event) { return true; }
+
+    @Override
+    public boolean onDoubleTapEvent(MotionEvent event) { return true; }
+
+    @Override
+    public boolean onDown(MotionEvent event) { return true; }
+
+    @Override
+    public boolean onFling(MotionEvent event1, MotionEvent event2,
+                           float velocityX, float velocityY) { return true; }
+
+    @Override
+    public void onLongPress(MotionEvent event) { }
 }
