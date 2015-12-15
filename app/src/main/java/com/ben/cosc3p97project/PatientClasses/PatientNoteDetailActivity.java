@@ -78,13 +78,13 @@ public class PatientNoteDetailActivity extends AppCompatActivity
             ((TextView) findViewById(R.id.textViewPatientNoteView)).setVisibility(View.VISIBLE);
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
         if (id == android.R.id.home)
         {
-            //navigateUpTo(new Intent(this, PatientDetailActivity.class));
             this.finish();
             return true;
         }
@@ -97,9 +97,16 @@ public class PatientNoteDetailActivity extends AppCompatActivity
         }
         else if (id == R.id.action_cancel)
         {
-            bEditMode = false;
-            invalidateOptionsMenu();
-            setLayout();
+            if (bNewRecord)
+            {
+                this.finish();
+            }
+            else
+            {
+                bEditMode = false;
+                invalidateOptionsMenu();
+                setLayout();
+            }
             return true;
 
         }

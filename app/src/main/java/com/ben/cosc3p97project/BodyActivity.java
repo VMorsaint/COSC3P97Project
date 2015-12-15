@@ -111,6 +111,7 @@ public class BodyActivity extends RajawaliActivity implements
         });
 
         // button to confirm the body part selected
+
         Button confirmButton = new Button(this);
         confirmButton.setText("OK");
         confirmButton.setLayoutParams(buttonRules);
@@ -118,6 +119,7 @@ public class BodyActivity extends RajawaliActivity implements
         confirmButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 //clicking on ok returns the selected body part to statin activity
+
                 if(currentBodyPart != null){
                     Intent intent = new Intent();
                     intent.putExtra("body_part", currentBodyPart);
@@ -144,7 +146,6 @@ public class BodyActivity extends RajawaliActivity implements
         gDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
-
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,

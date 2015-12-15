@@ -17,10 +17,13 @@ public class PatientFile implements BaseColumns
     private String sPatientFileName;
     private String sPatientFileStart;
     private String sPatientFileEnd;
+    private String sPatientFileBodyPartKey;
+
     public static final String TABLE_NAME = "tPatientFiles";
     public static final String COL_PATIENT_FILE_ID = "cPatientFilePk";
     public static final String COL_PATIENT_ID = "cPatientFk";
     public static final String COL_NAME = "cName";
+    public static final String COL_BODYPART_KEY = "cBodyPartKey";
     public static final String COL_DATETIME_START = "cTimeStart";
     public static final String COL_DATETIME_END = "cTimeEnd";
     private boolean bClosed = false;
@@ -32,15 +35,20 @@ public class PatientFile implements BaseColumns
         iPatientFileID = 0;
         iPatientID = 0;
         sPatientFileName = "";
+        sPatientFileBodyPartKey = "";
         sPatientFileStart = dfDateNow.format(calDateNow.getTime());
         sPatientFileEnd = "";
     }
 
-    public PatientFile(long iPatientFileIDParam, long iPatientIDParam, String sPatientFileNameParam, String sStartParam, String sEndParam)
+    public PatientFile(long iPatientFileIDParam, long iPatientIDParam, String sPatientFileNameParam, String sPatientFileBodyPartKeyParam, String sStartParam, String sEndParam)
+
     {
         iPatientFileID = iPatientFileIDParam;
         iPatientID = iPatientIDParam;
         sPatientFileName = sPatientFileNameParam;
+
+        sPatientFileBodyPartKey = sPatientFileBodyPartKeyParam;
+
         sPatientFileStart = sStartParam;
         sPatientFileEnd = sEndParam;
     }
@@ -75,5 +83,8 @@ public class PatientFile implements BaseColumns
     {
         return sPatientFileEnd;
     }
-
+    public String getBodyPartKey()
+    {
+        return sPatientFileBodyPartKey;
+    }
 }

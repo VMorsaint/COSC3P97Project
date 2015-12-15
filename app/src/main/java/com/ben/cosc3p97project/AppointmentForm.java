@@ -60,6 +60,7 @@ public class AppointmentForm extends AppCompatActivity {
         //get list of all patients
         ArrayList<Patient> pats = db.getPatientList(false, false);
 
+
         //adapter for listview
         PatientAdapter adapter = new PatientAdapter(this, pats);
 
@@ -70,6 +71,7 @@ public class AppointmentForm extends AppCompatActivity {
         sp.setAdapter(adapter);
 
         //get edit text views
+
         EditText dText = (EditText) findViewById(R.id.editText);
         EditText sText = (EditText) findViewById(R.id.editText2);
         EditText eText = (EditText) findViewById(R.id.editText3);
@@ -147,11 +149,13 @@ public class AppointmentForm extends AppCompatActivity {
      */
     public void onSave(View v){
 
+
         //get values from form
         Patient p = (Patient)((Spinner)findViewById(R.id.spinner)).getSelectedItem();
         String date = ((EditText)findViewById(R.id.editText)).getText().toString();
         String sTime = ((EditText)findViewById(R.id.editText2)).getText().toString();
         String eTime = ((EditText)findViewById(R.id.editText3)).getText().toString();
+
 
         //status of db write
         boolean status = false;
@@ -202,7 +206,6 @@ public class AppointmentForm extends AppCompatActivity {
 
             //get patient
             Patient pat = getItem(viewPosn);
-
             // Check if an existing view is being reused, otherwise inflate the view
             if (view == null) {
                 view = LayoutInflater.from(getContext()).inflate(R.layout.patient_item, parent, false);
@@ -243,7 +246,6 @@ public class AppointmentForm extends AppCompatActivity {
                         Log.d("DateTimePicker", pe.getMessage());
                     }
                 }else{
-
                     //get hte current date
                     Calendar c = Calendar.getInstance();
                     year = c.get(Calendar.YEAR);

@@ -12,7 +12,6 @@
         android:id="@+id/appListEmpty"
         android:paddingLeft="15dp"
         android:paddingTop="15dp" />
-
     <ExpandableListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

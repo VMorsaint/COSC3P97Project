@@ -12,7 +12,7 @@ public class PatientFileBodyLocation implements BaseColumns
     private long iPatientFileBodyLocationID;
     private long iPatientFileID;
     private long iBodyLocationID;
-    public static final String TABLE_NAME = "tPatientFileBodyLocations";
+    public static final String TABLE_NAME = "tPatientFiles";
     public static final String COL_PATIENT_FILE_BODY_LOCATION_ID = "cBodyLocationPk";
     public static final String COL_BODY_LOCATION_ID = "cBodyLocationFk";
     public static final String COL_PATIENT_FILE_ID = "cPatientFileFk";

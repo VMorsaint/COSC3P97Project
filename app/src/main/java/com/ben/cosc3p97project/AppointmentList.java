@@ -116,8 +116,6 @@ public class AppointmentList extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-                                Log.d("DatePicker", dayOfMonth + "-"
-                                        + (monthOfYear + 1) + "-" + year);
 
                                 //set the new date variable
                                 date = year + "-"+ (monthOfYear + 1) + "-" + dayOfMonth;
@@ -133,7 +131,6 @@ public class AppointmentList extends AppCompatActivity {
                 dpd.show();
                 break;
             case R.id.new_app:
-
                 //start the activity to create an appointment
                 Intent it = new Intent(this, AppointmentForm.class);
                 it.putExtra("date", date);
@@ -210,7 +207,6 @@ public class AppointmentList extends AppCompatActivity {
         public boolean hasStableIds() {
             return false;
         }
-
 
         // return a view for the patient name and time of app
         @Override

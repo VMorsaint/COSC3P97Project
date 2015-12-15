@@ -46,7 +46,7 @@ public class PatientNoteRecyclerViewAdapter
         }
         else
         {
-            holder.mIdView.setText(String.valueOf(iPatientNoteId));
+            holder.mIdView.setText(String.valueOf(position+1));
         }
         holder.mContentView.setText( holder.mItem.getNote());
 

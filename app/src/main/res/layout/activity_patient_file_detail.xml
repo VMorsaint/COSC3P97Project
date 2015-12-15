@@ -60,6 +60,44 @@
             <TextView
                 android:layout_width="108dp"
                 android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Body Part:"
+                android:layout_marginLeft="16dp"
+                android:id="@+id/textViewPatientFileBodyPartKeyLabel"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewPatientFileBodyPartKeyEdit"
+                android:layout_weight="1"
+                android:visibility="gone"
+                style="@android:style/Widget.Holo.Spinner"
+                android:singleLine="true"/>
+
+
+            <TextView
+                style="?android:attr/textAppearanceLarge"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/textViewPatientFileBodyPartKeyView"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:textIsSelectable="true"
+                android:text=""
+                android:gravity="center_vertical"
+                android:visibility="visible"
+                android:singleLine="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:layout_width="108dp"
+                android:layout_height="fill_parent"
                 android:layout_marginLeft="16dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Start:"

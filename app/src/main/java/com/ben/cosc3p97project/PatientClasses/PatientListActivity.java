@@ -83,7 +83,6 @@ public class PatientListActivity extends AppCompatActivity {
             buildPatientList();
             invalidateOptionsMenu();
         }
-
         return super.onOptionsItemSelected(item);
     }
 

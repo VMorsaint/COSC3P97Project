@@ -89,7 +89,6 @@ public class BodyRenderer extends RajawaliRenderer{
             Toast.makeText(getContext(), "Error occrued loading the model", Toast.LENGTH_SHORT).show();
             ((BodyActivity) getContext()).finish();
         }
-
         /* touch detectors */
 
         //left hand

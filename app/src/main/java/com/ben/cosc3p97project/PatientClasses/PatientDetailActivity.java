@@ -9,8 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+
 import com.ben.cosc3p97project.AppointmentForm;
 import com.ben.cosc3p97project.AppointmentList;
+
 import com.ben.cosc3p97project.DatabaseClasses.DBHelper;
 import com.ben.cosc3p97project.DatabaseClasses.Patient;
 import com.ben.cosc3p97project.DatabaseClasses.PatientFile;
@@ -38,7 +40,8 @@ public class PatientDetailActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_detail);
-        if (savedInstanceState == null)
+
+        if (savedInstanceState == null && getIntent().hasExtra(ARG_ITEM_ID))
         {
             dbHelperPatientDetail = new DBHelper(this);
             sPatientID = getIntent().getStringExtra(ARG_ITEM_ID);
@@ -51,9 +54,11 @@ public class PatientDetailActivity extends AppCompatActivity
             else
             {
                 mPatientItem = dbHelperPatientDetail.getPatient(sPatientID);
-                buildFileList();
             }
-            setLayout();
+        }
+        else
+        {
+            this.finish();
         }
     }
 
@@ -83,6 +88,10 @@ public class PatientDetailActivity extends AppCompatActivity
             ((TextView) findViewById(R.id.textViewPatientLastNameView)).setVisibility(View.GONE);
             ((TextView) findViewById(R.id.textViewPatientFirstNameEdit)).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.textViewPatientLastNameEdit)).setVisibility(View.VISIBLE);
+
+            ((TextView) findViewById(R.id.textViewPatientFilesLabel)).setVisibility(View.GONE);
+            ((RecyclerView) findViewById(R.id.listView_patientFile_items)).setVisibility(View.GONE);
+
         }
         else
         {
@@ -92,6 +101,11 @@ public class PatientDetailActivity extends AppCompatActivity
             ((TextView) findViewById(R.id.textViewPatientLastNameEdit)).setVisibility(View.GONE);
             ((TextView) findViewById(R.id.textViewPatientFirstNameView)).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.textViewPatientLastNameView)).setVisibility(View.VISIBLE);
+
+
+            ((TextView) findViewById(R.id.textViewPatientFilesLabel)).setVisibility(View.VISIBLE);
+            ((RecyclerView) findViewById(R.id.listView_patientFile_items)).setVisibility(View.VISIBLE);
+
         }
 
     }
@@ -113,9 +127,18 @@ public class PatientDetailActivity extends AppCompatActivity
         }
         else if (id == R.id.action_cancel)
         {
-            bEditMode = false;
-            invalidateOptionsMenu();
-            setLayout();
+
+            if (bNewRecord)
+            {
+                this.finish();
+            }
+            else
+            {
+                bEditMode = false;
+                invalidateOptionsMenu();
+                setLayout();
+            }
+
             return true;
 
         }
@@ -131,9 +154,8 @@ public class PatientDetailActivity extends AppCompatActivity
                 dbHelperPatientDetail.addPatient(mPatientItem);
                 sPatientID = String.valueOf(mPatientItem.getPatientID());
                 mPatientFileList = new ArrayList<>();
-                mPatientFileList.add(new PatientFile(0, mPatientItem.getPatientID(), "New File", "", ""));
+                mPatientFileList.add(new PatientFile(0, mPatientItem.getPatientID(), "New File","", "", ""));
                 myPatientAdapter = new PatientFileRecyclerViewAdapter(mPatientFileList);
-                ((TextView) findViewById(R.id.textViewPatientFilesLabel)).setVisibility(View.VISIBLE);
                 ((RecyclerView) findViewById(R.id.listView_patientFile_items)).setAdapter(myPatientAdapter);
                 bNewRecord = false;
             }
@@ -172,15 +194,26 @@ public class PatientDetailActivity extends AppCompatActivity
 
     private void buildFileList()
     {
-        if (mPatientItem != null)
+        if (mPatientItem != null && !bNewRecord)
         {
             mPatientFileList = dbHelperPatientDetail.getPatientFileListByPatientId(sPatientID, bShowActive);
             if (mPatientFileList != null)
             {
-                mPatientFileList.add(new PatientFile(0, Integer.parseInt(sPatientID), "New File", "", ""));
+
+                mPatientFileList.add(new PatientFile(0, Integer.parseInt(sPatientID), "New File","", "", ""));
+
                 myPatientAdapter = new PatientFileRecyclerViewAdapter(mPatientFileList);
                 ((RecyclerView) findViewById(R.id.listView_patientFile_items)).setAdapter(myPatientAdapter);
             }
         }
+    }
+
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        buildFileList();
+        setLayout();
     }
 }

@@ -47,7 +47,9 @@ public class PatientFileRecyclerViewAdapter
         }
         else
         {
-            holder.mIdView.setText(String.valueOf(iPatientFileId));
+
+            holder.mIdView.setText(String.valueOf(position+1));
+
         }
         holder.mContentView.setText(holder.mItem.getName());
 

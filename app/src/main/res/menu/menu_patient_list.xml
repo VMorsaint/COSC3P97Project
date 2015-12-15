@@ -25,5 +25,12 @@
           android:title="@string/sortByName"
           app:showAsAction="never"
         />
+<<<<<<< HEAD
+=======
+    <item android:id="@+id/action_appointment_list"
+        android:title="Appt. List"
+        app:showAsAction="never"
+        />
+>>>>>>> finalstuff
 
 </menu>

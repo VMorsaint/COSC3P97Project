@@ -28,6 +28,25 @@
     <string name="accept">Accept</string>
 
 
+<<<<<<< HEAD
     <string name="hello_world">Hello world!</string>
+=======
+
+    <string name="LeftHand">Left Hand</string>
+    <string name="RightHand">Right Hand</string>
+    <string name="LeftUpperArm">Left Upper Arm</string>
+    <string name="RightUpperArm">Right Upper Arm</string>
+    <string name="LeftForeArm">Left Forearm</string>
+    <string name="RightForeArm">Right Forearm</string>
+    <string name="Chest">Chest</string>
+    <string name="Abdomin">Abdomin</string>
+    <string name="Head">Head</string>
+    <string name="LeftLeg">Left Leg</string>
+    <string name="RightLeg">Right Leg</string>
+    <string name="LeftFoot">Left Foot</string>
+    <string name="RightFoot">Right Foot</string>
+    <string name="LowerBack">Lower Back</string>
+    <string name="UpperBack">Upper Back</string>
+>>>>>>> finalstuff
 </resources>
 
